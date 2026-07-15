@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Health Tracker</string>
+
+    <!-- Bottom navigation tabs -->
+    <string name="tab_dashboard">Tổng quan</string>
+    <string name="tab_meal_diary">Bữa ăn</string>
+    <string name="tab_activity_diary">Hoạt động</string>
+    <string name="tab_stats">Thống kê</string>
+    <string name="tab_profile">Cá nhân</string>
+</resources>

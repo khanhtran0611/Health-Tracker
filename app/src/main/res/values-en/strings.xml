@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Health Tracker</string>
+
+    <!-- Bottom navigation tabs -->
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_meal_diary">Meal</string>
+    <string name="tab_activity_diary">Activity</string>
+    <string name="tab_stats">Stats</string>
+    <string name="tab_profile">Profile</string>
+</resources>
