@@ -1,29 +1,59 @@
 package com.example.healthtracker.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.component.PlaceholderScreen
+import com.example.healthtracker.ui.onboarding.OnboardingScreen
+import com.example.healthtracker.ui.profile.EditProfileScreen
+
+/**
+ * Gốc app: chờ [AppStartViewModel] xác định đã có hồ sơ user chưa rồi mới dựng
+ * backstack — tránh chớp màn Onboarding rồi nhảy sang Dashboard.
+ */
+@Composable
+fun HealthTrackerApp() {
+    val appStartViewModel: AppStartViewModel = hiltViewModel()
+    val startDestination by appStartViewModel.startDestination.collectAsStateWithLifecycle()
+
+    when (startDestination) {
+        AppStartDestination.LOADING -> LoadingScreen()
+        AppStartDestination.ONBOARDING -> HealthTrackerNavHost(startRoute = Route.Onboarding)
+        AppStartDestination.DASHBOARD -> HealthTrackerNavHost(startRoute = Route.Dashboard)
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
+}
 
 /**
  * Khung điều hướng của app: MỘT backstack chung cho mọi màn hình.
  * - Bottom bar chỉ hiện khi màn hiện tại thuộc [TopLevelTab] (ẩn ở AddEdit…, Settings…).
  * - Tab bottom nav gọi [navigateToTab]; màn con đi tiếp bằng backStack.add(...).
- *
- * TODO: start màn theo hasUser (Onboarding vs Dashboard) khi có UserRepository ViewModel.
  */
 @Composable
-fun HealthTrackerApp() {
-    val backStack = rememberNavBackStack(Route.Onboarding)
+private fun HealthTrackerNavHost(startRoute: Route) {
+    val backStack = rememberNavBackStack(startRoute)
     val currentRoute = backStack.lastOrNull() as? Route
     val showBottomBar = currentRoute != null && TopLevelTab.routes.contains(currentRoute)
 
@@ -50,15 +80,12 @@ fun HealthTrackerApp() {
             entryProvider = entryProvider {
                 // ----- Onboarding (ngoài shell) -----
                 entry<Route.Onboarding> {
-                    PlaceholderScreen(
-                        title = "Onboarding",
-                        actions = listOf(
-                            // Hoàn tất onboarding: xoá backstack để không back về được.
-                            "Hoàn tất → vào app" to {
-                                backStack.clear()
-                                backStack.add(Route.Dashboard)
-                            },
-                        ),
+                    OnboardingScreen(
+                        onFinishOnboarding = {
+                            // Xoá backstack để không back về Onboarding được nữa.
+                            backStack.clear()
+                            backStack.add(Route.Dashboard)
+                        },
                     )
                 }
 
@@ -131,7 +158,9 @@ fun HealthTrackerApp() {
 
                 // ----- Màn con Profile (ẩn bottom bar) -----
                 entry<Route.Settings> { PlaceholderScreen("Settings") }
-                entry<Route.EditProfile> { PlaceholderScreen("Edit Profile") }
+                entry<Route.EditProfile> {
+                    EditProfileScreen(onBack = { backStack.removeLastOrNull() })
+                }
             },
         )
     }
