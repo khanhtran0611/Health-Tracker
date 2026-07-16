@@ -132,7 +132,7 @@ fun ProfileForm(
             )
         }
 
-        Text(stringResource(R.string.section_activity_level), style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(R.string.section_activity_level), style = MaterialTheme.typography.titleMedium)
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             ActivityLevelOption.entries.forEach { option ->
                 ActivityLevelCard(
@@ -143,7 +143,7 @@ fun ProfileForm(
             }
         }
 
-        Text(stringResource(R.string.section_goal), style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(R.string.section_goal), style = MaterialTheme.typography.titleMedium)
         GoalSelector(goal = state.goal, onGoalChange = onGoalChange)
 
         Button(
@@ -305,7 +305,7 @@ private fun ActivityLevelCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(stringResource(option.titleRes), style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(option.titleRes), style = MaterialTheme.typography.titleMedium)
                 Text(
                     stringResource(option.descriptionRes),
                     style = MaterialTheme.typography.bodyMedium,

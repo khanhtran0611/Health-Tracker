@@ -1,15 +1,22 @@
 package com.example.healthtracker.ui.mealdiary
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,12 +64,23 @@ fun MealDiaryContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(
-            text = stringResource(R.string.meal_diary_title),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-        )
+        // Box + Alignment (giống DateNavigator): tiêu đề LUÔN ở giữa dù icon drawer
+        // bên trái có mặt hay không — icon hiện để trưng, chưa có logic mở drawer.
+        Box(modifier = Modifier.fillMaxWidth()) {
+            IconButton(
+                onClick = { /* TODO: mở drawer khi có logic */ },
+                modifier = Modifier.align(Alignment.CenterStart),
+            ) {
+                Icon(Icons.Default.Menu, contentDescription = null)
+            }
+            Text(
+                text = stringResource(R.string.meal_diary_title),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
 
         DateNavigator(
             selectedDate = uiState.selectedDate,

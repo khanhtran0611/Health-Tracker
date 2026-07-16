@@ -72,7 +72,7 @@ fun DateNavigator(
             IconButton(onClick = onPreviousDay) {
                 Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(R.string.action_previous_day))
             }
-            Text(dateText, style = MaterialTheme.typography.titleLarge)
+            Text(dateText, style = MaterialTheme.typography.titleMedium)
             IconButton(onClick = onNextDay) {
                 Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.action_next_day))
             }

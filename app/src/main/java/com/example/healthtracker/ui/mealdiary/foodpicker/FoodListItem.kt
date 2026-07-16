@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -34,14 +35,20 @@ fun FoodListItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column {
-            Text(food.name, style = MaterialTheme.typography.titleLarge)
+            Text(food.name, style = MaterialTheme.typography.titleMedium)
             Text(
                 text = formatFoodSubtitle(food),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        IconButton(onClick = onClick) {
+        // IconButton mặc định chiếm khối 48dp (vùng chạm a11y) dù icon chỉ 24dp -> ép
+        // size(24.dp) lên chính IconButton để khối bằng đúng icon, áp sát mép phải
+        // (giống fix đã làm ở MealEntryRow).
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier.size(24.dp),
+        ) {
             Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_add_food))
         }
     }

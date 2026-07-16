@@ -61,7 +61,7 @@ fun EnterNewFoodCard(
         )
         Text(
             stringResource(R.string.food_picker_empty_title),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
         )
         Text(

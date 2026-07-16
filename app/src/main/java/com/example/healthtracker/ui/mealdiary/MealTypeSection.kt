@@ -63,13 +63,13 @@ fun MealTypeSection(
                     )
                     Text(
                         stringResource(mealTypeLabelRes(mealType)),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(start = 8.dp),
                     )
                 }
                 Text(
                     text = "${totalCalories.toInt()} ${stringResource(R.string.unit_kcal)}",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = if (totalCalories > 0) {
                         MaterialTheme.colorScheme.secondary
                     } else {

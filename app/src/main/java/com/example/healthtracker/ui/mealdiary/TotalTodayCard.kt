@@ -50,7 +50,7 @@ fun TotalTodayCard(
                 )
                 Text(
                     " ${stringResource(R.string.unit_kcal)}",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
