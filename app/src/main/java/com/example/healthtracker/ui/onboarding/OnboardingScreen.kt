@@ -28,6 +28,8 @@ fun OnboardingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+
+    // Onboarding sẽ tự collect cái event này để còn chuyển hướng sang dashboard
     LaunchedEffect(Unit) {
         viewModel.completedEvent.collect { onFinishOnboarding() }
     }
