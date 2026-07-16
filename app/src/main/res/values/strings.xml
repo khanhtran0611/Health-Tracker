@@ -49,4 +49,27 @@
     <string name="error_field_required">Vui lòng nhập thông tin</string>
     <string name="error_invalid_number">Giá trị không hợp lệ</string>
     <string name="error_must_be_positive">Giá trị phải lớn hơn 0</string>
+
+    <!-- Meal Diary -->
+    <string name="meal_diary_title">Nhật ký bữa ăn</string>
+    <string name="meal_type_breakfast">Bữa sáng</string>
+    <string name="meal_type_lunch">Bữa trưa</string>
+    <string name="meal_type_dinner">Bữa tối</string>
+    <string name="meal_type_snack">Bữa phụ</string>
+    <string name="section_no_items_yet">Chưa có món nào</string>
+    <string name="action_add_food">Thêm món ăn</string>
+    <string name="action_delete">Xoá</string>
+    <string name="action_pick_date">Chọn ngày</string>
+    <string name="action_previous_day">Ngày trước</string>
+    <string name="action_next_day">Ngày sau</string>
+    <string name="date_today_prefix">Hôm nay, %1$s</string>
+    <string name="total_today_label">TỔNG HÔM NAY</string>
+    <string name="unit_kcal">kcal</string>
+
+    <!-- Food Picker -->
+    <string name="food_picker_title">Chọn món ăn</string>
+    <string name="food_picker_search_placeholder">Tìm món ăn theo tên…</string>
+    <string name="food_picker_empty_title">Không tìm thấy món?</string>
+    <string name="food_picker_empty_subtitle">Thêm món mới để theo dõi chính xác hơn.</string>
+    <string name="action_enter_new_food">Nhập món mới</string>
 </resources>

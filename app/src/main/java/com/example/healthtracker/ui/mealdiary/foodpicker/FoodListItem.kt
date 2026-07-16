@@ -1,0 +1,55 @@
+package com.example.healthtracker.ui.mealdiary.foodpicker
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.healthtracker.R
+import com.example.healthtracker.domain.model.Food
+
+/** 1 dòng món ăn trong danh sách chọn: tên + khẩu phần/calo bên trái, nút "+" bên phải. */
+@Composable
+fun FoodListItem(
+    food: Food,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column {
+            Text(food.name, style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = formatFoodSubtitle(food),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        IconButton(onClick = onClick) {
+            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_add_food))
+        }
+    }
+}
+
+/** vd "100g · 130 kcal", hoặc "130 kcal" nếu food không có servingUnit. */
+@Composable
+private fun formatFoodSubtitle(food: Food): String {
+    val kcalText = "${food.calories.toInt()} ${stringResource(R.string.unit_kcal)}"
+    return if (food.servingUnit != null) "${food.servingUnit} · $kcalText" else kcalText
+}

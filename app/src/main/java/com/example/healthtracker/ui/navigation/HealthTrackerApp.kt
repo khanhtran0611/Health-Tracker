@@ -20,6 +20,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.component.PlaceholderScreen
+import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
+import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
 
@@ -91,14 +93,7 @@ private fun HealthTrackerNavHost(startRoute: Route) {
 
                 // ----- 5 tab -----
                 entry<Route.Dashboard> { PlaceholderScreen("Dashboard") }
-                entry<Route.MealDiary> {
-                    PlaceholderScreen(
-                        "Meal Diary",
-                        actions = listOf(
-                            "＋ Thêm bữa ăn" to { backStack.add(Route.AddEditMealEntry()) },
-                        ),
-                    )
-                }
+                entry<Route.MealDiary> { MealDiaryScreen() }
                 entry<Route.ActivityDiary> {
                     PlaceholderScreen(
                         "Activity Diary",
@@ -128,11 +123,10 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     )
                 }
                 entry<Route.FoodPicker> {
-                    PlaceholderScreen(
-                        "Food Picker",
-                        actions = listOf(
-                            "Nhập món thủ công" to { backStack.add(Route.EnterFoodManually) },
-                        ),
+                    FoodPickerScreen(
+                        onBack = { backStack.removeLastOrNull() },
+                        onFoodSelected = { /* TODO: điều hướng sang Add/Edit Meal Entry khi làm tới, mang theo food.id */ },
+                        onEnterNewFood = { backStack.add(Route.EnterFoodManually) },
                     )
                 }
                 entry<Route.EnterFoodManually> { PlaceholderScreen("Enter Food Manually") }
