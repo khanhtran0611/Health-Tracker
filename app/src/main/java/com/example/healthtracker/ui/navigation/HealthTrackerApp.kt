@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.example.healthtracker.domain.model.MealType
 import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
@@ -93,7 +94,11 @@ private fun HealthTrackerNavHost(startRoute: Route) {
 
                 // ----- 5 tab -----
                 entry<Route.Dashboard> { PlaceholderScreen("Dashboard") }
-                entry<Route.MealDiary> { MealDiaryScreen() }
+                entry<Route.MealDiary> {
+                    MealDiaryScreen(
+                        onAddFood = { mealType -> backStack.add(Route.FoodPicker(mealType = mealType)) },
+                    )
+                }
                 entry<Route.ActivityDiary> {
                     PlaceholderScreen(
                         "Activity Diary",
@@ -118,7 +123,9 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     PlaceholderScreen(
                         if (route.entryId == null) "Thêm bữa ăn" else "Sửa bữa ăn #${route.entryId}",
                         actions = listOf(
-                            "Chọn món (Food Picker)" to { backStack.add(Route.FoodPicker) },
+                            // Màn này còn placeholder nên chưa có mealType thật — tạm BREAKFAST
+                            // cho demo; khi làm AddEditMealEntry thật sẽ tự mang đúng mealType.
+                            "Chọn món (Food Picker)" to { backStack.add(Route.FoodPicker(mealType = MealType.BREAKFAST)) },
                         ),
                     )
                 }

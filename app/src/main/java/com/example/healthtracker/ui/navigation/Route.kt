@@ -1,6 +1,7 @@
 package com.example.healthtracker.ui.navigation
 
 import androidx.navigation3.runtime.NavKey
+import com.example.healthtracker.domain.model.MealType
 import kotlinx.serialization.Serializable
 
 /**
@@ -38,8 +39,9 @@ sealed interface Route : NavKey {
     @Serializable
     data class AddEditMealEntry(val entryId: Long? = null) : Route
 
+    /** mealType để biết món chọn xong sẽ log vào bữa nào. */
     @Serializable
-    data object FoodPicker : Route
+    data class FoodPicker(val mealType: MealType) : Route
 
     @Serializable
     data object EnterFoodManually : Route

@@ -33,6 +33,7 @@ import java.time.LocalDate
 /** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [MealDiaryContent]. */
 @Composable
 fun MealDiaryScreen(
+    onAddFood: (MealType) -> Unit,
     viewModel: MealDiaryViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,6 +43,7 @@ fun MealDiaryScreen(
         onPreviousDay = viewModel::onPreviousDay,
         onNextDay = viewModel::onNextDay,
         onDateSelected = viewModel::onDateSelected,
+        onAddFood = onAddFood,
     )
 }
 
@@ -55,6 +57,7 @@ fun MealDiaryContent(
     onPreviousDay: () -> Unit,
     onNextDay: () -> Unit,
     onDateSelected: (LocalDate) -> Unit,
+    onAddFood: (MealType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -94,7 +97,7 @@ fun MealDiaryContent(
                 mealType = mealType,
                 entries = uiState.entriesByMealType.getValue(mealType),
                 totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
-                onAddFood = { /* TODO: điều hướng sang Add Meal Entry khi làm tới */ },
+                onAddFood = { onAddFood(mealType) },
                 onDeleteEntry = { /* TODO: nối viewModel xoá entry khi làm tới */ },
             )
         }
@@ -166,6 +169,7 @@ private fun MealDiaryContentPreview() {
             onPreviousDay = {},
             onNextDay = {},
             onDateSelected = {},
+            onAddFood = {},
         )
     }
 }
