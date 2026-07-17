@@ -19,12 +19,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.healthtracker.domain.model.MealType
 import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
+import com.example.healthtracker.ui.mealdiary.addmealentry.AddMealEntryScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
+import java.time.LocalDate
 
 /**
  * Gốc app: chờ [AppStartViewModel] xác định đã có hồ sơ user chưa rồi mới dựng
@@ -96,7 +97,9 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                 entry<Route.Dashboard> { PlaceholderScreen("Dashboard") }
                 entry<Route.MealDiary> {
                     MealDiaryScreen(
-                        onAddFood = { mealType -> backStack.add(Route.FoodPicker(mealType = mealType)) },
+                        onAddFood = { mealType, logDate ->
+                            backStack.add(Route.FoodPicker(mealType = mealType, logDate = logDate.toString()))
+                        },
                     )
                 }
                 entry<Route.ActivityDiary> {
@@ -119,21 +122,27 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                 }
 
                 // ----- Màn con Meal (ẩn bottom bar) -----
-                entry<Route.AddEditMealEntry> { route ->
-                    PlaceholderScreen(
-                        if (route.entryId == null) "Thêm bữa ăn" else "Sửa bữa ăn #${route.entryId}",
-                        actions = listOf(
-                            // Màn này còn placeholder nên chưa có mealType thật — tạm BREAKFAST
-                            // cho demo; khi làm AddEditMealEntry thật sẽ tự mang đúng mealType.
-                            "Chọn món (Food Picker)" to { backStack.add(Route.FoodPicker(mealType = MealType.BREAKFAST)) },
-                        ),
-                    )
-                }
-                entry<Route.FoodPicker> {
+                entry<Route.FoodPicker> { route ->
                     FoodPickerScreen(
                         onBack = { backStack.removeLastOrNull() },
-                        onFoodSelected = { /* TODO: điều hướng sang Add/Edit Meal Entry khi làm tới, mang theo food.id */ },
+                        onFoodSelected = { food ->
+                            backStack.add(
+                                Route.AddMealEntry(
+                                    food = food,
+                                    mealType = route.mealType,
+                                    logDate = route.logDate,
+                                ),
+                            )
+                        },
                         onEnterNewFood = { backStack.add(Route.EnterFoodManually) },
+                    )
+                }
+                entry<Route.AddMealEntry> { route ->
+                    AddMealEntryScreen(
+                        food = route.food,
+                        mealType = route.mealType,
+                        logDate = LocalDate.parse(route.logDate),
+                        onDismiss = { backStack.removeLastOrNull() },
                     )
                 }
                 entry<Route.EnterFoodManually> { PlaceholderScreen("Enter Food Manually") }

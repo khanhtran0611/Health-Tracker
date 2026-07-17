@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
+import com.example.healthtracker.ui.component.formatFoodCalorieInfo
 
 /** 1 dòng món ăn trong danh sách chọn: tên + khẩu phần/calo bên trái, nút "+" bên phải. */
 @Composable
@@ -37,7 +38,7 @@ fun FoodListItem(
         Column {
             Text(food.name, style = MaterialTheme.typography.titleMedium)
             Text(
-                text = formatFoodSubtitle(food),
+                text = formatFoodCalorieInfo(food),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -52,11 +53,4 @@ fun FoodListItem(
             Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_add_food))
         }
     }
-}
-
-/** vd "100g · 130 kcal", hoặc "130 kcal" nếu food không có servingUnit. */
-@Composable
-private fun formatFoodSubtitle(food: Food): String {
-    val kcalText = "${food.calories.toInt()} ${stringResource(R.string.unit_kcal)}"
-    return if (food.servingUnit != null) "${food.servingUnit} · $kcalText" else kcalText
 }

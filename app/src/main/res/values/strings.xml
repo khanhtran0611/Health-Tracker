@@ -72,4 +72,14 @@
     <string name="food_picker_empty_title">Không tìm thấy món?</string>
     <string name="food_picker_empty_subtitle">Thêm món mới để theo dõi chính xác hơn.</string>
     <string name="action_enter_new_food">Nhập món mới</string>
+
+    <!-- Add Meal Entry -->
+    <string name="add_meal_entry_title">Thêm món ăn</string>
+    <string name="action_close">Đóng</string>
+    <string name="label_quantity">Số lượng</string>
+    <string name="unit_serving_short">khẩu phần</string>
+    <string name="label_logging_for">Ghi vào ngày:</string>
+    <string name="label_total_for_entry">TỔNG CHO MÓN NÀY</string>
+    <string name="action_decrease_quantity">Giảm số lượng</string>
+    <string name="action_increase_quantity">Tăng số lượng</string>
 </resources>

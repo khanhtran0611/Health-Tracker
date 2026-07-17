@@ -29,11 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.component.formatDiaryDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 /**
  * Thanh chuyển ngày: "< Hôm nay, 14 tháng 7 >" ở giữa, icon lịch ghim mép phải.
@@ -51,13 +50,7 @@ fun DateNavigator(
     modifier: Modifier = Modifier,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
-    val formatter = remember { DateTimeFormatter.ofPattern("d MMMM", Locale.getDefault()) }
-    val formattedDate = selectedDate.format(formatter)
-    val dateText = if (selectedDate == LocalDate.now()) {
-        stringResource(R.string.date_today_prefix, formattedDate)
-    } else {
-        formattedDate
-    }
+    val dateText = formatDiaryDate(selectedDate)
 
     Box(
         modifier = modifier

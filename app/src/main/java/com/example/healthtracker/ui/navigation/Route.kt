@@ -1,6 +1,7 @@
 package com.example.healthtracker.ui.navigation
 
 import androidx.navigation3.runtime.NavKey
+import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.domain.model.MealType
 import kotlinx.serialization.Serializable
 
@@ -35,13 +36,19 @@ sealed interface Route : NavKey {
     data object Profile : Route
 
     // ----- Màn con của Meal Diary -----
-    /** entryId = null → thêm mới; có id → sửa. */
+    /**
+     * Luôn tới từ Food Picker — đã biết chắc món/bữa/ngày trước khi mở màn này
+     * (chỉ "thêm", chưa có luồng sửa entry cũ nên không đặt tên AddEdit).
+     * logDate lưu String (ISO yyyy-MM-dd) vì java.time.LocalDate không tự
+     * serialize qua Nav3 (không phải @Serializable, không phải type của
+     * kotlinx.serialization) — parse lại LocalDate ở ViewModel.
+     */
     @Serializable
-    data class AddEditMealEntry(val entryId: Long? = null) : Route
+    data class AddMealEntry(val food: Food, val mealType: MealType, val logDate: String) : Route
 
-    /** mealType để biết món chọn xong sẽ log vào bữa nào. */
+    /** mealType + logDate để mang tiếp sang AddMealEntry sau khi chọn món xong. */
     @Serializable
-    data class FoodPicker(val mealType: MealType) : Route
+    data class FoodPicker(val mealType: MealType, val logDate: String) : Route
 
     @Serializable
     data object EnterFoodManually : Route

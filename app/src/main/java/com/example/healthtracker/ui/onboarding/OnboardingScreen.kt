@@ -1,5 +1,6 @@
 package com.example.healthtracker.ui.onboarding
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -34,10 +35,17 @@ fun OnboardingScreen(
         viewModel.completedEvent.collect { onFinishOnboarding() }
     }
 
+    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
+    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa
+    // (nếu không sẽ bị dư khoảng trắng cả trên lẫn dưới).
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(stringResource(R.string.onboarding_title)) })
+            TopAppBar(
+                title = { Text(stringResource(R.string.onboarding_title)) },
+                windowInsets = WindowInsets(0, 0, 0, 0),
+            )
         },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { padding ->
         ProfileForm(
             state = uiState,

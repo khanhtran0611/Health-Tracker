@@ -1,5 +1,6 @@
 package com.example.healthtracker.ui.profile
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -35,6 +36,8 @@ fun EditProfileScreen(
         viewModel.savedEvent.collect { onBack() }
     }
 
+    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
+    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa.
     Scaffold(
         topBar = {
             TopAppBar(
@@ -44,8 +47,10 @@ fun EditProfileScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 },
+                windowInsets = WindowInsets(0, 0, 0, 0),
             )
         },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { padding ->
         ProfileForm(
             state = uiState,
