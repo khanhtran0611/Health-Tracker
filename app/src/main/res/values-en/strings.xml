@@ -23,6 +23,7 @@
 
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+    <string name="section_gender">Gender</string>
 
     <string name="section_activity_level">Activity level</string>
     <string name="activity_level_sedentary_title">Sedentary</string>
@@ -49,4 +50,54 @@
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_number">Invalid value</string>
     <string name="error_must_be_positive">Value must be greater than 0</string>
+
+    <!-- Meal Diary -->
+    <string name="meal_diary_title">Meal Diary</string>
+    <string name="meal_type_breakfast">Breakfast</string>
+    <string name="meal_type_lunch">Lunch</string>
+    <string name="meal_type_dinner">Dinner</string>
+    <string name="meal_type_snack">Snacks</string>
+    <string name="section_no_items_yet">No items yet</string>
+    <string name="action_add_food">Add food</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_pick_date">Pick date</string>
+    <string name="action_previous_day">Previous day</string>
+    <string name="action_next_day">Next day</string>
+    <string name="date_today_prefix">Today, %1$s</string>
+    <string name="total_today_label">TOTAL TODAY</string>
+    <string name="unit_kcal">kcal</string>
+
+    <!-- Food Picker -->
+    <string name="food_picker_title">Choose food</string>
+    <string name="food_picker_search_placeholder">Search food by name…</string>
+    <string name="food_picker_empty_title">Can\'t find your food?</string>
+    <string name="food_picker_empty_subtitle">Add a custom entry for accurate tracking.</string>
+    <string name="action_enter_new_food">Enter new food</string>
+
+    <!-- Add Meal Entry -->
+    <string name="add_meal_entry_title">Add food</string>
+    <string name="action_close">Close</string>
+    <string name="label_quantity">Quantity</string>
+    <string name="unit_serving_short">serving(s)</string>
+    <string name="label_logging_for">Logging for:</string>
+    <string name="label_total_for_entry">TOTAL FOR THIS ENTRY</string>
+    <string name="action_decrease_quantity">Decrease quantity</string>
+    <string name="action_increase_quantity">Increase quantity</string>
+
+    <!-- Enter Food Manually -->
+    <string name="enter_food_manually_add_title">Add new food</string>
+    <string name="enter_food_manually_edit_title">Edit food</string>
+    <string name="action_edit">Edit</string>
+    <string name="field_food_name">Food name *</string>
+    <string name="field_food_name_placeholder">e.g. Bún đậu mắm tôm</string>
+    <string name="field_calories_required">Calories *</string>
+    <string name="field_serving_unit_optional">Serving unit (optional)</string>
+    <string name="field_serving_unit_placeholder">e.g. 1 bowl, 100g, 1 piece</string>
+    <string name="text_custom_food_banner">Adding custom nutritional data</string>
+    <string name="text_custom_food_info">This food will be saved to your food list for future use.</string>
+    <string name="action_save_and_use">Save and use</string>
+    <string name="msg_food_saved">Food saved</string>
+    <string name="msg_food_save_failed">Failed to save food, please try again</string>
+    <string name="msg_meal_entry_added">Meal entry added</string>
+    <string name="msg_meal_entry_failed">Failed to add meal entry, please try again</string>
 </resources>

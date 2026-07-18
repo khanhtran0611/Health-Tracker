@@ -1,6 +1,9 @@
 package com.example.healthtracker.domain.model
 
+import kotlinx.serialization.Serializable
+
 /** Món ăn trong catalog. */
+@Serializable
 data class Food(
     val id: Long = 0,
     val name: String,
