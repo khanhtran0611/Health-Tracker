@@ -1,4 +1,4 @@
-package com.example.healthtracker.ui.mealdiary
+package com.example.healthtracker.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
-import com.example.healthtracker.ui.component.formatDiaryDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -39,6 +38,8 @@ import java.time.ZoneOffset
  * Dùng Box + Alignment (không phải Row + SpaceBetween) để cụm giữa LUÔN ở chính
  * giữa dù icon lịch có đổi kích thước — Box định vị từng con theo toàn bộ chiều
  * rộng của chính nó, không phụ thuộc con bên cạnh.
+ *
+ * Dùng chung cho Meal Diary lẫn Activity Diary.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

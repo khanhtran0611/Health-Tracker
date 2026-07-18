@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
+import com.example.healthtracker.ui.component.DateNavigator
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
