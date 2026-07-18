@@ -1,7 +1,5 @@
 package com.example.healthtracker.domain.model
 
-import kotlinx.serialization.Serializable
-
 /** Giới tính — quyết định công thức BMR (nam +5 / nữ −161). */
 enum class Gender {
     MALE,
@@ -15,11 +13,7 @@ enum class Goal {
     GAIN,
 }
 
-/**
- * Loại bữa ăn cho một dòng nhật ký.
- * @Serializable để Route.FoodPicker(mealType) mang được giá trị này qua Nav3 backstack.
- */
-@Serializable
+/** Loại bữa ăn cho một dòng nhật ký. */
 enum class MealType {
     BREAKFAST,
     LUNCH,
