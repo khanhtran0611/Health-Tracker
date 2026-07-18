@@ -31,21 +31,26 @@ fun QuantityStepper(
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        StepperButton(
-            icon = Icons.Default.Remove,
-            contentDescription = stringResource(R.string.action_decrease_quantity),
-            onClick = onDecrease,
-        )
-        Text(
-            text = formatQuantity(quantity),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-        StepperButton(
-            icon = Icons.Default.Add,
-            contentDescription = stringResource(R.string.action_increase_quantity),
-            onClick = onIncrease,
-        )
+        Row(
+            modifier = Modifier.border(BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), androidx.compose.foundation.shape.RoundedCornerShape(999.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            StepperButton(
+                icon = Icons.Default.Remove,
+                contentDescription = stringResource(R.string.action_decrease_quantity),
+                onClick = onDecrease,
+            )
+            Text(
+                text = formatQuantity(quantity),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+            StepperButton(
+                icon = Icons.Default.Add,
+                contentDescription = stringResource(R.string.action_increase_quantity),
+                onClick = onIncrease,
+            )
+        }
         Text(
             text = stringResource(R.string.unit_serving_short),
             style = MaterialTheme.typography.bodyMedium,
@@ -69,8 +74,7 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(32.dp)
-            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.outline), CircleShape)
+            .size(36.dp)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

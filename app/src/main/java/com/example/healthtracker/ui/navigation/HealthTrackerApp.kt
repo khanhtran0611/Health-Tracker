@@ -21,7 +21,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
-import com.example.healthtracker.ui.mealdiary.addmealentry.AddMealEntryScreen
+import com.example.healthtracker.ui.mealdiary.enterfood.EnterFoodManuallyScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
@@ -124,28 +124,19 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                 // ----- Màn con Meal (ẩn bottom bar) -----
                 entry<Route.FoodPicker> { route ->
                     FoodPickerScreen(
-                        onBack = { backStack.removeLastOrNull() },
-                        onFoodSelected = { food ->
-                            backStack.add(
-                                Route.AddMealEntry(
-                                    food = food,
-                                    mealType = route.mealType,
-                                    logDate = route.logDate,
-                                ),
-                            )
-                        },
-                        onEnterNewFood = { backStack.add(Route.EnterFoodManually) },
-                    )
-                }
-                entry<Route.AddMealEntry> { route ->
-                    AddMealEntryScreen(
-                        food = route.food,
                         mealType = route.mealType,
                         logDate = LocalDate.parse(route.logDate),
-                        onDismiss = { backStack.removeLastOrNull() },
+                        onBack = { backStack.removeLastOrNull() },
+                        onEnterNewFood = { backStack.add(Route.EnterFoodManually()) },
+                        onEditFood = { food -> backStack.add(Route.EnterFoodManually(food = food)) },
                     )
                 }
-                entry<Route.EnterFoodManually> { PlaceholderScreen("Enter Food Manually") }
+                entry<Route.EnterFoodManually> { route ->
+                    EnterFoodManuallyScreen(
+                        food = route.food,
+                        onClose = { backStack.removeLastOrNull() },
+                    )
+                }
 
                 // ----- Màn con Activity (ẩn bottom bar) -----
                 entry<Route.AddEditActivityEntry> { route ->

@@ -156,20 +156,12 @@ fun ProfileForm(
     }
 }
 
-@Composable
-private fun fieldErrorText(error: ProfileFieldError?): String? = when (error) {
-    null -> null
-    ProfileFieldError.REQUIRED -> stringResource(R.string.error_field_required)
-    ProfileFieldError.INVALID_NUMBER -> stringResource(R.string.error_invalid_number)
-    ProfileFieldError.MUST_BE_POSITIVE -> stringResource(R.string.error_must_be_positive)
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DateOfBirthField(
     dateOfBirth: LocalDate?,
     age: Int?,
-    error: ProfileFieldError?,
+    error: FieldError?,
     onDateChange: (LocalDate) -> Unit,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }

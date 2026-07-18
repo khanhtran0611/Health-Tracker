@@ -39,13 +39,17 @@ class AddMealEntryViewModel @Inject constructor(
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
-    /** Gọi 1 lần lúc màn mở, mang theo dữ liệu từ Route (foodId/mealType/logDate). */
+    /**
+     * Gọi mỗi lần modal mở, mang theo food/mealType/logDate đã chọn.
+     * Gán lại NGUYÊN state (không .copy() lên state cũ) vì FoodPickerScreen giữ
+     * modal ở dạng state cục bộ — cùng 1 ViewModel instance có thể bị dùng lại
+     * cho nhiều lần mở modal khác nhau (mỗi lần chọn 1 food khác) trong lúc vẫn
+     * đứng ở Food Picker. Nếu chỉ .copy() thì quantity của lần chọn trước sẽ dính
+     * sang lần chọn sau — phải reset sạch.
+     */
     fun initialize(food: Food, mealType: MealType, logDate: LocalDate) {
         this.mealType = mealType
-        _uiState.update { it.copy(food = food, logDate = logDate) }
-//        viewModelScope.launch {
-//            _uiState.update { it.copy(food = food) }
-//        }
+        _uiState.value = AddMealEntryUiState(food = food, logDate = logDate, mealType = mealType)
     }
 
     fun onDecreaseQuantity() {

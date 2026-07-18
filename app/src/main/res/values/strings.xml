@@ -82,4 +82,17 @@
     <string name="label_total_for_entry">TỔNG CHO MÓN NÀY</string>
     <string name="action_decrease_quantity">Giảm số lượng</string>
     <string name="action_increase_quantity">Tăng số lượng</string>
+
+    <!-- Enter Food Manually -->
+    <string name="enter_food_manually_add_title">Thêm món mới</string>
+    <string name="enter_food_manually_edit_title">Sửa món ăn</string>
+    <string name="action_edit">Sửa</string>
+    <string name="field_food_name">Tên món ăn *</string>
+    <string name="field_food_name_placeholder">vd. Bún đậu mắm tôm</string>
+    <string name="field_calories_required">Calo *</string>
+    <string name="field_serving_unit_optional">Đơn vị khẩu phần (không bắt buộc)</string>
+    <string name="field_serving_unit_placeholder">vd. 1 tô, 100g, 1 cái</string>
+    <string name="text_custom_food_banner">Thêm thông tin dinh dưỡng tuỳ chỉnh</string>
+    <string name="text_custom_food_info">Món này sẽ được lưu vào danh sách món ăn để dùng sau.</string>
+    <string name="action_save_and_use">Lưu và dùng</string>
 </resources>

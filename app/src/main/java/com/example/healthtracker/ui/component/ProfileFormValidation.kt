@@ -5,21 +5,21 @@ fun validateProfileForm(state: ProfileFormUiState): ProfileFormUiState {
     val weight = state.weightKg.toDoubleOrNull()
     val height = state.heightCm.toDoubleOrNull()
 
-    val fullNameError = if (state.fullName.isBlank()) ProfileFieldError.REQUIRED else null
+    val fullNameError = if (state.fullName.isBlank()) FieldError.REQUIRED else null
 
-    val dateOfBirthError = if (state.dateOfBirth == null) ProfileFieldError.REQUIRED else null
+    val dateOfBirthError = if (state.dateOfBirth == null) FieldError.REQUIRED else null
 
     val weightError = when {
-        state.weightKg.isBlank() -> ProfileFieldError.REQUIRED
-        weight == null -> ProfileFieldError.INVALID_NUMBER
-        weight <= 0 -> ProfileFieldError.MUST_BE_POSITIVE
+        state.weightKg.isBlank() -> FieldError.REQUIRED
+        weight == null -> FieldError.INVALID_NUMBER
+        weight <= 0 -> FieldError.MUST_BE_POSITIVE
         else -> null
     }
 
     val heightError = when {
-        state.heightCm.isBlank() -> ProfileFieldError.REQUIRED
-        height == null -> ProfileFieldError.INVALID_NUMBER
-        height <= 0 -> ProfileFieldError.MUST_BE_POSITIVE
+        state.heightCm.isBlank() -> FieldError.REQUIRED
+        height == null -> FieldError.INVALID_NUMBER
+        height <= 0 -> FieldError.MUST_BE_POSITIVE
         else -> null
     }
 

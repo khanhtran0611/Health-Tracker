@@ -36,22 +36,22 @@ sealed interface Route : NavKey {
     data object Profile : Route
 
     // ----- Màn con của Meal Diary -----
-    /**
-     * Luôn tới từ Food Picker — đã biết chắc món/bữa/ngày trước khi mở màn này
-     * (chỉ "thêm", chưa có luồng sửa entry cũ nên không đặt tên AddEdit).
-     * logDate lưu String (ISO yyyy-MM-dd) vì java.time.LocalDate không tự
-     * serialize qua Nav3 (không phải @Serializable, không phải type của
-     * kotlinx.serialization) — parse lại LocalDate ở ViewModel.
-     */
-    @Serializable
-    data class AddMealEntry(val food: Food, val mealType: MealType, val logDate: String) : Route
+    // "Thêm món vào bữa" (chọn food -> nhập số lượng -> lưu) là 1 ModalBottomSheet
+    // hiện qua state cục bộ (remember { mutableStateOf<Food?>(null) }) ngay trong
+    // FoodPickerScreen — KHÔNG phải Route riêng. Modal thật sự không cần cả 1 Route/
+    // backstack entry, chỉ cần show/hide trong đúng màn đang đứng.
 
-    /** mealType + logDate để mang tiếp sang AddMealEntry sau khi chọn món xong. */
+    /** mealType + logDate để mang tiếp sang lúc tạo MealEntry sau khi chọn món xong. */
     @Serializable
     data class FoodPicker(val mealType: MealType, val logDate: String) : Route
 
+    /**
+     * food = null -> thêm món mới; food != null -> sửa món đã có trong catalog.
+     * Truyền THẲNG object Food (không phải foodId) vì nơi gọi (Food Picker) đã có
+     * sẵn Food trong tay — khỏi tốn thêm 1 lần query lại từ repository.
+     */
     @Serializable
-    data object EnterFoodManually : Route
+    data class EnterFoodManually(val food: Food? = null) : Route
 
     // ----- Màn con của Activity Diary -----
     @Serializable

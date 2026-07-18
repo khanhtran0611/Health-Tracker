@@ -82,4 +82,17 @@
     <string name="label_total_for_entry">TOTAL FOR THIS ENTRY</string>
     <string name="action_decrease_quantity">Decrease quantity</string>
     <string name="action_increase_quantity">Increase quantity</string>
+
+    <!-- Enter Food Manually -->
+    <string name="enter_food_manually_add_title">Add new food</string>
+    <string name="enter_food_manually_edit_title">Edit food</string>
+    <string name="action_edit">Edit</string>
+    <string name="field_food_name">Food name *</string>
+    <string name="field_food_name_placeholder">e.g. Bún đậu mắm tôm</string>
+    <string name="field_calories_required">Calories *</string>
+    <string name="field_serving_unit_optional">Serving unit (optional)</string>
+    <string name="field_serving_unit_placeholder">e.g. 1 bowl, 100g, 1 piece</string>
+    <string name="text_custom_food_banner">Adding custom nutritional data</string>
+    <string name="text_custom_food_info">This food will be saved to your food list for future use.</string>
+    <string name="action_save_and_use">Save and use</string>
 </resources>
