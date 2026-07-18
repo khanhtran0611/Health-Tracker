@@ -7,4 +7,132 @@
     <string name="tab_activity_diary">Activity</string>
     <string name="tab_stats">Stats</string>
     <string name="tab_profile">Profile</string>
+
+    <!-- Onboarding / Edit Profile (dùng chung ProfileForm) -->
+    <string name="onboarding_title">Set up your profile</string>
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="action_back">Back</string>
+
+    <string name="field_full_name">Full name</string>
+    <string name="field_date_of_birth">Date of birth</string>
+    <string name="field_age_value">Age: %1$d</string>
+    <string name="field_weight">Weight</string>
+    <string name="field_height">Height</string>
+    <string name="unit_kg">kg</string>
+    <string name="unit_cm">cm</string>
+
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="section_gender">Gender</string>
+
+    <string name="section_activity_level">Activity level</string>
+    <string name="activity_level_sedentary_title">Sedentary</string>
+    <string name="activity_level_sedentary_desc">Little or no exercise</string>
+    <string name="activity_level_light_title">Light</string>
+    <string name="activity_level_light_desc">Light exercise 1-3 days/week</string>
+    <string name="activity_level_moderate_title">Moderate</string>
+    <string name="activity_level_moderate_desc">Moderate exercise 3-5 days/week</string>
+    <string name="activity_level_active_title">Active</string>
+    <string name="activity_level_active_desc">Hard exercise 6-7 days/week</string>
+    <string name="activity_level_very_active_title">Very active</string>
+    <string name="activity_level_very_active_desc">Very hard exercise, physical job</string>
+
+    <string name="section_goal">Goal</string>
+    <string name="goal_lose">Lose weight</string>
+    <string name="goal_maintain">Maintain weight</string>
+    <string name="goal_gain">Gain weight</string>
+
+    <string name="action_next">Next</string>
+    <string name="action_save">Save</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Cancel</string>
+
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_number">Invalid value</string>
+    <string name="error_must_be_positive">Value must be greater than 0</string>
+
+    <!-- Meal Diary -->
+    <string name="meal_diary_title">Meal Diary</string>
+    <string name="meal_type_breakfast">Breakfast</string>
+    <string name="meal_type_lunch">Lunch</string>
+    <string name="meal_type_dinner">Dinner</string>
+    <string name="meal_type_snack">Snacks</string>
+    <string name="section_no_items_yet">No items yet</string>
+    <string name="action_add_food">Add food</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_pick_date">Pick date</string>
+    <string name="action_previous_day">Previous day</string>
+    <string name="action_next_day">Next day</string>
+    <string name="date_today_prefix">Today, %1$s</string>
+    <string name="total_today_label">TOTAL TODAY</string>
+    <string name="unit_kcal">kcal</string>
+
+    <!-- Food Picker -->
+    <string name="food_picker_title">Choose food</string>
+    <string name="food_picker_search_placeholder">Search food by name…</string>
+    <string name="food_picker_empty_title">Can\'t find your food?</string>
+    <string name="food_picker_empty_subtitle">Add a custom entry for accurate tracking.</string>
+    <string name="action_enter_new_food">Enter new food</string>
+
+    <!-- Add Meal Entry -->
+    <string name="add_meal_entry_title">Add food</string>
+    <string name="action_close">Close</string>
+    <string name="label_quantity">Quantity</string>
+    <string name="unit_serving_short">serving(s)</string>
+    <string name="label_logging_for">Logging for:</string>
+    <string name="label_total_for_entry">TOTAL FOR THIS ENTRY</string>
+    <string name="action_decrease_quantity">Decrease quantity</string>
+    <string name="action_increase_quantity">Increase quantity</string>
+
+    <!-- Enter Food Manually -->
+    <string name="enter_food_manually_add_title">Add new food</string>
+    <string name="enter_food_manually_edit_title">Edit food</string>
+    <string name="action_edit">Edit</string>
+    <string name="field_food_name">Food name *</string>
+    <string name="field_food_name_placeholder">e.g. Bún đậu mắm tôm</string>
+    <string name="field_calories_required">Calories *</string>
+    <string name="field_serving_unit_optional">Serving unit (optional)</string>
+    <string name="field_serving_unit_placeholder">e.g. 1 bowl, 100g, 1 piece</string>
+    <string name="text_custom_food_banner">Adding custom nutritional data</string>
+    <string name="text_custom_food_info">This food will be saved to your food list for future use.</string>
+    <string name="action_save_and_use">Save and use</string>
+    <string name="msg_food_saved">Food saved</string>
+    <string name="msg_food_save_failed">Failed to save food, please try again</string>
+    <string name="msg_meal_entry_added">Meal entry added</string>
+    <string name="msg_meal_entry_failed">Failed to add meal entry, please try again</string>
+
+    <!-- Activity Diary -->
+    <string name="activity_diary_title">Activity Diary</string>
+    <string name="action_add_activity">Add activity</string>
+    <string name="total_burned_today_label">TOTAL BURNED TODAY</string>
+    <string name="unit_minutes">min</string>
+    <string name="activity_diary_empty">No activities yet</string>
+
+    <!-- Choose Activity -->
+    <string name="activity_picker_title">Choose Activity</string>
+    <string name="activity_picker_search_placeholder">Search activity by name…</string>
+    <string name="activity_picker_empty_title">Can\'t find your activity?</string>
+    <string name="activity_picker_empty_subtitle">Add a custom entry for accurate tracking.</string>
+    <string name="action_enter_new_activity">Enter new activity</string>
+
+    <!-- Add Activity Entry -->
+    <string name="add_activity_entry_title">Add activity</string>
+    <string name="label_duration">DURATION</string>
+    <string name="label_calories_burned">Calories burned</string>
+    <string name="label_met_value">MET %1$s</string>
+    <string name="action_decrease_duration">Decrease duration</string>
+    <string name="action_increase_duration">Increase duration</string>
+
+    <!-- Enter Activity Manually -->
+    <string name="enter_activity_add_title">Add new activity</string>
+    <string name="enter_activity_edit_title">Edit activity</string>
+    <string name="field_activity_name">Activity name *</string>
+    <string name="field_activity_name_placeholder">e.g. Jump rope</string>
+    <string name="field_met_required">MET *</string>
+    <string name="text_custom_activity_banner">Adding custom activity</string>
+    <string name="text_custom_activity_info">This activity will be saved to your activity list for future use.</string>
+    <string name="msg_activity_saved">Activity saved</string>
+    <string name="msg_activity_save_failed">Failed to save activity, please try again</string>
+    <string name="msg_activity_entry_added">Activity entry added</string>
+    <string name="msg_activity_entry_failed">Failed to add activity entry, please try again</string>
 </resources>
