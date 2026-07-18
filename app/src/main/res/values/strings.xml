@@ -100,4 +100,39 @@
     <string name="msg_food_save_failed">Lưu món ăn thất bại, thử lại nhé</string>
     <string name="msg_meal_entry_added">Đã ghi nhận bữa ăn</string>
     <string name="msg_meal_entry_failed">Ghi nhận bữa ăn thất bại</string>
+
+    <!-- Activity Diary -->
+    <string name="activity_diary_title">Nhật ký hoạt động</string>
+    <string name="action_add_activity">Thêm hoạt động</string>
+    <string name="total_burned_today_label">TỔNG ĐỐT HÔM NAY</string>
+    <string name="unit_minutes">phút</string>
+    <string name="activity_diary_empty">Chưa có hoạt động nào</string>
+
+    <!-- Choose Activity -->
+    <string name="activity_picker_title">Chọn hoạt động</string>
+    <string name="activity_picker_search_placeholder">Tìm hoạt động theo tên…</string>
+    <string name="activity_picker_empty_title">Không tìm thấy hoạt động?</string>
+    <string name="activity_picker_empty_subtitle">Thêm hoạt động mới để theo dõi chính xác hơn.</string>
+    <string name="action_enter_new_activity">Nhập hoạt động mới</string>
+
+    <!-- Add Activity Entry -->
+    <string name="add_activity_entry_title">Thêm hoạt động</string>
+    <string name="label_duration">THỜI LƯỢNG</string>
+    <string name="label_calories_burned">Calo đã đốt</string>
+    <string name="label_met_value">MET %1$s</string>
+    <string name="action_decrease_duration">Giảm thời lượng</string>
+    <string name="action_increase_duration">Tăng thời lượng</string>
+
+    <!-- Enter Activity Manually -->
+    <string name="enter_activity_add_title">Thêm hoạt động mới</string>
+    <string name="enter_activity_edit_title">Sửa hoạt động</string>
+    <string name="field_activity_name">Tên hoạt động *</string>
+    <string name="field_activity_name_placeholder">vd. Nhảy dây</string>
+    <string name="field_met_required">Chỉ số MET *</string>
+    <string name="text_custom_activity_banner">Thêm hoạt động tuỳ chỉnh</string>
+    <string name="text_custom_activity_info">Hoạt động này sẽ được lưu vào danh sách để dùng sau.</string>
+    <string name="msg_activity_saved">Đã lưu hoạt động</string>
+    <string name="msg_activity_save_failed">Lưu hoạt động thất bại, thử lại nhé</string>
+    <string name="msg_activity_entry_added">Đã ghi nhận hoạt động</string>
+    <string name="msg_activity_entry_failed">Ghi nhận hoạt động thất bại</string>
 </resources>

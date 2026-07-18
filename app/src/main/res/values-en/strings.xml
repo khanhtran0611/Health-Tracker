@@ -100,4 +100,39 @@
     <string name="msg_food_save_failed">Failed to save food, please try again</string>
     <string name="msg_meal_entry_added">Meal entry added</string>
     <string name="msg_meal_entry_failed">Failed to add meal entry, please try again</string>
+
+    <!-- Activity Diary -->
+    <string name="activity_diary_title">Activity Diary</string>
+    <string name="action_add_activity">Add activity</string>
+    <string name="total_burned_today_label">TOTAL BURNED TODAY</string>
+    <string name="unit_minutes">min</string>
+    <string name="activity_diary_empty">No activities yet</string>
+
+    <!-- Choose Activity -->
+    <string name="activity_picker_title">Choose Activity</string>
+    <string name="activity_picker_search_placeholder">Search activity by name…</string>
+    <string name="activity_picker_empty_title">Can\'t find your activity?</string>
+    <string name="activity_picker_empty_subtitle">Add a custom entry for accurate tracking.</string>
+    <string name="action_enter_new_activity">Enter new activity</string>
+
+    <!-- Add Activity Entry -->
+    <string name="add_activity_entry_title">Add activity</string>
+    <string name="label_duration">DURATION</string>
+    <string name="label_calories_burned">Calories burned</string>
+    <string name="label_met_value">MET %1$s</string>
+    <string name="action_decrease_duration">Decrease duration</string>
+    <string name="action_increase_duration">Increase duration</string>
+
+    <!-- Enter Activity Manually -->
+    <string name="enter_activity_add_title">Add new activity</string>
+    <string name="enter_activity_edit_title">Edit activity</string>
+    <string name="field_activity_name">Activity name *</string>
+    <string name="field_activity_name_placeholder">e.g. Jump rope</string>
+    <string name="field_met_required">MET *</string>
+    <string name="text_custom_activity_banner">Adding custom activity</string>
+    <string name="text_custom_activity_info">This activity will be saved to your activity list for future use.</string>
+    <string name="msg_activity_saved">Activity saved</string>
+    <string name="msg_activity_save_failed">Failed to save activity, please try again</string>
+    <string name="msg_activity_entry_added">Activity entry added</string>
+    <string name="msg_activity_entry_failed">Failed to add activity entry, please try again</string>
 </resources>
