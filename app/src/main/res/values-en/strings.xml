@@ -95,4 +95,6 @@
     <string name="text_custom_food_banner">Adding custom nutritional data</string>
     <string name="text_custom_food_info">This food will be saved to your food list for future use.</string>
     <string name="action_save_and_use">Save and use</string>
+    <string name="msg_food_saved">Food saved</string>
+    <string name="msg_food_save_failed">Failed to save food, please try again</string>
 </resources>

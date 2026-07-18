@@ -8,11 +8,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +32,10 @@ import com.example.healthtracker.ui.mealdiary.enterfood.EnterFoodManuallyScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
+import com.example.healthtracker.ui.toast.SharedToast
+import com.example.healthtracker.ui.toast.ToastData
+import com.example.healthtracker.ui.toast.ToastViewModel
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 /**
@@ -61,6 +72,21 @@ private fun HealthTrackerNavHost(startRoute: Route) {
     val currentRoute = backStack.lastOrNull() as? Route
     val showBottomBar = currentRoute != null && TopLevelTab.routes.contains(currentRoute)
 
+    // Toast dùng chung toàn app: bất kỳ ViewModel nào cũng gửi message được
+    // (qua ToastController), hiện ở ĐÚNG 1 chỗ này vì đây là nơi duy nhất sống
+    // xuyên suốt mọi lần chuyển màn — xem thêm ui/toast/ToastController.kt.
+    val toastViewModel: ToastViewModel = hiltViewModel()
+    var currentToast by remember { mutableStateOf<ToastData?>(null) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        toastViewModel.messages.collect { message ->
+            currentToast = ToastData(message = context.getString(message.textRes), type = message.type)
+            delay(3000)
+            currentToast = null
+        }
+    }
+
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
@@ -77,11 +103,12 @@ private fun HealthTrackerNavHost(startRoute: Route) {
             }
         },
     ) { padding ->
-        NavDisplay(
-            backStack = backStack,
-            onBack = { backStack.removeLastOrNull() },
-            modifier = Modifier.padding(padding),
-            entryProvider = entryProvider {
+        Box(modifier = Modifier.fillMaxSize()) {
+            NavDisplay(
+                backStack = backStack,
+                onBack = { backStack.removeLastOrNull() },
+                modifier = Modifier.fillMaxSize().padding(padding),
+                entryProvider = entryProvider {
                 // ----- Onboarding (ngoài shell) -----
                 entry<Route.Onboarding> {
                     OnboardingScreen(
@@ -163,6 +190,11 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     EditProfileScreen(onBack = { backStack.removeLastOrNull() })
                 }
             },
-        )
+            )
+            SharedToast(
+                toastData = currentToast,
+                modifier = Modifier.align(Alignment.TopCenter).padding(padding)
+            )
+        }
     }
 }

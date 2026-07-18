@@ -2,9 +2,14 @@ package com.example.healthtracker.ui.mealdiary.enterfood
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.domain.repository.FoodRepository
+import com.example.healthtracker.ui.toast.ToastMessage
+import com.example.healthtracker.ui.toast.ToastType
+import com.example.healthtracker.ui.toast.ToastController
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EnterFoodManuallyViewModel @Inject constructor(
     private val foodRepository: FoodRepository,
+    private val toastController: ToastController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EnterFoodManuallyUiState())
@@ -67,19 +73,28 @@ class EnterFoodManuallyViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true) }
-            val food = Food(
-                id = foodId ?: 0,
-                name = validated.name,
-                calories = validated.caloriesInput.toDouble(),
-                servingUnit = validated.servingUnit.ifBlank { null },
-            )
-            if (foodId == null) {
-                foodRepository.addFood(food)
-            } else {
-                foodRepository.updateFood(food)
+            try {
+                val food = Food(
+                    id = foodId ?: 0,
+                    name = validated.name,
+                    calories = validated.caloriesInput.toDouble(),
+                    servingUnit = validated.servingUnit.ifBlank { null },
+                )
+                if (foodId == null) {
+                    foodRepository.addFood(food)
+                } else {
+                    foodRepository.updateFood(food)
+                }
+                toastController.show(ToastMessage(R.string.msg_food_saved, ToastType.SUCCESS))
+                _uiState.update { it.copy(isSaving = false) }
+                _savedEvent.send(Unit)
+            } catch (e: CancellationException) {
+                throw e // huỷ coroutine bình thường (vd rời màn) — không phải lỗi, không báo
+            } catch (e: Exception) {
+                toastController.show(ToastMessage(R.string.msg_food_save_failed, ToastType.ERROR))
+                _uiState.update { it.copy(isSaving = false) }
+                // KHÔNG gửi savedEvent -> màn không đóng, user sửa/thử lại được.
             }
-            _uiState.update { it.copy(isSaving = false) }
-            _savedEvent.send(Unit)
         }
     }
 }

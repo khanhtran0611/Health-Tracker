@@ -95,4 +95,6 @@
     <string name="text_custom_food_banner">Thêm thông tin dinh dưỡng tuỳ chỉnh</string>
     <string name="text_custom_food_info">Món này sẽ được lưu vào danh sách món ăn để dùng sau.</string>
     <string name="action_save_and_use">Lưu và dùng</string>
+    <string name="msg_food_saved">Đã lưu món ăn</string>
+    <string name="msg_food_save_failed">Lưu món ăn thất bại, thử lại nhé</string>
 </resources>

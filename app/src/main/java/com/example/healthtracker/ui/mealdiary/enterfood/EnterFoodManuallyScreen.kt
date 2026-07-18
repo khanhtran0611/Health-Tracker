@@ -114,13 +114,6 @@ fun EnterFoodManuallyContent(
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.align(Alignment.Center),
                     )
-                    TextButton(
-                        onClick = onSave,
-                        enabled = !uiState.isSaving,
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                    ) {
-                        Text(stringResource(R.string.action_save))
-                    }
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
             }
