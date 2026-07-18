@@ -1,8 +1,16 @@
 package com.example.healthtracker.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -21,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
@@ -37,6 +46,9 @@ import com.example.healthtracker.ui.toast.ToastData
 import com.example.healthtracker.ui.toast.ToastViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
+
+// Thời lượng animation chuyển màn (slide + fade) khi push/pop trong NavDisplay.
+private const val NAV_TRANSITION_DURATION_MS = 300
 
 /**
  * Gốc app: chờ [AppStartViewModel] xác định đã có hồ sơ user chưa rồi mới dựng
@@ -76,12 +88,17 @@ private fun HealthTrackerNavHost(startRoute: Route) {
     // (qua ToastController), hiện ở ĐÚNG 1 chỗ này vì đây là nơi duy nhất sống
     // xuyên suốt mọi lần chuyển màn — xem thêm ui/toast/ToastController.kt.
     val toastViewModel: ToastViewModel = hiltViewModel()
+    // vì toast có thể null => phải type "T?", không phải mỗi "T"
     var currentToast by remember { mutableStateOf<ToastData?>(null) }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         toastViewModel.messages.collect { message ->
-            currentToast = ToastData(message = context.getString(message.textRes), type = message.type)
+            // Chờ pop/push transition của NavDisplay chạy xong rồi mới hiện toast,
+            // để enter animation không bị rớt frame vì main thread đang bận vẽ transition.
+            delay(NAV_TRANSITION_DURATION_MS.toLong())
+
+            currentToast = ToastData(message = stringResource(message.textRes), type = message.type)
             delay(3000)
             currentToast = null
         }
@@ -108,6 +125,30 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
                 modifier = Modifier.fillMaxSize().padding(padding),
+                // Đi tới màn mới: màn mới trượt vào từ bên phải + fade in,
+                // màn cũ trượt sang trái + fade out.
+                transitionSpec = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(NAV_TRANSITION_DURATION_MS),
+                    ) + fadeIn(animationSpec = tween(NAV_TRANSITION_DURATION_MS)) togetherWith
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(NAV_TRANSITION_DURATION_MS),
+                        ) + fadeOut(animationSpec = tween(NAV_TRANSITION_DURATION_MS))
+                },
+                // Back (pop): ngược lại — màn trước trượt vào từ bên trái + fade in,
+                // màn hiện tại trượt sang phải + fade out.
+                popTransitionSpec = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(NAV_TRANSITION_DURATION_MS),
+                    ) + fadeIn(animationSpec = tween(NAV_TRANSITION_DURATION_MS)) togetherWith
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(NAV_TRANSITION_DURATION_MS),
+                        ) + fadeOut(animationSpec = tween(NAV_TRANSITION_DURATION_MS))
+                },
                 entryProvider = entryProvider {
                 // ----- Onboarding (ngoài shell) -----
                 entry<Route.Onboarding> {
@@ -191,9 +232,12 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                 }
             },
             )
+            val topPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 64.dp + 8.dp
             SharedToast(
                 toastData = currentToast,
-                modifier = Modifier.align(Alignment.TopCenter).padding(padding)
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = topPadding)
             )
         }
     }

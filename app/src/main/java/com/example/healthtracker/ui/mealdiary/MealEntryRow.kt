@@ -40,10 +40,10 @@ fun MealEntryRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(entry.foodName, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 3.dp))
+            Text(entry.foodName, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(bottom = 2.dp))
             Text(
                 formatQuantity(entry.quantity),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -53,7 +53,8 @@ fun MealEntryRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "${entry.calories.toInt()} ${stringResource(R.string.unit_kcal)}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(end = 6.dp)
             )
             // IconButton mặc định luôn chiếm khối 48dp (chuẩn vùng chạm a11y), dù icon

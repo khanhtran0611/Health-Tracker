@@ -23,6 +23,7 @@
 
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+    <string name="section_gender">Gender</string>
 
     <string name="section_activity_level">Activity level</string>
     <string name="activity_level_sedentary_title">Sedentary</string>
@@ -97,4 +98,6 @@
     <string name="action_save_and_use">Save and use</string>
     <string name="msg_food_saved">Food saved</string>
     <string name="msg_food_save_failed">Failed to save food, please try again</string>
+    <string name="msg_meal_entry_added">Meal entry added</string>
+    <string name="msg_meal_entry_failed">Failed to add meal entry, please try again</string>
 </resources>

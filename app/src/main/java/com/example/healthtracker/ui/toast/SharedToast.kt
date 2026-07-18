@@ -1,6 +1,8 @@
 package com.example.healthtracker.ui.toast
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,11 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,13 +35,22 @@ fun SharedToast(
     toastData: ToastData?,
     modifier: Modifier = Modifier
 ) {
+    // Lưu lại data cũ để Toast không bị xoá ruột trước khi chạy xong hiệu ứng trượt lên (exit)
+    // Cập nhật ĐỒNG BỘ ngay trong composition (không dùng LaunchedEffect) 
+    // để tránh bị delay 1 frame làm mất hiệu ứng trượt xuống (enter)
+    var lastToastData by remember { mutableStateOf(toastData) }
+    if (toastData != null) {
+        lastToastData = toastData
+    }
+    val displayData = toastData ?: lastToastData
+
     AnimatedVisibility(
         visible = toastData != null,
-        enter = slideInVertically(initialOffsetY = { -it }), // Slide from top
-        exit = slideOutVertically(targetOffsetY = { -it }),
+        enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+        exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut(),
         modifier = modifier
     ) {
-        toastData?.let { data ->
+        displayData?.let { data ->
             val backgroundColor = when (data.type) {
                 ToastType.SUCCESS -> Color(0xFF4CAF50) // Green
                 ToastType.ERROR -> Color(0xFFF44336)   // Red
@@ -55,7 +71,7 @@ fun SharedToast(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 32.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Row(
                     modifier = Modifier

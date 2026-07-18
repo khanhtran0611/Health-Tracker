@@ -5,9 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
+import com.example.healthtracker.R
 import com.example.healthtracker.domain.repository.FoodRepository
 import com.example.healthtracker.domain.repository.MealEntryRepository
+import com.example.healthtracker.ui.toast.ToastController
+import com.example.healthtracker.ui.toast.ToastMessage
+import com.example.healthtracker.ui.toast.ToastType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +33,7 @@ import javax.inject.Inject
 class AddMealEntryViewModel @Inject constructor(
     private val foodRepository: FoodRepository,
     private val mealEntryRepository: MealEntryRepository,
+    private val toastController: ToastController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddMealEntryUiState())
@@ -66,18 +72,26 @@ class AddMealEntryViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true) }
-            mealEntryRepository.addEntry(
-                MealEntry(
-                    foodId = food.id,
-                    logDate = state.logDate,
-                    mealType = mealType,
-                    foodName = food.name,
-                    quantity = state.quantity,
-                    calories = food.calories * state.quantity,
-                ),
-            )
-            _uiState.update { it.copy(isSaving = false) }
-            _savedEvent.send(Unit)
+            try {
+                mealEntryRepository.addEntry(
+                    MealEntry(
+                        foodId = food.id,
+                        logDate = state.logDate,
+                        mealType = mealType,
+                        foodName = food.name,
+                        quantity = state.quantity,
+                        calories = food.calories * state.quantity,
+                    ),
+                )
+                toastController.show(ToastMessage(R.string.msg_meal_entry_added, ToastType.SUCCESS))
+                _uiState.update { it.copy(isSaving = false) }
+                _savedEvent.send(Unit)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                toastController.show(ToastMessage(R.string.msg_meal_entry_failed, ToastType.ERROR))
+                _uiState.update { it.copy(isSaving = false) }
+            }
         }
     }
 }

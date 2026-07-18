@@ -78,7 +78,7 @@ fun MealDiaryContent(
             }
             Text(
                 text = stringResource(R.string.meal_diary_title),
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(Alignment.Center),

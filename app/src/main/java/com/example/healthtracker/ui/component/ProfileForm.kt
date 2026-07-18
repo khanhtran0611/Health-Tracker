@@ -43,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
@@ -85,15 +86,18 @@ fun ProfileForm(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        OutlinedTextField(
-            value = state.fullName,
-            onValueChange = onFullNameChange,
-            label = { Text(stringResource(R.string.field_full_name)) },
-            isError = state.fullNameError != null,
-            supportingText = fieldErrorText(state.fullNameError)?.let { { Text(it) } },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(stringResource(R.string.field_full_name), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            OutlinedTextField(
+                value = state.fullName,
+                onValueChange = onFullNameChange,
+                isError = state.fullNameError != null,
+                supportingText = fieldErrorText(state.fullNameError)?.let { { Text(it) } },
+                singleLine = true,
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
 
         DateOfBirthField(
             dateOfBirth = state.dateOfBirth,
@@ -102,34 +106,43 @@ fun ProfileForm(
             onDateChange = onDateOfBirthChange,
         )
 
-        GenderSelector(gender = state.gender, onGenderChange = onGenderChange)
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(stringResource(R.string.section_gender), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            GenderSelector(gender = state.gender, onGenderChange = onGenderChange)
+        }
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
-            OutlinedTextField(
-                value = state.weightKg,
-                onValueChange = onWeightChange,
-                label = { Text(stringResource(R.string.field_weight)) },
-                suffix = { Text(stringResource(R.string.unit_kg)) },
-                isError = state.weightError != null,
-                supportingText = fieldErrorText(state.weightError)?.let { { Text(it) } },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                singleLine = true,
-                modifier = Modifier.weight(1f),
-            )
-            OutlinedTextField(
-                value = state.heightCm,
-                onValueChange = onHeightChange,
-                label = { Text(stringResource(R.string.field_height)) },
-                suffix = { Text(stringResource(R.string.unit_cm)) },
-                isError = state.heightError != null,
-                supportingText = fieldErrorText(state.heightError)?.let { { Text(it) } },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                singleLine = true,
-                modifier = Modifier.weight(1f),
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.field_weight), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedTextField(
+                    value = state.weightKg,
+                    onValueChange = onWeightChange,
+                    suffix = { Text(stringResource(R.string.unit_kg)) },
+                    isError = state.weightError != null,
+                    supportingText = fieldErrorText(state.weightError)?.let { { Text(it) } },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.field_height), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedTextField(
+                    value = state.heightCm,
+                    onValueChange = onHeightChange,
+                    suffix = { Text(stringResource(R.string.unit_cm)) },
+                    isError = state.heightError != null,
+                    supportingText = fieldErrorText(state.heightError)?.let { { Text(it) } },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
 
         Text(stringResource(R.string.section_activity_level), style = MaterialTheme.typography.titleMedium)
@@ -167,12 +180,12 @@ private fun DateOfBirthField(
     var showDatePicker by remember { mutableStateOf(false) }
     val formatter = remember { DateTimeFormatter.ofPattern("dd/MM/yyyy") }
 
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.field_date_of_birth), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(
             value = dateOfBirth?.format(formatter) ?: "",
             onValueChange = {},
             readOnly = true,
-            label = { Text(stringResource(R.string.field_date_of_birth)) },
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = true }) {
                     Icon(Icons.Default.DateRange, contentDescription = null)
@@ -181,6 +194,7 @@ private fun DateOfBirthField(
             isError = error != null,
             supportingText = fieldErrorText(error)?.let { { Text(it) } },
             singleLine = true,
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth(),
         )
         if (age != null) {
@@ -297,10 +311,10 @@ private fun ActivityLevelCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(stringResource(option.titleRes), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(option.titleRes), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                 Text(
                     stringResource(option.descriptionRes),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }

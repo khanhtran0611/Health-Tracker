@@ -23,6 +23,7 @@
 
     <string name="gender_male">Nam</string>
     <string name="gender_female">Nữ</string>
+    <string name="section_gender">Giới tính</string>
 
     <string name="section_activity_level">Mức độ hoạt động</string>
     <string name="activity_level_sedentary_title">Ít vận động</string>
@@ -97,4 +98,6 @@
     <string name="action_save_and_use">Lưu và dùng</string>
     <string name="msg_food_saved">Đã lưu món ăn</string>
     <string name="msg_food_save_failed">Lưu món ăn thất bại, thử lại nhé</string>
+    <string name="msg_meal_entry_added">Đã ghi nhận bữa ăn</string>
+    <string name="msg_meal_entry_failed">Ghi nhận bữa ăn thất bại</string>
 </resources>

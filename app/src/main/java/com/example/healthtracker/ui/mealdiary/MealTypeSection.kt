@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
@@ -64,6 +65,7 @@ fun MealTypeSection(
                     Text(
                         stringResource(mealTypeLabelRes(mealType)),
                         style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 8.dp),
                     )
                 }
