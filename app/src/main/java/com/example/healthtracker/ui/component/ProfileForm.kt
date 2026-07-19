@@ -23,7 +23,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +52,8 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
+import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import androidx.compose.ui.tooling.preview.Preview
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -241,20 +246,36 @@ private fun DateOfBirthField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
-    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-        SegmentedButton(
-            selected = gender == Gender.MALE,
-            onClick = { onGenderChange(Gender.MALE) },
-            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+    var expanded by remember { mutableStateOf(false) }
+    val options = listOf(Gender.MALE to R.string.gender_male, Gender.FEMALE to R.string.gender_female)
+    val selectedText = stringResource(options.first { it.first == gender }.second)
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = {},
+            readOnly = true,
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.fillMaxWidth().menuAnchor(),
+            shape = RoundedCornerShape(8.dp)
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
         ) {
-            Text(stringResource(R.string.gender_male))
-        }
-        SegmentedButton(
-            selected = gender == Gender.FEMALE,
-            onClick = { onGenderChange(Gender.FEMALE) },
-            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-        ) {
-            Text(stringResource(R.string.gender_female))
+            options.forEach { (option, labelRes) ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(labelRes)) },
+                    onClick = {
+                        onGenderChange(option)
+                        expanded = false
+                    }
+                )
+            }
         }
     }
 }
@@ -288,6 +309,10 @@ private enum class ActivityLevelOption(val level: Int, val titleRes: Int, val de
     ACTIVE(4, R.string.activity_level_active_title, R.string.activity_level_active_desc),
     VERY_ACTIVE(5, R.string.activity_level_very_active_title, R.string.activity_level_very_active_desc),
 }
+
+/** Tên hiển thị (string res) của 1 mức activity_level 1..5 — dùng lại ở Profile để hiện "Dựa trên: <mức>". */
+fun activityLevelTitleRes(level: Int): Int =
+    ActivityLevelOption.entries.first { it.level == level }.titleRes
 
 @Composable
 private fun ActivityLevelCard(
@@ -336,5 +361,39 @@ private fun ActivityLevelCard(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProfileFormPreview() {
+    HealthTrackerTheme {
+        ProfileForm(
+            state = ProfileFormUiState(
+                isLoading = false,
+                fullName = "Alex Johnson",
+                dateOfBirth = LocalDate.of(1996, 5, 20),
+                age = 28,
+                gender = Gender.MALE,
+                weightKg = "70",
+                heightCm = "175",
+                activityLevel = 3,
+                goal = Goal.MAINTAIN,
+                isSaving = false,
+                fullNameError = null,
+                dateOfBirthError = null,
+                weightError = null,
+                heightError = null
+            ),
+            onFullNameChange = {},
+            onDateOfBirthChange = {},
+            onGenderChange = {},
+            onWeightChange = {},
+            onHeightChange = {},
+            onActivityLevelChange = {},
+            onGoalChange = {},
+            onSubmit = {},
+            submitLabel = "Save"
+        )
     }
 }

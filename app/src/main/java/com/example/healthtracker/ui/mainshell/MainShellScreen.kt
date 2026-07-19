@@ -26,6 +26,7 @@ import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.dashboard.DashboardScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
+import com.example.healthtracker.ui.profile.ProfileScreen
 
 // Thời lượng animation đổi tab (slide + fade) — giống hệt NavDisplay tầng
 // ngoài ở HealthTrackerApp.kt, để cảm giác chuyển màn nhất quán ở cả 2 tầng.
@@ -132,12 +133,9 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
                 }
                 entry<Route.Stats> { PlaceholderScreen("Stats") }
                 entry<Route.Profile> {
-                    PlaceholderScreen(
-                        "Profile",
-                        actions = listOf(
-                            "Chỉnh sửa hồ sơ" to { onNavigateOuter(Route.EditProfile) },
-                            "Cài đặt" to { onNavigateOuter(Route.Settings) },
-                        ),
+                    ProfileScreen(
+                        onEditProfileClick = { onNavigateOuter(Route.EditProfile) },
+                        onSettingsClick = { onNavigateOuter(Route.Settings) },
                     )
                 }
             },
