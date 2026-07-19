@@ -18,6 +18,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.ActivityDiaryScreen
 import com.example.healthtracker.ui.component.PlaceholderScreen
+import com.example.healthtracker.ui.dashboard.DashboardScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
 
@@ -78,7 +79,12 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             // slide+fade 300ms là của riêng NavDisplay tầng ngoài, không bắt buộc
             // giống ở đây.
             entryProvider = entryProvider {
-                entry<Route.Dashboard> { PlaceholderScreen("Dashboard") }
+                entry<Route.Dashboard> { 
+                    DashboardScreen(
+                        onAddMealClick = { /* TODO */ },
+                        onAddActivityClick = { /* TODO */ }
+                    )
+                }
                 entry<Route.MealDiary> {
                     MealDiaryScreen(
                         onAddFood = { mealType, logDate ->
