@@ -18,6 +18,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.ActivityDiaryScreen
 import com.example.healthtracker.ui.component.PlaceholderScreen
+import com.example.healthtracker.ui.dashboard.DashboardScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
 
@@ -53,16 +54,20 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
     val currentTab = TopLevelTab.entries[currentTabIndex]
     val activeBackStack = tabBackStacks.getValue(currentTab.route)
 
+    // Dùng chung cho cả bottom nav lẫn shortcut trong Dashboard (Add meal/Add
+    // activity) — mọi nơi muốn nhảy sang 1 trong 5 tab đều gọi qua đây.
+    fun switchToTab(tab: TopLevelTab) {
+        navigateToTab(tabBackStacks.getValue(tab.route), tab.route)
+        currentTabIndex = tab.ordinal
+    }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
                 TopLevelTab.entries.forEach { tab ->
                     NavigationBarItem(
                         selected = currentTab == tab,
-                        onClick = {
-                            navigateToTab(tabBackStacks.getValue(tab.route), tab.route)
-                            currentTabIndex = tab.ordinal
-                        },
+                        onClick = { switchToTab(tab) },
                         icon = { Icon(tab.icon, contentDescription = stringResource(tab.labelRes)) },
                         label = { Text(stringResource(tab.labelRes)) },
                     )
@@ -78,7 +83,12 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             // slide+fade 300ms là của riêng NavDisplay tầng ngoài, không bắt buộc
             // giống ở đây.
             entryProvider = entryProvider {
-                entry<Route.Dashboard> { PlaceholderScreen("Dashboard") }
+                entry<Route.Dashboard> {
+                    DashboardScreen(
+                        onAddMealClick = { switchToTab(TopLevelTab.MEAL) },
+                        onAddActivityClick = { switchToTab(TopLevelTab.ACTIVITY) }
+                    )
+                }
                 entry<Route.MealDiary> {
                     MealDiaryScreen(
                         onAddFood = { mealType, logDate ->

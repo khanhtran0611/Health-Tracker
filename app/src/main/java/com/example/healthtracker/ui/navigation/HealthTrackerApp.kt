@@ -102,7 +102,6 @@ private fun HealthTrackerNavHost(startRoute: Route) {
             // Chờ pop/push transition của NavDisplay chạy xong rồi mới hiện toast,
             // để enter animation không bị rớt frame vì main thread đang bận vẽ transition.
             delay(NAV_TRANSITION_DURATION_MS.toLong())
-
             currentToast = ToastData(message = context.getString(message.textRes), type = message.type)
             delay(3000)
             currentToast = null

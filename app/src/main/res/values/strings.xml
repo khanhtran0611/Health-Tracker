@@ -135,4 +135,20 @@
     <string name="msg_activity_save_failed">Lưu hoạt động thất bại, thử lại nhé</string>
     <string name="msg_activity_entry_added">Đã ghi nhận hoạt động</string>
     <string name="msg_activity_entry_failed">Ghi nhận hoạt động thất bại</string>
+
+    <!-- Dashboard -->
+    <string name="content_description_avatar">Ảnh đại diện</string>
+    <string name="unit_kcal_left">kcal còn thiếu</string>
+    <string name="unit_kcal_over">kcal thừa ra</string>
+    <string name="label_goal">MỤC TIÊU</string>
+    <string name="label_eaten">ĐÃ ĂN</string>
+    <string name="label_burned">ĐÃ ĐỐT</string>
+    <string name="label_calories_eaten_today">Calo đã ăn hôm nay</string>
+    <string name="label_calories_burned_today">Calo đã đốt hôm nay</string>
+    <string name="label_calorie_balance">Cân bằng calo: </string>
+    <string name="label_hint_prefix">Gợi ý:</string>
+    <string name="action_add_meal">Thêm bữa ăn</string>
+    <string name="dashboard_need_under_target">Bạn còn thiếu %1$d kcal hôm nay</string>
+    <string name="dashboard_need_on_target">Bạn đã ăn đủ calo hôm nay!</string>
+    <string name="dashboard_need_over_target">Bạn đã vượt %1$d kcal hôm nay</string>
 </resources>

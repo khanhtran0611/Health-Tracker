@@ -2,6 +2,7 @@ package com.example.healthtracker.ui.activitydiary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.healthtracker.domain.model.ActivityEntry
 import com.example.healthtracker.domain.repository.ActivityEntryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ActivityDiaryViewModel @Inject constructor(
@@ -44,5 +46,11 @@ class ActivityDiaryViewModel @Inject constructor(
 
     fun onDateSelected(date: LocalDate) {
         _selectedDate.value = date
+    }
+
+    fun onDeleteEntry(entry: ActivityEntry) {
+        viewModelScope.launch {
+            activityEntryRepository.deleteEntry(entry)
+        }
     }
 }

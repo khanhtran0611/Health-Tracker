@@ -135,4 +135,20 @@
     <string name="msg_activity_save_failed">Failed to save activity, please try again</string>
     <string name="msg_activity_entry_added">Activity entry added</string>
     <string name="msg_activity_entry_failed">Failed to add activity entry, please try again</string>
+
+    <!-- Dashboard -->
+    <string name="content_description_avatar">Avatar</string>
+    <string name="unit_kcal_left">kcal left</string>
+    <string name="unit_kcal_over">kcal over</string>
+    <string name="label_goal">GOAL</string>
+    <string name="label_eaten">EATEN</string>
+    <string name="label_burned">BURNED</string>
+    <string name="label_calories_eaten_today">Calories eaten today</string>
+    <string name="label_calories_burned_today">Calories burned today</string>
+    <string name="label_calorie_balance">Calorie balance: </string>
+    <string name="label_hint_prefix">Hint:</string>
+    <string name="action_add_meal">Add meal</string>
+    <string name="dashboard_need_under_target">You still need %1$d kcal today</string>
+    <string name="dashboard_need_on_target">You\'ve hit your calorie goal today</string>
+    <string name="dashboard_need_over_target">You\'re %1$d kcal over today</string>
 </resources>
