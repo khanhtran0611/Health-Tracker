@@ -15,12 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.dashboard.CalorieStatus
 import kotlin.math.abs
 
 @Composable
 fun CalorieProgressCircle(
     caloriesLeft: Int,
     progress: Float,
+    calorieStatus: CalorieStatus,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -30,12 +32,15 @@ fun CalorieProgressCircle(
         contentAlignment = Alignment.Center
     ) {
         val trackColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        // progress > 1f nghĩa là đã ăn vượt quá ngân sách thật (remaining < 0,
-        // đã tính cả calo đốt — xem DashboardUiState.progress) -> tô đỏ cả
-        // vòng tròn thay vì cam. Cung progress lúc này full 360° (coerce bên
-        // dưới) nên đè kín track xám, "cả vòng tròn" sẽ hiện đỏ như yêu cầu.
-        val isOverBudget = progress > 1f
-        val progressColor = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary
+        // Vượt quá (remaining < 0) -> đỏ; vừa đủ (remaining == 0) -> xanh lá;
+        // còn dư (remaining > 0) -> cam như mặc định. Cung progress lúc vượt
+        // quá đã full 360° (coerce bên dưới) nên đè kín track xám, "cả vòng
+        // tròn" sẽ hiện đúng màu như yêu cầu.
+        val progressColor = when (calorieStatus) {
+            CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.error
+            CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
+            CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.secondary
+        }
         val strokeWidth = 24.dp
 
         Canvas(
@@ -84,10 +89,16 @@ fun CalorieProgressCircle(
                 text = "${abs(caloriesLeft)}",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+                color = when (calorieStatus) {
+                    CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.error
+                    CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
+                    CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.onSurface
+                }
             )
             Text(
-                text = stringResource(if (isOverBudget) R.string.unit_kcal_over else R.string.unit_kcal_left),
+                text = stringResource(
+                    if (calorieStatus == CalorieStatus.OVER_TARGET) R.string.unit_kcal_over else R.string.unit_kcal_left
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium

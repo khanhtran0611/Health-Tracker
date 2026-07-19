@@ -2,6 +2,7 @@ package com.example.healthtracker.ui.mealdiary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
 import com.example.healthtracker.domain.repository.MealEntryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MealDiaryViewModel @Inject constructor(
@@ -53,4 +55,9 @@ class MealDiaryViewModel @Inject constructor(
         _selectedDate.value = date
     }
 
+    fun onDeleteEntry(entry: MealEntry) {
+        viewModelScope.launch {
+            mealEntryRepository.deleteEntry(entry)
+        }
+    }
 }

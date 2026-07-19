@@ -45,6 +45,7 @@ fun MealDiaryScreen(
         onNextDay = viewModel::onNextDay,
         onDateSelected = viewModel::onDateSelected,
         onAddFood = onAddFood,
+        onDeleteEntry = viewModel::onDeleteEntry,
     )
 }
 
@@ -59,6 +60,7 @@ fun MealDiaryContent(
     onNextDay: () -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     onAddFood: (MealType, LocalDate) -> Unit,
+    onDeleteEntry: (MealEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -99,7 +101,7 @@ fun MealDiaryContent(
                 entries = uiState.entriesByMealType.getValue(mealType),
                 totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
                 onAddFood = { onAddFood(mealType, uiState.selectedDate) },
-                onDeleteEntry = { /* TODO: nối viewModel xoá entry khi làm tới */ },
+                onDeleteEntry = onDeleteEntry,
             )
         }
 
@@ -171,6 +173,7 @@ private fun MealDiaryContentPreview() {
             onNextDay = {},
             onDateSelected = {},
             onAddFood = { _, _ -> },
+            onDeleteEntry = {},
         )
     }
 }

@@ -138,8 +138,8 @@
 
     <!-- Dashboard -->
     <string name="content_description_avatar">Ảnh đại diện</string>
-    <string name="unit_kcal_left">kcal còn lại</string>
-    <string name="unit_kcal_over">kcal vượt</string>
+    <string name="unit_kcal_left">kcal còn thiếu</string>
+    <string name="unit_kcal_over">kcal thừa ra</string>
     <string name="label_goal">MỤC TIÊU</string>
     <string name="label_eaten">ĐÃ ĂN</string>
     <string name="label_burned">ĐÃ ĐỐT</string>

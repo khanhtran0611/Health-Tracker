@@ -45,7 +45,8 @@ fun DashboardHeader(
 
         Text(
             text = dateText,
-            style = MaterialTheme.typography.headlineSmall,
+            // titleLarge — khớp cỡ chữ tiêu đề của Meal Diary/Activity Diary.
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.align(Alignment.Center)

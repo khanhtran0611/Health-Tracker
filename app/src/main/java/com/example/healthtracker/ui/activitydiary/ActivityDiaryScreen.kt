@@ -52,6 +52,7 @@ fun ActivityDiaryScreen(
         onNextDay = viewModel::onNextDay,
         onDateSelected = viewModel::onDateSelected,
         onAddActivity = { onAddActivity(uiState.selectedDate) },
+        onDeleteEntry = viewModel::onDeleteEntry,
     )
 }
 
@@ -66,6 +67,7 @@ fun ActivityDiaryContent(
     onNextDay: () -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     onAddActivity: () -> Unit,
+    onDeleteEntry: (ActivityEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -112,7 +114,7 @@ fun ActivityDiaryContent(
             )
         } else {
             uiState.entries.forEach { entry ->
-                ActivityEntryCard(entry = entry, onDelete = { /* TODO: nối viewModel xoá entry khi làm tới */ })
+                ActivityEntryCard(entry = entry, onDelete = { onDeleteEntry(entry) })
             }
         }
 
@@ -166,6 +168,7 @@ private fun ActivityDiaryContentPreview() {
             onNextDay = {},
             onDateSelected = {},
             onAddActivity = {},
+            onDeleteEntry = {},
         )
     }
 }

@@ -67,8 +67,12 @@ fun CalorieSummaryCard(
                 Text(
                     text = stringResource(R.string.label_calorie_balance),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+
                 )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
                 Text(
                     text = "$balance",
                     style = MaterialTheme.typography.bodyMedium,

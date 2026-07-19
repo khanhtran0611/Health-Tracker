@@ -55,7 +55,8 @@ fun DashboardContent(
 
         CalorieProgressCircle(
             caloriesLeft = uiState.remaining.toInt(),
-            progress = uiState.progress
+            progress = uiState.progress,
+            calorieStatus = uiState.calorieStatus,
         )
 
         DailyStatsRow(
