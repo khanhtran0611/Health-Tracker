@@ -151,4 +151,15 @@
     <string name="dashboard_need_under_target">You still need %1$d kcal today</string>
     <string name="dashboard_need_on_target">You\'ve hit your calorie goal today</string>
     <string name="dashboard_need_over_target">You\'re %1$d kcal over today</string>
+
+    <!-- Confirm delete dialog -->
+    <string name="dialog_delete_food_title">Delete food?</string>
+    <string name="dialog_delete_food_message">“%1$s” will be removed from your food list. This action cannot be undone.</string>
+    <string name="msg_food_deleted">Food deleted</string>
+    <string name="msg_food_delete_failed">Can\'t delete — this food is used in a logged entry</string>
+
+    <string name="dialog_delete_activity_title">Delete activity?</string>
+    <string name="dialog_delete_activity_message">“%1$s” will be removed from your activity list. This action cannot be undone.</string>
+    <string name="msg_activity_deleted">Activity deleted</string>
+    <string name="msg_activity_delete_failed">Can\'t delete — this activity is used in a logged entry</string>
 </resources>

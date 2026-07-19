@@ -87,6 +87,38 @@ class EnterActivityViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Chỉ gọi được khi đang sửa (activityId != null) — UI đã ẩn nút xoá lúc
+     * thêm mới. FK activity_id ở activity_entries là RESTRICT nên nếu hoạt
+     * động đang có nhật ký dùng, deleteActivity() sẽ ném lỗi — bắt lại và báo
+     * toast, KHÔNG đóng màn.
+     */
+    fun onDelete() {
+        val id = activityId ?: return
+        val state = _uiState.value
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isDeleting = true) }
+            try {
+                activityRepository.deleteActivity(
+                    Activity(
+                        id = id,
+                        name = state.name,
+                        met = state.metInput.toDoubleOrNull() ?: 0.0,
+                    ),
+                )
+                toastController.show(ToastMessage(R.string.msg_activity_deleted, ToastType.SUCCESS))
+                _uiState.update { it.copy(isDeleting = false) }
+                _savedEvent.send(Unit) // đóng màn — dùng chung kênh với lưu thành công
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                toastController.show(ToastMessage(R.string.msg_activity_delete_failed, ToastType.ERROR))
+                _uiState.update { it.copy(isDeleting = false) }
+            }
+        }
+    }
 }
 
 /** vd 9.0 -> "9", 9.8 -> "9.8" — bỏ ".0" thừa khi là số nguyên. */

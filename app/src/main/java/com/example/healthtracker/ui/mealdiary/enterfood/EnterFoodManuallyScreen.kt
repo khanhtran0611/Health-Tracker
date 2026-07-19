@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
@@ -31,6 +32,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -41,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
+import com.example.healthtracker.ui.component.ConfirmDeleteDialog
 import com.example.healthtracker.ui.component.fieldErrorText
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
@@ -78,6 +83,9 @@ fun EnterFoodManuallyScreen(
         onServingUnitChange = viewModel::onServingUnitChange,
         onSave = viewModel::onSubmit,
         onClose = onClose,
+        // Nút xoá chỉ hiện khi đang sửa món có sẵn (food != null) — thêm mới
+        // thì chưa có gì để xoá.
+        onDelete = if (food != null) viewModel::onDelete else null,
     )
 }
 
@@ -94,7 +102,10 @@ fun EnterFoodManuallyContent(
     onServingUnitChange: (String) -> Unit,
     onSave: () -> Unit,
     onClose: () -> Unit,
+    onDelete: (() -> Unit)? = null,
 ) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             Column {
@@ -114,6 +125,19 @@ fun EnterFoodManuallyContent(
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.align(Alignment.Center),
                     )
+                    if (onDelete != null) {
+                        IconButton(
+                            onClick = { showDeleteDialog = true },
+                            enabled = !uiState.isSaving && !uiState.isDeleting,
+                            modifier = Modifier.align(Alignment.CenterEnd),
+                        ) {
+                            Icon(
+                                Icons.Default.DeleteOutline,
+                                contentDescription = stringResource(R.string.action_delete),
+                                tint = MaterialTheme.colorScheme.error,
+                            )
+                        }
+                    }
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
             }
@@ -127,7 +151,7 @@ fun EnterFoodManuallyContent(
                 HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
                 Button(
                     onClick = onSave,
-                    enabled = !uiState.isSaving,
+                    enabled = !uiState.isSaving && !uiState.isDeleting,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
@@ -268,6 +292,18 @@ fun EnterFoodManuallyContent(
                 )
             }
         }
+    }
+
+    if (showDeleteDialog && onDelete != null) {
+        ConfirmDeleteDialog(
+            title = stringResource(R.string.dialog_delete_food_title),
+            message = stringResource(R.string.dialog_delete_food_message, uiState.name),
+            onConfirm = {
+                showDeleteDialog = false
+                onDelete()
+            },
+            onDismiss = { showDeleteDialog = false },
+        )
     }
 }
 

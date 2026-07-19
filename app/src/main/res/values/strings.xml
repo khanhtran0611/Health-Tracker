@@ -151,4 +151,15 @@
     <string name="dashboard_need_under_target">Bạn còn thiếu %1$d kcal hôm nay</string>
     <string name="dashboard_need_on_target">Bạn đã ăn đủ calo hôm nay!</string>
     <string name="dashboard_need_over_target">Bạn đã vượt %1$d kcal hôm nay</string>
+
+    <!-- Confirm delete dialog -->
+    <string name="dialog_delete_food_title">Xoá món ăn?</string>
+    <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>
+    <string name="msg_food_deleted">Đã xoá món ăn</string>
+    <string name="msg_food_delete_failed">Không thể xoá — món này đang có nhật ký sử dụng</string>
+
+    <string name="dialog_delete_activity_title">Xoá hoạt động?</string>
+    <string name="dialog_delete_activity_message">Hoạt động “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>
+    <string name="msg_activity_deleted">Đã xoá hoạt động</string>
+    <string name="msg_activity_delete_failed">Không thể xoá — hoạt động này đang có nhật ký sử dụng</string>
 </resources>

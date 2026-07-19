@@ -1,5 +1,10 @@
 package com.example.healthtracker.ui.mainshell
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -21,6 +26,10 @@ import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.dashboard.DashboardScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
+
+// Thời lượng animation đổi tab (slide + fade) — giống hệt NavDisplay tầng
+// ngoài ở HealthTrackerApp.kt, để cảm giác chuyển màn nhất quán ở cả 2 tầng.
+private const val TAB_TRANSITION_DURATION_MS = 300
 
 /**
  * Shell 5-tab: `Scaffold` với `bottomBar` là [NavigationBar], bên trong là 1
@@ -79,9 +88,27 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             backStack = activeBackStack,
             onBack = { activeBackStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize().padding(padding),
-            // Đổi tab: fade đơn giản (mặc định của NavDisplay) là đủ — animation
-            // slide+fade 300ms là của riêng NavDisplay tầng ngoài, không bắt buộc
-            // giống ở đây.
+            // Đổi tab: slide + fade y hệt NavDisplay tầng ngoài ở HealthTrackerApp.kt.
+            transitionSpec = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(TAB_TRANSITION_DURATION_MS),
+                ) + fadeIn(animationSpec = tween(TAB_TRANSITION_DURATION_MS)) togetherWith
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(TAB_TRANSITION_DURATION_MS),
+                    ) + fadeOut(animationSpec = tween(TAB_TRANSITION_DURATION_MS))
+            },
+            popTransitionSpec = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(TAB_TRANSITION_DURATION_MS),
+                ) + fadeIn(animationSpec = tween(TAB_TRANSITION_DURATION_MS)) togetherWith
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(TAB_TRANSITION_DURATION_MS),
+                    ) + fadeOut(animationSpec = tween(TAB_TRANSITION_DURATION_MS))
+            },
             entryProvider = entryProvider {
                 entry<Route.Dashboard> {
                     DashboardScreen(

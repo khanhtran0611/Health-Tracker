@@ -97,6 +97,38 @@ class EnterFoodManuallyViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Chỉ gọi được khi đang sửa (foodId != null) — UI đã ẩn nút xoá lúc thêm
+     * mới. FK food_id ở meal_entries là RESTRICT nên nếu món đang có nhật ký
+     * dùng, deleteFood() sẽ ném lỗi — bắt lại và báo toast, KHÔNG đóng màn.
+     */
+    fun onDelete() {
+        val id = foodId ?: return
+        val state = _uiState.value
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isDeleting = true) }
+            try {
+                foodRepository.deleteFood(
+                    Food(
+                        id = id,
+                        name = state.name,
+                        calories = state.caloriesInput.toDoubleOrNull() ?: 0.0,
+                        servingUnit = state.servingUnit.ifBlank { null },
+                    ),
+                )
+                toastController.show(ToastMessage(R.string.msg_food_deleted, ToastType.SUCCESS))
+                _uiState.update { it.copy(isDeleting = false) }
+                _savedEvent.send(Unit) // đóng màn — dùng chung kênh với lưu thành công
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                toastController.show(ToastMessage(R.string.msg_food_delete_failed, ToastType.ERROR))
+                _uiState.update { it.copy(isDeleting = false) }
+            }
+        }
+    }
 }
 
 /** vd 130.0 -> "130", 130.5 -> "130.5" — bỏ ".0" thừa khi là số nguyên. */
