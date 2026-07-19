@@ -1,6 +1,5 @@
 package com.example.healthtracker.ui.dashboard.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -13,9 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.R
 
 @Composable
 fun DashboardHeader(
@@ -31,19 +31,23 @@ fun DashboardHeader(
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(Color.LightGray)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 .align(Alignment.CenterStart),
             contentAlignment = Alignment.Center
         ) {
             // Placeholder for Avatar
-            Icon(Icons.Default.Person, contentDescription = "Avatar", tint = Color.White)
+            Icon(
+                Icons.Default.Person,
+                contentDescription = stringResource(R.string.content_description_avatar),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
-        
+
         Text(
             text = dateText,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF004D40), // Dark green
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.align(Alignment.Center)
         )
     }

@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.healthtracker.R
 
 @Composable
 fun DailyStatsRow(
@@ -27,31 +29,31 @@ fun DailyStatsRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         StatItem(
-            label = "GOAL",
+            label = stringResource(R.string.label_goal),
             value = "$goal",
-            valueColor = Color(0xFF1C2B33)
+            valueColor = MaterialTheme.colorScheme.onSurface
         )
 
         VerticalDivider(
             modifier = Modifier.height(32.dp),
-            color = Color.LightGray.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.outlineVariant
         )
 
         StatItem(
-            label = "EATEN",
+            label = stringResource(R.string.label_eaten),
             value = "$eaten",
-            valueColor = Color(0xFFFF7043) // Orange/coral
+            valueColor = MaterialTheme.colorScheme.secondary
         )
 
         VerticalDivider(
             modifier = Modifier.height(32.dp),
-            color = Color.LightGray.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.outlineVariant
         )
 
         StatItem(
-            label = "BURNED",
+            label = stringResource(R.string.label_burned),
             value = "$burned",
-            valueColor = Color(0xFF1B5E20) // Dark green
+            valueColor = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -67,7 +69,7 @@ private fun StatItem(
             text = label,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             letterSpacing = 1.sp
         )
         Spacer(modifier = Modifier.height(4.dp))

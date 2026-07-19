@@ -7,12 +7,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.healthtracker.R
+import kotlin.math.abs
 
 @Composable
 fun CalorieProgressCircle(
@@ -26,14 +29,15 @@ fun CalorieProgressCircle(
             .padding(vertical = 16.dp),
         contentAlignment = Alignment.Center
     ) {
-        val trackColor = Color(0xFFE0E0E0)
+        val trackColor = MaterialTheme.colorScheme.surfaceContainerHigh
         // progress > 1f nghĩa là đã ăn vượt quá ngân sách thật (remaining < 0,
         // đã tính cả calo đốt — xem DashboardUiState.progress) -> tô đỏ cả
         // vòng tròn thay vì cam. Cung progress lúc này full 360° (coerce bên
         // dưới) nên đè kín track xám, "cả vòng tròn" sẽ hiện đỏ như yêu cầu.
-        val progressColor = if (progress > 1f) Color(0xFFE53935) else Color(0xFFFF7043)
+        val isOverBudget = progress > 1f
+        val progressColor = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary
         val strokeWidth = 24.dp
-        
+
         Canvas(
             modifier = Modifier.size(240.dp)
         ) {
@@ -45,44 +49,47 @@ fun CalorieProgressCircle(
             val clampedProgress = progress.coerceIn(0f, 1f)
             val inset = strokeWidth.toPx() / 2
             val arcSize = size.copy(width = size.width - strokeWidth.toPx(), height = size.height - strokeWidth.toPx())
-            
+
             // Draw background track
             drawArc(
                 color = trackColor,
                 startAngle = startAngle,
                 sweepAngle = sweepAngle,
                 useCenter = false,
-                topLeft = androidx.compose.ui.geometry.Offset(inset, inset),
+                topLeft = Offset(inset, inset),
                 size = arcSize,
                 style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
             )
-            
+
             // Draw progress track
             drawArc(
                 color = progressColor,
                 startAngle = startAngle,
                 sweepAngle = sweepAngle * clampedProgress,
                 useCenter = false,
-                topLeft = androidx.compose.ui.geometry.Offset(inset, inset),
+                topLeft = Offset(inset, inset),
                 size = arcSize,
                 style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
             )
         }
-        
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(top = 16.dp)
         ) {
+            // caloriesLeft âm nghĩa là đã vượt ngân sách -> hiện trị tuyệt đối +
+            // đổi nhãn "kcal left" thành "kcal over", KHÔNG hiện dấu trừ trần trụi
+            // (vd "-150") vì user thường không hiểu ngay đó là "vượt bao nhiêu".
             Text(
-                text = "$caloriesLeft",
+                text = "${abs(caloriesLeft)}",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color(0xFF1C2B33) // Very dark blue/grey
+                color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "kcal left",
+                text = stringResource(if (isOverBudget) R.string.unit_kcal_over else R.string.unit_kcal_left),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.DarkGray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium
             )
         }

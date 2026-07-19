@@ -14,8 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.R
 
 @Composable
 fun CalorieSummaryCard(
@@ -29,49 +31,49 @@ fun CalorieSummaryCard(
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Flat look from image, maybe slight shadow
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             SummaryItem(
                 icon = Icons.Default.RestaurantMenu,
-                iconBgColor = Color(0xFFFBE9E7),
-                iconColor = Color(0xFFFF7043),
-                label = "Calories eaten today",
+                iconBgColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
+                iconColor = MaterialTheme.colorScheme.secondary,
+                label = stringResource(R.string.label_calories_eaten_today),
                 value = "$eatenToday"
             )
 
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 48.dp),
-                color = Color.LightGray.copy(alpha = 0.3f)
+                color = MaterialTheme.colorScheme.outlineVariant
             )
 
             SummaryItem(
                 icon = Icons.Default.DirectionsRun,
-                iconBgColor = Color(0xFFE8F5E9),
-                iconColor = Color(0xFF2E7D32),
-                label = "Calories burned today",
+                iconBgColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                iconColor = MaterialTheme.colorScheme.primary,
+                label = stringResource(R.string.label_calories_burned_today),
                 value = "$burnedToday"
             )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
+
+            Spacer(modifier = Modifier.height(19.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(
-                    text = "Calorie balance: ",
+                    text = stringResource(R.string.label_calorie_balance),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.DarkGray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     text = "$balance",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1C2B33)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -104,21 +106,21 @@ private fun SummaryItem(
                 modifier = Modifier.size(20.dp)
             )
         }
-        
+
         Spacer(modifier = Modifier.width(16.dp))
-        
+
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color(0xFF1C2B33),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
-        
+
         Text(
             text = value,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF1C2B33)
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

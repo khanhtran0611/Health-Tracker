@@ -11,39 +11,44 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.R
+import com.example.healthtracker.ui.dashboard.CalorieStatus
 
 /**
  * Chỉ hiện ĐÚNG 1 trong 2 hint, tuỳ tình trạng calo hiện tại (đúng mục "Lời
  * khuyên ngắn dựa trên tình trạng hiện tại" trong docs/requirement.md 2.5):
- * còn dư calo (remaining > 0) -> gợi ý thêm bữa ăn; đã đủ/vượt quá -> gợi ý
- * thêm hoạt động để đốt bớt.
+ * còn dư calo -> gợi ý thêm bữa ăn; đã vượt -> gợi ý thêm hoạt động để đốt
+ * bớt; vừa đủ -> KHÔNG hiện nút nào cả.
  */
 @Composable
 fun DashboardActionButtons(
-    showAddMealHint: Boolean,
+    calorieStatus: CalorieStatus,
     onAddMealClick: () -> Unit,
     onAddActivityClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (calorieStatus == CalorieStatus.ON_TARGET) return
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (showAddMealHint) {
+        if (calorieStatus == CalorieStatus.UNDER_TARGET) {
             CustomActionButton(
                 icon = Icons.Default.RestaurantMenu,
-                text = "Add meal",
+                text = stringResource(R.string.action_add_meal),
                 onClick = onAddMealClick
             )
         } else {
             CustomActionButton(
                 icon = Icons.Default.DirectionsRun,
-                text = "Add activity",
+                text = stringResource(R.string.action_add_activity),
                 onClick = onAddActivityClick
             )
         }
@@ -52,13 +57,13 @@ fun DashboardActionButtons(
 
 @Composable
 private fun CustomActionButton(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     text: String,
     onClick: () -> Unit
 ) {
     Card(
         onClick = onClick,
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1B5E20)), // Dark green
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -67,39 +72,39 @@ private fun CustomActionButton(
                 // Top Left: Lightbulb + "Hint: "
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        Icons.Default.Lightbulb, 
-                        contentDescription = null, 
-                        tint = Color.Yellow, 
+                        Icons.Default.Lightbulb,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        "Hint:", 
-                        color = Color.White.copy(alpha = 0.9f), 
+                        stringResource(R.string.label_hint_prefix),
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(12.dp))
-                
+
                 // Main Row: Icon + Text
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(icon, contentDescription = null, tint = Color.White)
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = text, 
-                        color = Color.White, 
-                        fontWeight = FontWeight.SemiBold, 
+                        text = text,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
             }
-            
+
             // Bottom Right: Arrow Right
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.align(Alignment.BottomEnd)
             )
         }

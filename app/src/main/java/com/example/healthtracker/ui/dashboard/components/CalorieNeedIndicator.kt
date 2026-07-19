@@ -9,41 +9,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.R
+import com.example.healthtracker.ui.dashboard.CalorieStatus
+import kotlin.math.abs
 
+/**
+ * Lời khuyên ngắn dựa trên tình trạng calo hiện tại — đúng docs/requirement.md
+ * 2.5: còn thiếu -> "Bạn còn thiếu X kcal hôm nay"; vừa đủ -> "Bạn đã ăn đủ
+ * calo hôm nay!"; vượt quá -> "Bạn đã vượt X kcal hôm nay".
+ */
 @Composable
 fun CalorieNeedIndicator(
     remainingCalories: Int,
+    calorieStatus: CalorieStatus,
     modifier: Modifier = Modifier
 ) {
+    val contentColor = if (calorieStatus == CalorieStatus.OVER_TARGET) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+    val text = when (calorieStatus) {
+        CalorieStatus.UNDER_TARGET -> stringResource(R.string.dashboard_need_under_target, remainingCalories)
+        CalorieStatus.ON_TARGET -> stringResource(R.string.dashboard_need_on_target)
+        CalorieStatus.OVER_TARGET -> stringResource(R.string.dashboard_need_over_target, abs(remainingCalories))
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
             .clip(RoundedCornerShape(24.dp))
-            .background(Color(0xFFD7E8CD)) // Light green
+            .background(contentColor.copy(alpha = 0.15f))
             .padding(vertical = 16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "You still need ",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1B5E20) // Dark green
-            )
-            Text(
-                text = "$remainingCalories",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B5E20)
-            )
-            Text(
-                text = " kcal today",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1B5E20)
-            )
-        }
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+            color = contentColor
+        )
     }
 }

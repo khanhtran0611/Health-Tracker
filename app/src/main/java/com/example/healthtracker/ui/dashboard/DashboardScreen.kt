@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,7 +48,7 @@ fun DashboardContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF9F9F9)) // Very light gray background as in the image
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
         DashboardHeader(dateText = formatDiaryDate(uiState.today))
@@ -73,12 +73,15 @@ fun DashboardContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        CalorieNeedIndicator(remainingCalories = uiState.remaining.toInt())
+        CalorieNeedIndicator(
+            remainingCalories = uiState.remaining.toInt(),
+            calorieStatus = uiState.calorieStatus,
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         DashboardActionButtons(
-            showAddMealHint = uiState.remaining > 0,
+            calorieStatus = uiState.calorieStatus,
             onAddMealClick = onAddMealClick,
             onAddActivityClick = onAddActivityClick
         )
