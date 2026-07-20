@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.example.healthtracker.domain.model.Brightness
+import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.ThemePreset
 import com.materialkolor.rememberDynamicColorScheme
 
@@ -11,6 +12,7 @@ import com.materialkolor.rememberDynamicColorScheme
 fun HealthTrackerTheme(
     themePreset: ThemePreset = ThemePreset.VITALITY_MATERIAL,
     brightness: Brightness = Brightness.SYSTEM,
+    fontSize: FontSize = FontSize.MEDIUM,
     content: @Composable () -> Unit
 ) {
     val isDark = when (brightness) {
@@ -25,7 +27,7 @@ fun HealthTrackerTheme(
     )
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = appTypography(fontSize),
         content = content
     )
 }

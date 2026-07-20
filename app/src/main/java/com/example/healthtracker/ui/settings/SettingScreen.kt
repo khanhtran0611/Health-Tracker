@@ -10,28 +10,69 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.healthtracker.R
+import com.example.healthtracker.domain.model.AppSettings
+import com.example.healthtracker.domain.model.Brightness
+import com.example.healthtracker.domain.model.FontSize
+import com.example.healthtracker.domain.model.Language
+import com.example.healthtracker.domain.model.ThemePreset
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [SettingContent]. */
 @Composable
 fun SettingScreen(
-    onBackClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    SettingContent(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        onLanguageChange = viewModel::onLanguageChange,
+        onBrightnessChange = viewModel::onBrightnessChange,
+        onThemePresetChange = viewModel::onThemePresetChange,
+        onFontSizeChange = viewModel::onFontSizeChange,
+        modifier = modifier,
+    )
+}
+
+/**
+ * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [SettingScreen]
+ * để @Preview dùng được (màn Preview không có Hilt container để dựng ViewModel thật).
+ */
+@Composable
+fun SettingContent(
+    uiState: SettingsUiState,
+    onBackClick: () -> Unit,
+    onLanguageChange: (Language) -> Unit,
+    onBrightnessChange: (Brightness) -> Unit,
+    onThemePresetChange: (ThemePreset) -> Unit,
+    onFontSizeChange: (FontSize) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val settings = uiState.settings
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF9F9F9))
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
         // TopBar
@@ -44,96 +85,94 @@ fun SettingScreen(
                 onClick = onBackClick,
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.DarkGray)
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.action_back),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
             Text(
-                text = "Settings",
+                text = stringResource(R.string.settings_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B5E20), // Dark green
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
 
-        Divider(color = Color.LightGray.copy(alpha = 0.3f))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Language Section
-        SectionTitle(title = "Language")
+        SectionTitle(title = stringResource(R.string.section_language))
         SettingsCard {
             Text(
-                text = "App language",
+                text = stringResource(R.string.label_app_language),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1C2B33),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(12.dp))
             CustomSegmentedControl(
-                options = listOf("English", "Tiếng Việt"),
-                selectedIndex = 0,
-                onOptionSelected = {}
+                options = Language.entries.map { stringResource(languageLabelRes(it)) },
+                selectedIndex = Language.entries.indexOf(settings.language),
+                onOptionSelected = { index -> onLanguageChange(Language.entries[index]) }
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         // Appearance Section
-        SectionTitle(title = "Appearance")
+        SectionTitle(title = stringResource(R.string.section_appearance))
         SettingsCard {
             Text(
-                text = "Brightness",
+                text = stringResource(R.string.label_brightness),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1C2B33),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(12.dp))
             CustomSegmentedControl(
-                options = listOf("Light", "Dark", "System"),
-                selectedIndex = 0,
-                onOptionSelected = {}
+                options = Brightness.entries.map { stringResource(brightnessLabelRes(it)) },
+                selectedIndex = Brightness.entries.indexOf(settings.brightness),
+                onOptionSelected = { index -> onBrightnessChange(Brightness.entries[index]) }
             )
 
-            Divider(modifier = Modifier.padding(vertical = 16.dp), color = Color.LightGray.copy(alpha = 0.3f))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
 
             Text(
-                text = "Color theme",
+                text = stringResource(R.string.label_color_theme),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1C2B33),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(12.dp))
             ColorThemeSelector(
-                colors = listOf(
-                    Color(0xFF1B5E20), // Green
-                    Color(0xFF0277BD), // Blue
-                    Color(0xFFA14828), // Brown/Orange
-                    Color(0xFF673AB7), // Purple
-                    Color(0xFFC62828)  // Red
-                ),
-                selectedIndex = 0,
-                onColorSelected = {}
+                colors = ThemePreset.entries.map { it.seedColor },
+                selectedIndex = ThemePreset.entries.indexOf(settings.themePreset),
+                onColorSelected = { index -> onThemePresetChange(ThemePreset.entries[index]) }
             )
 
-            Divider(modifier = Modifier.padding(vertical = 16.dp), color = Color.LightGray.copy(alpha = 0.3f))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
 
             Text(
-                text = "Font size",
+                text = stringResource(R.string.label_font_size),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF1C2B33),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(12.dp))
             CustomSegmentedControl(
-                options = listOf("Small", "Medium", "Large"),
-                selectedIndex = 0,
-                onOptionSelected = {}
+                options = FontSize.entries.map { stringResource(fontSizeLabelRes(it)) },
+                selectedIndex = FontSize.entries.indexOf(settings.fontSize),
+                onOptionSelected = { index -> onFontSizeChange(FontSize.entries[index]) }
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Reminders Section
+        // Reminders Section — UI mockup tạm, CHƯA có domain model/logic (làm sau).
         SectionTitle(title = "Reminders")
         SettingsCard(padding = 0.dp) {
             SwitchRow(
@@ -142,21 +181,21 @@ fun SettingScreen(
                 onCheckedChange = {},
                 isBold = true
             )
-            Divider(color = Color.LightGray.copy(alpha = 0.3f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
                 title = "Morning • 7:00 AM",
                 checked = true,
                 onCheckedChange = {},
                 isBold = false
             )
-            Divider(color = Color.LightGray.copy(alpha = 0.3f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
                 title = "Midday • 12:00 PM",
                 checked = false,
                 onCheckedChange = {},
                 isBold = false
             )
-            Divider(color = Color.LightGray.copy(alpha = 0.3f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
                 title = "Evening • 7:00 PM",
                 checked = true,
@@ -169,15 +208,32 @@ fun SettingScreen(
 
         // Footer
         Text(
-            text = "HealthTracker v1.0",
+            text = stringResource(R.string.settings_app_version),
             style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(32.dp))
     }
+}
+
+private fun languageLabelRes(language: Language): Int = when (language) {
+    Language.EN -> R.string.language_english
+    Language.VI -> R.string.language_vietnamese
+}
+
+private fun brightnessLabelRes(brightness: Brightness): Int = when (brightness) {
+    Brightness.LIGHT -> R.string.brightness_light
+    Brightness.DARK -> R.string.brightness_dark
+    Brightness.SYSTEM -> R.string.brightness_system
+}
+
+private fun fontSizeLabelRes(fontSize: FontSize): Int = when (fontSize) {
+    FontSize.SMALL -> R.string.font_size_small
+    FontSize.MEDIUM -> R.string.font_size_medium
+    FontSize.LARGE -> R.string.font_size_large
 }
 
 @Composable
@@ -186,14 +242,14 @@ private fun SectionTitle(title: String) {
         text = title,
         style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.Bold,
-        color = Color(0xFF2E7D32), // Light green for headers
+        color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
     )
 }
 
 @Composable
 private fun SettingsCard(
-    padding: androidx.compose.ui.unit.Dp = 16.dp,
+    padding: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
@@ -201,8 +257,8 @@ private fun SettingsCard(
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color.LightGray.copy(alpha = 0.3f))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier.padding(padding),
@@ -221,7 +277,7 @@ private fun CustomSegmentedControl(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(Color(0xFFF2F2F2))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(4.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -231,7 +287,7 @@ private fun CustomSegmentedControl(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(20.dp))
-                        .background(if (isSelected) Color.White else Color.Transparent)
+                        .background(if (isSelected) MaterialTheme.colorScheme.surfaceContainerLowest else Color.Transparent)
                         .clickable { onOptionSelected(index) }
                         .padding(vertical = 10.dp),
                     contentAlignment = Alignment.Center
@@ -240,7 +296,7 @@ private fun CustomSegmentedControl(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                        color = if (isSelected) Color(0xFF1C2B33) else Color.DarkGray
+                        color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -294,26 +350,26 @@ private fun SwitchRow(
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = if (isBold) FontWeight.Bold else FontWeight.Medium,
-            color = Color(0xFF1C2B33)
+            color = MaterialTheme.colorScheme.onSurface
         )
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = Color.White,
-                checkedTrackColor = Color(0xFF1B5E20), // Dark green
-                uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = Color.LightGray,
-                uncheckedBorderColor = Color.Transparent
-            )
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun SettingScreenPreview() {
+private fun SettingContentPreview() {
     HealthTrackerTheme {
-        SettingScreen()
+        SettingContent(
+            uiState = SettingsUiState(settings = AppSettings()),
+            onBackClick = {},
+            onLanguageChange = {},
+            onBrightnessChange = {},
+            onThemePresetChange = {},
+            onFontSizeChange = {},
+        )
     }
 }

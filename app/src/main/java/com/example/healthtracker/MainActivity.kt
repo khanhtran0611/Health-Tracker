@@ -7,8 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.healthtracker.ui.locale.LocalizedApp
 import com.example.healthtracker.ui.navigation.HealthTrackerApp
-import com.example.healthtracker.ui.theme.AppThemeViewModel
+import com.example.healthtracker.ui.settings.SettingsViewModel
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,14 +19,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val themeViewModel: AppThemeViewModel = hiltViewModel()
-            val appSettings by themeViewModel.appSettings.collectAsStateWithLifecycle()
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
 
-            HealthTrackerTheme(
-                themePreset = appSettings.themePreset,
-                brightness = appSettings.brightness,
-            ) {
-                HealthTrackerApp()
+            LocalizedApp(language = uiState.settings.language) {
+                HealthTrackerTheme(
+                    themePreset = uiState.settings.themePreset,
+                    brightness = uiState.settings.brightness,
+                    fontSize = uiState.settings.fontSize,
+                ) {
+                    HealthTrackerApp()
+                }
             }
         }
     }

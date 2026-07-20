@@ -168,6 +168,27 @@
     <string name="msg_profile_saved">Đã lưu hồ sơ</string>
     <string name="msg_profile_save_failed">Lưu hồ sơ thất bại, thử lại nhé</string>
 
+    <!-- Settings -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_app_version">HealthTracker v1.0</string>
+
+    <string name="section_language">Ngôn ngữ</string>
+    <string name="label_app_language">Ngôn ngữ ứng dụng</string>
+    <!-- Tên ngôn ngữ hiển thị đúng bằng chính ngôn ngữ đó, không dịch -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+
+    <string name="section_appearance">Giao diện</string>
+    <string name="label_brightness">Độ sáng</string>
+    <string name="brightness_light">Sáng</string>
+    <string name="brightness_dark">Tối</string>
+    <string name="brightness_system">Hệ thống</string>
+    <string name="label_color_theme">Màu chủ đạo</string>
+    <string name="label_font_size">Cỡ chữ</string>
+    <string name="font_size_small">Nhỏ</string>
+    <string name="font_size_medium">Vừa</string>
+    <string name="font_size_large">Lớn</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
     <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>

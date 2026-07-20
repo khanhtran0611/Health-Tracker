@@ -20,12 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
@@ -85,6 +88,14 @@ fun DateNavigator(
     }
 
     if (showDatePicker) {
+        // DatePickerDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
+        // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
+        // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
+        // ngôn ngữ) rồi re-provide vào các slot bên trong (kể cả lịch DatePicker,
+        // để tên tháng/thứ trong lịch cũng đổi ngôn ngữ đúng theo).
+        val localContext = LocalContext.current
+        val localConfiguration = LocalConfiguration.current
+
         // DatePicker cần 1 object "state" riêng để:
         // (a) biết ngày nào đang được tô đậm lúc mở lên,
         // (b) tự cập nhật khi người dùng bấm chọn ngày khác trong lưới
@@ -100,24 +111,30 @@ fun DateNavigator(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
-                    val millis = datePickerState.selectedDateMillis
-                    if (millis != null) {
-                        // ↑ dịch ngược: epoch millis -> Instant -> gắn UTC -> lấy ra LocalDate
-                        onDateSelected(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        if (millis != null) {
+                            // ↑ dịch ngược: epoch millis -> Instant -> gắn UTC -> lấy ra LocalDate
+                            onDateSelected(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                        }
+                        showDatePicker = false
+                    }) {
+                        Text(stringResource(R.string.action_confirm))
                     }
-                    showDatePicker = false
-                }) {
-                    Text(stringResource(R.string.action_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text(stringResource(R.string.action_cancel))
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        Text(stringResource(R.string.action_cancel))
+                    }
                 }
             },
         ) {
-            DatePicker(state = datePickerState)
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                DatePicker(state = datePickerState)
+            }
         }
     }
 }

@@ -24,10 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,18 +69,30 @@ fun AddMealEntryScreen(
         viewModel.savedEvent.collect { onDismiss() }
     }
 
+    // ModalBottomSheet dựng Dialog/Popup riêng, bên trong tự lấy lại LocalContext/
+    // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản đã đổi
+    // ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng ngôn ngữ) rồi
+    // re-provide vào trong, để stringResource() bên trong content đọc đúng.
+    val localContext = LocalContext.current
+    val localConfiguration = LocalConfiguration.current
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState
     ) {
-        AddMealEntryContent(
-            uiState = uiState,
-            onDecreaseQuantity = viewModel::onDecreaseQuantity,
-            onIncreaseQuantity = viewModel::onIncreaseQuantity,
-            onSave = viewModel::onSubmit,
-            onClose = onDismiss,
-        )
+        CompositionLocalProvider(
+            LocalContext provides localContext,
+            LocalConfiguration provides localConfiguration,
+        ) {
+            AddMealEntryContent(
+                uiState = uiState,
+                onDecreaseQuantity = viewModel::onDecreaseQuantity,
+                onIncreaseQuantity = viewModel::onIncreaseQuantity,
+                onSave = viewModel::onSubmit,
+                onClose = onDismiss,
+            )
+        }
     }
 }
 

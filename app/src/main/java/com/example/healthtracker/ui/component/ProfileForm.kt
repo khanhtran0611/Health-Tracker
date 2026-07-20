@@ -39,12 +39,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -213,6 +216,13 @@ private fun DateOfBirthField(
     }
 
     if (showDatePicker) {
+        // DatePickerDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
+        // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
+        // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
+        // ngôn ngữ) rồi re-provide vào các slot bên trong.
+        val localContext = LocalContext.current
+        val localConfiguration = LocalConfiguration.current
+
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = dateOfBirth
                 ?.atStartOfDay(ZoneOffset.UTC)
@@ -222,23 +232,29 @@ private fun DateOfBirthField(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
-                    val millis = datePickerState.selectedDateMillis
-                    if (millis != null) {
-                        onDateChange(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        if (millis != null) {
+                            onDateChange(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                        }
+                        showDatePicker = false
+                    }) {
+                        Text(stringResource(R.string.action_confirm))
                     }
-                    showDatePicker = false
-                }) {
-                    Text(stringResource(R.string.action_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text(stringResource(R.string.action_cancel))
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        Text(stringResource(R.string.action_cancel))
+                    }
                 }
             },
         ) {
-            DatePicker(state = datePickerState)
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                DatePicker(state = datePickerState)
+            }
         }
     }
 }
