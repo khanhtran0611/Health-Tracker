@@ -42,6 +42,10 @@
     <string name="goal_maintain">Giữ cân</string>
     <string name="goal_gain">Tăng cân</string>
 
+    <string name="goal_lose_desc">Giảm 500 kcal mỗi ngày</string>
+    <string name="goal_maintain_desc">Giữ nguyên mức calo hiện tại</string>
+    <string name="goal_gain_desc">Tăng 500 kcal mỗi ngày</string>
+
     <string name="action_next">Tiếp theo</string>
     <string name="action_save">Lưu</string>
     <string name="action_confirm">Xác nhận</string>
@@ -168,6 +172,34 @@
     <string name="msg_profile_saved">Đã lưu hồ sơ</string>
     <string name="msg_profile_save_failed">Lưu hồ sơ thất bại, thử lại nhé</string>
 
+    <!-- Settings -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_app_version">HealthTracker v1.0</string>
+
+    <string name="section_language">Ngôn ngữ</string>
+    <string name="label_app_language">Ngôn ngữ ứng dụng</string>
+    <!-- Tên ngôn ngữ hiển thị đúng bằng chính ngôn ngữ đó, không dịch -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+
+    <string name="section_appearance">Giao diện</string>
+    <string name="label_brightness">Độ sáng</string>
+    <string name="brightness_light">Sáng</string>
+    <string name="brightness_dark">Tối</string>
+    <string name="brightness_system">Hệ thống</string>
+    <string name="label_color_theme">Màu chủ đạo</string>
+    <string name="label_font_size">Cỡ chữ</string>
+    <string name="font_size_small">Nhỏ</string>
+    <string name="font_size_medium">Vừa</string>
+    <string name="font_size_large">Lớn</string>
+
+    <string name="section_data_management">Quản lý dữ liệu</string>
+    <string name="action_reset_data">Đặt lại dữ liệu</string>
+    <string name="text_reset_data_info">Xoá toàn bộ hồ sơ, nhật ký bữa ăn và hoạt động. Danh sách món ăn/hoạt động vẫn được giữ lại.</string>
+    <string name="dialog_reset_data_title">Đặt lại dữ liệu?</string>
+    <string name="dialog_reset_data_message">Toàn bộ hồ sơ, nhật ký bữa ăn và hoạt động sẽ bị xoá vĩnh viễn. Hành động này không thể hoàn tác.</string>
+    <string name="msg_data_reset">Đã đặt lại dữ liệu</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
     <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>
@@ -178,4 +210,6 @@
     <string name="dialog_delete_activity_message">Hoạt động “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>
     <string name="msg_activity_deleted">Đã xoá hoạt động</string>
     <string name="msg_activity_delete_failed">Không thể xoá — hoạt động này đang có nhật ký sử dụng</string>
+
+
 </resources>

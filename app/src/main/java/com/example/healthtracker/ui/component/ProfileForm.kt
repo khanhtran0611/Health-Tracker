@@ -3,22 +3,34 @@ package com.example.healthtracker.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingFlat
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingFlat
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
@@ -31,23 +43,33 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Gender
@@ -213,6 +235,13 @@ private fun DateOfBirthField(
     }
 
     if (showDatePicker) {
+        // DatePickerDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
+        // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
+        // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
+        // ngôn ngữ) rồi re-provide vào các slot bên trong.
+        val localContext = LocalContext.current
+        val localConfiguration = LocalConfiguration.current
+
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = dateOfBirth
                 ?.atStartOfDay(ZoneOffset.UTC)
@@ -222,23 +251,29 @@ private fun DateOfBirthField(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
-                    val millis = datePickerState.selectedDateMillis
-                    if (millis != null) {
-                        onDateChange(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        if (millis != null) {
+                            onDateChange(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
+                        }
+                        showDatePicker = false
+                    }) {
+                        Text(stringResource(R.string.action_confirm))
                     }
-                    showDatePicker = false
-                }) {
-                    Text(stringResource(R.string.action_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text(stringResource(R.string.action_cancel))
+                CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        Text(stringResource(R.string.action_cancel))
+                    }
                 }
             },
         ) {
-            DatePicker(state = datePickerState)
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                DatePicker(state = datePickerState)
+            }
         }
     }
 }
@@ -280,22 +315,92 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/** Cấu hình hiển thị cho 1 lựa chọn Goal — gộp icon xu hướng + text res vào 1 chỗ cho gọn. */
+private data class GoalOption(
+    val goal: Goal,
+    val titleRes: Int,
+    val descriptionRes: Int,
+    val icon: ImageVector,
+)
+
+/**
+ * Bộ chọn Goal (Lose/Maintain/Gain weight) — mỗi lựa chọn nằm riêng 1 hàng dọc
+ * (giống cấu trúc Column của ActivityLevelCard bên dưới: xếp dọc, full-width),
+ * NHƯNG cố tình thiết kế khác để 2 khối không bị lẫn với nhau dù đứng cạnh nhau
+ * trong form:
+ *   - ActivityLevelCard: text bên trái, icon check/circle bên phải.
+ *   - GoalOption ở đây: icon xu hướng trong vòng tròn màu BÊN TRÁI (mũi tên
+ *     xuống/ngang/lên tương ứng giảm/giữ/tăng cân), có thêm dòng phụ mô tả tác
+ *     động lên TDEE (đúng công thức đã chốt ở CLAUDE.md: -500 / +0 / +500 kcal),
+ *     và dùng RadioButton chuẩn Material3 bên phải thay vì icon check tự vẽ.
+ *
+ * Nhờ mỗi lựa chọn chiếm trọn 1 hàng full-width (không còn ép 3 ô chung 1 hàng
+ * như SegmentedButton trước đây), chữ "Maintain weight" luôn có đủ chỗ nằm gọn
+ * 1 dòng — không còn lỗi tràn/wrap chữ ra ngoài khung nữa.
+ */
 @Composable
 private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
     val options = listOf(
-        Goal.LOSE to R.string.goal_lose,
-        Goal.MAINTAIN to R.string.goal_maintain,
-        Goal.GAIN to R.string.goal_gain,
+        GoalOption(Goal.LOSE, R.string.goal_lose, R.string.goal_lose_desc, Icons.Filled.TrendingDown),
+        GoalOption(Goal.MAINTAIN, R.string.goal_maintain, R.string.goal_maintain_desc, Icons.Filled.TrendingFlat),
+        GoalOption(Goal.GAIN, R.string.goal_gain, R.string.goal_gain_desc, Icons.Filled.TrendingUp),
     )
-    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-        options.forEachIndexed { index, (value, labelRes) ->
-            SegmentedButton(
-                selected = goal == value,
-                onClick = { onGoalChange(value) },
-                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        options.forEach { option ->
+            val selected = goal == option.goal
+            Surface(
+                onClick = { onGoalChange(option.goal) },
+                shape = RoundedCornerShape(16.dp),
+                color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest,
+                border = BorderStroke(
+                    width = if (selected) 1.5.dp else 1.dp,
+                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                ),
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(stringResource(labelRes))
+                Row(
+                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(
+                                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
+                                shape = CircleShape,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector = option.icon,
+                            contentDescription = null,
+                            tint = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+
+                    Spacer(Modifier.width(12.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(option.titleRes),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                        )
+                        Text(
+                            text = stringResource(option.descriptionRes),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+
+                    RadioButton(
+                        selected = selected,
+                        onClick = { onGoalChange(option.goal) },
+                        colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
+                    )
+                }
             }
         }
     }

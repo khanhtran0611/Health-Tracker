@@ -168,6 +168,34 @@
     <string name="msg_profile_saved">Profile saved</string>
     <string name="msg_profile_save_failed">Failed to save profile, please try again</string>
 
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_app_version">HealthTracker v1.0</string>
+
+    <string name="section_language">Language</string>
+    <string name="label_app_language">App language</string>
+    <!-- Language names shown in their own language, not translated -->
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+
+    <string name="section_appearance">Appearance</string>
+    <string name="label_brightness">Brightness</string>
+    <string name="brightness_light">Light</string>
+    <string name="brightness_dark">Dark</string>
+    <string name="brightness_system">System</string>
+    <string name="label_color_theme">Color theme</string>
+    <string name="label_font_size">Font size</string>
+    <string name="font_size_small">Small</string>
+    <string name="font_size_medium">Medium</string>
+    <string name="font_size_large">Large</string>
+
+    <string name="section_data_management">Data management</string>
+    <string name="action_reset_data">Reset data</string>
+    <string name="text_reset_data_info">Delete your entire profile, meal diary, and activity diary. Your food/activity lists are kept.</string>
+    <string name="dialog_reset_data_title">Reset data?</string>
+    <string name="dialog_reset_data_message">Your profile, meal diary, and activity diary will be permanently deleted. This action cannot be undone.</string>
+    <string name="msg_data_reset">Data reset</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Delete food?</string>
     <string name="dialog_delete_food_message">“%1$s” will be removed from your food list. This action cannot be undone.</string>
@@ -178,4 +206,8 @@
     <string name="dialog_delete_activity_message">“%1$s” will be removed from your activity list. This action cannot be undone.</string>
     <string name="msg_activity_deleted">Activity deleted</string>
     <string name="msg_activity_delete_failed">Can\'t delete — this activity is used in a logged entry</string>
+
+    <string name="goal_lose_desc">−500 kcal per day</string>
+    <string name="goal_maintain_desc">Keep your current calories</string>
+    <string name="goal_gain_desc">+500 kcal per day</string>
 </resources>

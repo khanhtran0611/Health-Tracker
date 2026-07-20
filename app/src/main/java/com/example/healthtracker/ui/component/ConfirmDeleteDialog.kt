@@ -10,6 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
@@ -27,6 +30,13 @@ fun ConfirmDeleteDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    // AlertDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
+    // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản đã
+    // đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng ngôn ngữ)
+    // rồi re-provide vào các slot bên trong dùng stringResource().
+    val localContext = LocalContext.current
+    val localConfiguration = LocalConfiguration.current
+
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
@@ -41,16 +51,20 @@ fun ConfirmDeleteDialog(
         shape = RoundedCornerShape(24.dp),
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         confirmButton = {
-            TextButton(
-                onClick = onConfirm,
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-            ) {
-                Text(stringResource(R.string.action_delete))
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                TextButton(
+                    onClick = onConfirm,
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                ) {
+                    Text(stringResource(R.string.action_delete))
+                }
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.action_cancel))
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.action_cancel))
+                }
             }
         },
     )

@@ -57,6 +57,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.material3)
     ksp(libs.androidx.room.compiler)
 
     // Hilt
@@ -71,6 +72,9 @@ dependencies {
 
     // DataStore (settings)
     implementation(libs.androidx.datastore.preferences)
+
+    // MaterialKolor (seed-based Material3 color scheme generation)
+    implementation(libs.materialkolor)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

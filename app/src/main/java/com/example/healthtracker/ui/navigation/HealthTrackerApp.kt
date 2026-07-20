@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,12 +29,12 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.activitypicker.ActivityPickerScreen
 import com.example.healthtracker.ui.activitydiary.enteractivity.EnterActivityScreen
-import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.mainshell.MainShellScreen
 import com.example.healthtracker.ui.mealdiary.enterfood.EnterFoodManuallyScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
+import com.example.healthtracker.ui.settings.SettingScreen
 import com.example.healthtracker.ui.toast.SharedToast
 import com.example.healthtracker.ui.toast.ToastData
 import com.example.healthtracker.ui.toast.ToastViewModel
@@ -95,14 +94,17 @@ private fun HealthTrackerNavHost(startRoute: Route) {
     val toastViewModel: ToastViewModel = hiltViewModel()
     // vì toast có thể null => phải type "T?", không phải mỗi "T"
     var currentToast by remember { mutableStateOf<ToastData?>(null) }
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         toastViewModel.messages.collect { message ->
             // Chờ pop/push transition của NavDisplay chạy xong rồi mới hiện toast,
             // để enter animation không bị rớt frame vì main thread đang bận vẽ transition.
             delay(NAV_TRANSITION_DURATION_MS.toLong())
-            currentToast = ToastData(message = context.getString(message.textRes), type = message.type)
+            // Giữ nguyên textRes, KHÔNG resolve String ở đây bằng context.getString():
+            // LaunchedEffect(Unit) không bao giờ chạy lại nên context bị đóng băng ở
+            // lần compose đầu tiên -> đổi ngôn ngữ ở Settings sau đó sẽ không còn tác
+            // dụng với toast. Để SharedToast tự stringResource() lúc render.
+            currentToast = ToastData(textRes = message.textRes, type = message.type)
             delay(3000)
             currentToast = null
         }
@@ -206,7 +208,15 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     // ----- Màn con Profile (ẩn bottom bar) -----
                     entry<Route.Settings> {
                         Box(modifier = Modifier.padding(padding)) {
-                            PlaceholderScreen("Settings")
+                            SettingScreen(
+                                onBackClick = { backStack.removeLastOrNull() },
+                                onResetComplete = {
+                                    // Giống onFinishOnboarding: xoá sạch backstack, không cho back
+                                    // trở lại MainShell/Settings vì hồ sơ đã bị xoá.
+                                    backStack.clear()
+                                    backStack.add(Route.Onboarding)
+                                },
+                            )
                         }
                     }
                     entry<Route.EditProfile> {

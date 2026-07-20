@@ -12,4 +12,6 @@ interface ActivityEntryRepository {
     suspend fun addEntry(entry: ActivityEntry): Long
     suspend fun updateEntry(entry: ActivityEntry)
     suspend fun deleteEntry(entry: ActivityEntry)
+    /** Xoá toàn bộ nhật ký hoạt động — dùng cho tính năng "Đặt lại dữ liệu" ở Settings. */
+    suspend fun deleteAllEntries()
 }

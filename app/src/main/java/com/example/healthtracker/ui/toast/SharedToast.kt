@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,10 +24,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * Giữ resource id thay vì String đã resolve sẵn — chuỗi được resolve bằng
+ * `stringResource()` NGAY TRONG [SharedToast] (đọc LocalContext hiện tại mỗi lần
+ * render), để đổi ngôn ngữ runtime ở Settings ảnh hưởng đúng tới toast đang/sắp
+ * hiện. Resolve trước bằng `context.getString()` ở nơi gọi rồi truyền String vào
+ * đây sẽ bị "đóng băng" ngôn ngữ lúc resolve — xem HealthTrackerApp.kt.
+ */
 data class ToastData(
-    val message: String,
+    @param:StringRes val textRes: Int,
     val type: ToastType = ToastType.INFO
 )
 
@@ -81,13 +90,19 @@ fun SharedToast(
                 ) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = "Toast Icon",
+                        // Icon chỉ minh hoạ lại nội dung Text ngay bên cạnh — để null
+                        // tránh screen reader đọc trùng lặp 2 lần.
+                        contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = data.message,
+                        // Bây giờ thì phải vào tận đây thì mới dùng stringResource
+                        // để lấy text, thay vì lấy ngay tạo LaunchedEffect của HealthTrackerApp
+                        // do LaunchedEffect chỉ chạy đúng 1 lần nên sẽ khóa ngay lại context với config đầu tiên
+                        // Có đổi ngôn ngữ giữa chừng app chạy thì sẽ ko đổi config locale được.
+                        text = stringResource(data.textRes),
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge
                     )

@@ -5,8 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.healthtracker.domain.model.AppSettings
+import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.Language
+import com.example.healthtracker.domain.model.ThemePreset
 import com.example.healthtracker.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,6 +17,8 @@ import javax.inject.Inject
 // Ngăn kéo lưu trữ các config. Giá trị lưu vào ko phải là string thường mà là tên của enum
 private val LANGUAGE_KEY = stringPreferencesKey("language")
 private val FONT_SIZE_KEY = stringPreferencesKey("font_size")
+private val BRIGHTNESS_KEY = stringPreferencesKey("brightness")
+private val THEME_PRESET_KEY = stringPreferencesKey("theme_preset")
 
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
@@ -26,6 +30,8 @@ class SettingsRepositoryImpl @Inject constructor(
         AppSettings(
             language = parseLanguage(prefs[LANGUAGE_KEY]),
             fontSize = parseFontSize(prefs[FONT_SIZE_KEY]),
+            brightness = parseBrightness(prefs[BRIGHTNESS_KEY]),
+            themePreset = parseThemePreset(prefs[THEME_PRESET_KEY]),
         )
     }
 
@@ -36,6 +42,14 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun setFontSize(fontSize: FontSize) {
         dataStore.edit { it[FONT_SIZE_KEY] = fontSize.name }
+    }
+
+    override suspend fun setBrightness(brightness: Brightness) {
+        dataStore.edit { it[BRIGHTNESS_KEY] = brightness.name }
+    }
+
+    override suspend fun setThemePreset(themePreset: ThemePreset) {
+        dataStore.edit { it[THEME_PRESET_KEY] = themePreset.name }
     }
 }
 
@@ -52,4 +66,22 @@ private fun parseFontSize(value: String?): FontSize = when (value) {
     "MEDIUM" -> FontSize.MEDIUM
     "LARGE" -> FontSize.LARGE
     else -> FontSize.MEDIUM
+}
+
+// Đọc giá trị brightness đã lưu ra enum. Không match hoặc chưa lưu lần nào -> default SYSTEM.
+private fun parseBrightness(value: String?): Brightness = when (value) {
+    "LIGHT" -> Brightness.LIGHT
+    "DARK" -> Brightness.DARK
+    "SYSTEM" -> Brightness.SYSTEM
+    else -> Brightness.SYSTEM
+}
+
+// Đọc giá trị themePreset đã lưu ra enum. Không match hoặc chưa lưu lần nào -> default VITALITY_MATERIAL.
+private fun parseThemePreset(value: String?): ThemePreset = when (value) {
+    "CARBON" -> ThemePreset.CARBON
+    "TERRA" -> ThemePreset.TERRA
+    "VITALITY_MATERIAL" -> ThemePreset.VITALITY_MATERIAL
+    "SILK" -> ThemePreset.SILK
+    "CANDY" -> ThemePreset.CANDY
+    else -> ThemePreset.VITALITY_MATERIAL
 }

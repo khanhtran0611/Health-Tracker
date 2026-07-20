@@ -30,4 +30,7 @@ interface ActivityEntryDao {
 
     @Delete
     suspend fun delete(entry: ActivityEntryEntity)
+
+    @Query("DELETE FROM activity_entries")
+    suspend fun deleteAll()
 }

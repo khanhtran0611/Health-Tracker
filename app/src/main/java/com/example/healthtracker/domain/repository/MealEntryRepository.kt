@@ -12,4 +12,6 @@ interface MealEntryRepository {
     suspend fun addEntry(entry: MealEntry): Long
     suspend fun updateEntry(entry: MealEntry)
     suspend fun deleteEntry(entry: MealEntry)
+    /** Xoá toàn bộ nhật ký bữa ăn — dùng cho tính năng "Đặt lại dữ liệu" ở Settings. */
+    suspend fun deleteAllEntries()
 }

@@ -30,4 +30,7 @@ interface MealEntryDao {
 
     @Delete
     suspend fun delete(entry: MealEntryEntity)
+
+    @Query("DELETE FROM meal_entries")
+    suspend fun deleteAll()
 }

@@ -34,4 +34,6 @@ class ActivityEntryRepositoryImpl @Inject constructor(
 
     override suspend fun deleteEntry(entry: ActivityEntry) =
         activityEntryDao.delete(entry.toEntity())
+
+    override suspend fun deleteAllEntries() = activityEntryDao.deleteAll()
 }
