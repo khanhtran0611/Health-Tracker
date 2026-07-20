@@ -83,7 +83,7 @@ fun ProfileContent(
             .padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Box(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+        Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
             Text(
                 text = stringResource(R.string.profile_title),
                 style = MaterialTheme.typography.titleLarge,
