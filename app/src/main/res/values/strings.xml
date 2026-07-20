@@ -152,6 +152,22 @@
     <string name="dashboard_need_on_target">Bạn đã ăn đủ calo hôm nay!</string>
     <string name="dashboard_need_over_target">Bạn đã vượt %1$d kcal hôm nay</string>
 
+    <!-- Profile -->
+    <string name="profile_title">Hồ sơ cá nhân</string>
+    <string name="profile_age_gender_format">%1$d tuổi • %2$s</string>
+    <string name="profile_label_goal">Mục tiêu</string>
+    <string name="profile_bmi_title">Chỉ số khối cơ thể (BMI)</string>
+    <string name="bmi_category_underweight">Thiếu cân</string>
+    <string name="bmi_category_normal">Bình thường</string>
+    <string name="bmi_category_overweight">Thừa cân</string>
+    <string name="bmi_category_obese">Béo phì</string>
+    <string name="profile_tdee_title">Nhu cầu calo hàng ngày (TDEE)</string>
+    <string name="profile_tdee_based_on">Dựa trên: %1$s</string>
+    <string name="action_edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="msg_profile_saved">Đã lưu hồ sơ</string>
+    <string name="msg_profile_save_failed">Lưu hồ sơ thất bại, thử lại nhé</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
     <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>

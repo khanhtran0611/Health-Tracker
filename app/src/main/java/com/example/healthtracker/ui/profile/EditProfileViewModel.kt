@@ -2,6 +2,7 @@ package com.example.healthtracker.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
 import com.example.healthtracker.domain.model.User
@@ -10,7 +11,11 @@ import com.example.healthtracker.domain.usecase.CalculateAgeUseCase
 import com.example.healthtracker.ui.component.ProfileFormUiState
 import com.example.healthtracker.ui.component.isProfileFormValid
 import com.example.healthtracker.ui.component.validateProfileForm
+import com.example.healthtracker.ui.toast.ToastController
+import com.example.healthtracker.ui.toast.ToastMessage
+import com.example.healthtracker.ui.toast.ToastType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +31,7 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val calculateAgeUseCase: CalculateAgeUseCase,
+    private val toastController: ToastController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileFormUiState(isLoading = true))
@@ -93,19 +99,28 @@ class EditProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true) }
-            userRepository.saveUser(
-                User(
-                    fullName = validated.fullName,
-                    dateOfBirth = validated.dateOfBirth!!,
-                    gender = validated.gender,
-                    weightKg = validated.weightKg.toDouble(),
-                    heightCm = validated.heightCm.toDouble(),
-                    activityLevel = validated.activityLevel,
-                    goal = validated.goal,
-                ),
-            )
-            _uiState.update { it.copy(isSaving = false) }
-            _savedEvent.send(Unit)
+            try {
+                userRepository.saveUser(
+                    User(
+                        fullName = validated.fullName,
+                        dateOfBirth = validated.dateOfBirth!!,
+                        gender = validated.gender,
+                        weightKg = validated.weightKg.toDouble(),
+                        heightCm = validated.heightCm.toDouble(),
+                        activityLevel = validated.activityLevel,
+                        goal = validated.goal,
+                    ),
+                )
+                toastController.show(ToastMessage(R.string.msg_profile_saved, ToastType.SUCCESS))
+                _uiState.update { it.copy(isSaving = false) }
+                _savedEvent.send(Unit)
+            } catch (e: CancellationException) {
+                throw e // huỷ coroutine bình thường (vd rời màn) — không phải lỗi, không báo
+            } catch (e: Exception) {
+                toastController.show(ToastMessage(R.string.msg_profile_save_failed, ToastType.ERROR))
+                _uiState.update { it.copy(isSaving = false) }
+                // KHÔNG gửi savedEvent -> màn không đóng, user sửa/thử lại được.
+            }
         }
     }
 }
