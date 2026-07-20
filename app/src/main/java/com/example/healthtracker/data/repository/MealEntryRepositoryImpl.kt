@@ -34,4 +34,6 @@ class MealEntryRepositoryImpl @Inject constructor(
 
     override suspend fun deleteEntry(entry: MealEntry) =
         mealEntryDao.delete(entry.toEntity())
+
+    override suspend fun deleteAllEntries() = mealEntryDao.deleteAll()
 }

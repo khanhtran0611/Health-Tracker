@@ -10,4 +10,6 @@ interface UserRepository {
     suspend fun hasUser(): Boolean
     /** Tạo mới hoặc cập nhật hồ sơ (app chỉ 1 user). */
     suspend fun saveUser(user: User)
+    /** Xoá hồ sơ user — dùng cho tính năng "Đặt lại dữ liệu" ở Settings. */
+    suspend fun deleteUser()
 }

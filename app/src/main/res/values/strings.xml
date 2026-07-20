@@ -193,6 +193,13 @@
     <string name="font_size_medium">Vừa</string>
     <string name="font_size_large">Lớn</string>
 
+    <string name="section_data_management">Quản lý dữ liệu</string>
+    <string name="action_reset_data">Đặt lại dữ liệu</string>
+    <string name="text_reset_data_info">Xoá toàn bộ hồ sơ, nhật ký bữa ăn và hoạt động. Danh sách món ăn/hoạt động vẫn được giữ lại.</string>
+    <string name="dialog_reset_data_title">Đặt lại dữ liệu?</string>
+    <string name="dialog_reset_data_message">Toàn bộ hồ sơ, nhật ký bữa ăn và hoạt động sẽ bị xoá vĩnh viễn. Hành động này không thể hoàn tác.</string>
+    <string name="msg_data_reset">Đã đặt lại dữ liệu</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
     <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>

@@ -208,7 +208,15 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     // ----- Màn con Profile (ẩn bottom bar) -----
                     entry<Route.Settings> {
                         Box(modifier = Modifier.padding(padding)) {
-                            SettingScreen(onBackClick = { backStack.removeLastOrNull() })
+                            SettingScreen(
+                                onBackClick = { backStack.removeLastOrNull() },
+                                onResetComplete = {
+                                    // Giống onFinishOnboarding: xoá sạch backstack, không cho back
+                                    // trở lại MainShell/Settings vì hồ sơ đã bị xoá.
+                                    backStack.clear()
+                                    backStack.add(Route.Onboarding)
+                                },
+                            )
                         }
                     }
                     entry<Route.EditProfile> {

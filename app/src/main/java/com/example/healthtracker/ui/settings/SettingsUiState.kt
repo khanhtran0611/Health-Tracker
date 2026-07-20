@@ -4,4 +4,5 @@ import com.example.healthtracker.domain.model.AppSettings
 
 data class SettingsUiState(
     val settings: AppSettings = AppSettings(),
+    val isResetting: Boolean = false,
 )

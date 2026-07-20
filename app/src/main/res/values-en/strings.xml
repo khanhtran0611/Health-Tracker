@@ -189,6 +189,13 @@
     <string name="font_size_medium">Medium</string>
     <string name="font_size_large">Large</string>
 
+    <string name="section_data_management">Data management</string>
+    <string name="action_reset_data">Reset data</string>
+    <string name="text_reset_data_info">Delete your entire profile, meal diary, and activity diary. Your food/activity lists are kept.</string>
+    <string name="dialog_reset_data_title">Reset data?</string>
+    <string name="dialog_reset_data_message">Your profile, meal diary, and activity diary will be permanently deleted. This action cannot be undone.</string>
+    <string name="msg_data_reset">Data reset</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Delete food?</string>
     <string name="dialog_delete_food_message">“%1$s” will be removed from your food list. This action cannot be undone.</string>

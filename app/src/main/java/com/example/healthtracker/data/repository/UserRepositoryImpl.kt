@@ -31,4 +31,6 @@ class UserRepositoryImpl @Inject constructor(
         )
         userDao.upsert(entity)
     }
+
+    override suspend fun deleteUser() = userDao.deleteAll()
 }

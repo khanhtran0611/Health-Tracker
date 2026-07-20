@@ -31,16 +31,22 @@ import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.Language
 import com.example.healthtracker.domain.model.ThemePreset
+import com.example.healthtracker.ui.component.ConfirmDeleteDialog
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
 /** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [SettingContent]. */
 @Composable
 fun SettingScreen(
     onBackClick: () -> Unit,
+    onResetComplete: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.resetEvent.collect { onResetComplete() }
+    }
 
     SettingContent(
         uiState = uiState,
@@ -49,6 +55,7 @@ fun SettingScreen(
         onBrightnessChange = viewModel::onBrightnessChange,
         onThemePresetChange = viewModel::onThemePresetChange,
         onFontSizeChange = viewModel::onFontSizeChange,
+        onResetData = viewModel::onResetData,
         modifier = modifier,
     )
 }
@@ -65,6 +72,7 @@ fun SettingContent(
     onBrightnessChange: (Brightness) -> Unit,
     onThemePresetChange: (ThemePreset) -> Unit,
     onFontSizeChange: (FontSize) -> Unit,
+    onResetData: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val settings = uiState.settings
@@ -172,6 +180,7 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+
         // Reminders Section — UI mockup tạm, CHƯA có domain model/logic (làm sau).
         SectionTitle(title = "Reminders")
         SettingsCard(padding = 0.dp) {
@@ -202,6 +211,42 @@ fun SettingContent(
                 onCheckedChange = {},
                 isBold = false
             )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Data management Section — đặt lại dữ liệu (destructive, có dialog xác nhận).
+        SectionTitle(title = stringResource(R.string.section_data_management))
+        SettingsCard {
+            Text(
+                text = stringResource(R.string.text_reset_data_info),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            var showResetConfirm by remember { mutableStateOf(false) }
+            OutlinedButton(
+                onClick = { showResetConfirm = true },
+                enabled = !uiState.isResetting,
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.action_reset_data))
+            }
+
+            if (showResetConfirm) {
+                ConfirmDeleteDialog(
+                    title = stringResource(R.string.dialog_reset_data_title),
+                    message = stringResource(R.string.dialog_reset_data_message),
+                    onConfirm = {
+                        showResetConfirm = false
+                        onResetData()
+                    },
+                    onDismiss = { showResetConfirm = false },
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -370,6 +415,7 @@ private fun SettingContentPreview() {
             onBrightnessChange = {},
             onThemePresetChange = {},
             onFontSizeChange = {},
+            onResetData = {},
         )
     }
 }
