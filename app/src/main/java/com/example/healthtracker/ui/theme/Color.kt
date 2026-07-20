@@ -10,13 +10,13 @@ import androidx.compose.ui.graphics.Color
 // =====================================================================
 
 /** Than chì — trầm, chắc chắn, tối giản. */
-val ThemeCarbonSeed = Color(0xFF2E7D32)
+val ThemeCarbonSeed = Color(0xFF5BA2D5)
 
 /** Đất nung — ấm, mộc mạc, gần gũi thiên nhiên. */
 val ThemeTerraSeed = Color(0xFF8D6E63)
 
 /** Vitality Material — theme mặc định, seed = primary cũ (docs/design-system.md). */
-val ThemeVitalityMaterialSeed = Color(0xFF006E1C)
+val ThemeVitalityMaterialSeed = Color(0xFF4CAF50)
 
 /** Lụa — tím nhẹ, mềm mại, hiện đại. */
 val ThemeSilkSeed = Color(0xFF7C4DFF)

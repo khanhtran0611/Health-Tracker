@@ -33,6 +33,14 @@ fun createLocalizedContext(baseContext: Context, language: Language): Context {
     val config = Configuration(baseContext.resources.configuration).apply {
         setLocale(locale)
     }
+    // createConfigurationContext là 1 hàm có sẵn của mọi context.
+    // tham số là 1 cái configuration , nó sẽ tạo và trả về 1 cái context hoàn toàn mới,
+    // và context này sẽ dùng đúng configuration đã đưa vào.
     val localizedResources = baseContext.createConfigurationContext(config).resources
+
+    // Tuy nhiên, cái context này có 1 nhược điểm, đó là không có bất kỳ liên hệ nào với Activity gốc
+    // Khi hilt tìm activity trong cái context, nó ko tìm thấy cái activity nào cả.  => báo lỗi và crash hệ thống
+    // Vì thế tạo ra class LocalizedContextWrapper
+    // => giữ nguyên context gốc, trong chỉ thay đổi phần resources trả về (chứa config mới)
     return LocalizedContextWrapper(baseContext, localizedResources)
 }

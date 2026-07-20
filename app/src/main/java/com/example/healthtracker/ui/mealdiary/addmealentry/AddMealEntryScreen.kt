@@ -77,6 +77,10 @@ fun AddMealEntryScreen(
     val localConfiguration = LocalConfiguration.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    // Vì đặt CompositionLocalProvider(LocalContext provides localContext, ...)
+    // lồng sâu hơn Provider #2 của thư viện (nó nằm giữa Provider #2 và AddMealEntryContent).
+    // AddMealEntryContent sẽ lấy context mới thay vì context sẵn có.
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState

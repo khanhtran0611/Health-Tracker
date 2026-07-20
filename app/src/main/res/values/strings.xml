@@ -42,6 +42,10 @@
     <string name="goal_maintain">Giữ cân</string>
     <string name="goal_gain">Tăng cân</string>
 
+    <string name="goal_lose_desc">Giảm 500 kcal mỗi ngày</string>
+    <string name="goal_maintain_desc">Giữ nguyên mức calo hiện tại</string>
+    <string name="goal_gain_desc">Tăng 500 kcal mỗi ngày</string>
+
     <string name="action_next">Tiếp theo</string>
     <string name="action_save">Lưu</string>
     <string name="action_confirm">Xác nhận</string>
@@ -199,4 +203,6 @@
     <string name="dialog_delete_activity_message">Hoạt động “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>
     <string name="msg_activity_deleted">Đã xoá hoạt động</string>
     <string name="msg_activity_delete_failed">Không thể xoá — hoạt động này đang có nhật ký sử dụng</string>
+
+
 </resources>

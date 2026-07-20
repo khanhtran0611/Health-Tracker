@@ -16,6 +16,7 @@ navigation3 = "1.1.4"
 kotlinxSerialization = "1.7.3"
 datastorePreferences = "1.1.7"
 materialKolor = "2.0.0"
+material3 = "1.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,7 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 
 # MaterialKolor (seed-based Material3 color scheme generation)
 materialkolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "materialKolor" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

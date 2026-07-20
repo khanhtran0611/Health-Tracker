@@ -199,4 +199,8 @@
     <string name="dialog_delete_activity_message">“%1$s” will be removed from your activity list. This action cannot be undone.</string>
     <string name="msg_activity_deleted">Activity deleted</string>
     <string name="msg_activity_delete_failed">Can\'t delete — this activity is used in a logged entry</string>
+
+    <string name="goal_lose_desc">−500 kcal per day</string>
+    <string name="goal_maintain_desc">Keep your current calories</string>
+    <string name="goal_gain_desc">+500 kcal per day</string>
 </resources>

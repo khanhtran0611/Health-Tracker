@@ -98,6 +98,10 @@ fun SharedToast(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
+                        // Bây giờ thì phải vào tận đây thì mới dùng stringResource
+                        // để lấy text, thay vì lấy ngay tạo LaunchedEffect của HealthTrackerApp
+                        // do LaunchedEffect chỉ chạy đúng 1 lần nên sẽ khóa ngay lại context với config đầu tiên
+                        // Có đổi ngôn ngữ giữa chừng app chạy thì sẽ ko đổi config locale được.
                         text = stringResource(data.textRes),
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge

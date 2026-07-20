@@ -23,8 +23,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingFlat
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingFlat
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
@@ -37,6 +43,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -55,6 +63,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -306,56 +315,92 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
     }
 }
 
+/** Cấu hình hiển thị cho 1 lựa chọn Goal — gộp icon xu hướng + text res vào 1 chỗ cho gọn. */
+private data class GoalOption(
+    val goal: Goal,
+    val titleRes: Int,
+    val descriptionRes: Int,
+    val icon: ImageVector,
+)
+
+/**
+ * Bộ chọn Goal (Lose/Maintain/Gain weight) — mỗi lựa chọn nằm riêng 1 hàng dọc
+ * (giống cấu trúc Column của ActivityLevelCard bên dưới: xếp dọc, full-width),
+ * NHƯNG cố tình thiết kế khác để 2 khối không bị lẫn với nhau dù đứng cạnh nhau
+ * trong form:
+ *   - ActivityLevelCard: text bên trái, icon check/circle bên phải.
+ *   - GoalOption ở đây: icon xu hướng trong vòng tròn màu BÊN TRÁI (mũi tên
+ *     xuống/ngang/lên tương ứng giảm/giữ/tăng cân), có thêm dòng phụ mô tả tác
+ *     động lên TDEE (đúng công thức đã chốt ở CLAUDE.md: -500 / +0 / +500 kcal),
+ *     và dùng RadioButton chuẩn Material3 bên phải thay vì icon check tự vẽ.
+ *
+ * Nhờ mỗi lựa chọn chiếm trọn 1 hàng full-width (không còn ép 3 ô chung 1 hàng
+ * như SegmentedButton trước đây), chữ "Maintain weight" luôn có đủ chỗ nằm gọn
+ * 1 dòng — không còn lỗi tràn/wrap chữ ra ngoài khung nữa.
+ */
 @Composable
 private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
     val options = listOf(
-        Goal.LOSE to R.string.goal_lose,
-        Goal.MAINTAIN to R.string.goal_maintain,
-        Goal.GAIN to R.string.goal_gain,
+        GoalOption(Goal.LOSE, R.string.goal_lose, R.string.goal_lose_desc, Icons.Filled.TrendingDown),
+        GoalOption(Goal.MAINTAIN, R.string.goal_maintain, R.string.goal_maintain_desc, Icons.Filled.TrendingFlat),
+        GoalOption(Goal.GAIN, R.string.goal_gain, R.string.goal_gain_desc, Icons.Filled.TrendingUp),
     )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
-            .clip(RoundedCornerShape(12.dp)),
-    ) {
-        options.forEachIndexed { index, (value, labelRes) ->
-            val selected = goal == value
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
-                    .clickable { onGoalChange(value) }
-                    .padding(vertical = 10.dp, horizontal = 6.dp),
-                contentAlignment = Alignment.Center,
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        options.forEach { option ->
+            val selected = goal == option.goal
+            Surface(
+                onClick = { onGoalChange(option.goal) },
+                shape = RoundedCornerShape(16.dp),
+                color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest,
+                border = BorderStroke(
+                    width = if (selected) 1.5.dp else 1.dp,
+                    color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                ),
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (selected) {
+                Row(
+                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(
+                                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
+                                shape = CircleShape,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
                         Icon(
-                            Icons.Default.Check,
+                            imageVector = option.icon,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(16.dp),
+                            tint = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp),
                         )
-                        Spacer(Modifier.width(4.dp))
                     }
-                    // KHÔNG set maxLines/overflow -> chữ được phép wrap tự nhiên,
-                    // hiển thị đầy đủ, không bị cắt "...".
-                    Text(
-                        text = stringResource(labelRes),
-                        style = MaterialTheme.typography.labelMedium,
-                        textAlign = TextAlign.Center,
-                        color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+
+                    Spacer(Modifier.width(12.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(option.titleRes),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                        )
+                        Text(
+                            text = stringResource(option.descriptionRes),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+
+                    RadioButton(
+                        selected = selected,
+                        onClick = { onGoalChange(option.goal) },
+                        colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
                     )
                 }
-            }
-            if (index != options.lastIndex) {
-                VerticalDivider(
-                    modifier = Modifier.fillMaxHeight().width(1.dp),
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                )
             }
         }
     }
