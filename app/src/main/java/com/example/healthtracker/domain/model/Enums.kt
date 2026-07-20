@@ -26,3 +26,10 @@ enum class MealType {
     DINNER,
     SNACK,
 }
+
+/** Chế độ sáng/tối của giao diện — SYSTEM đi theo cài đặt hệ điều hành. */
+enum class Brightness {
+    LIGHT,
+    DARK,
+    SYSTEM,
+}

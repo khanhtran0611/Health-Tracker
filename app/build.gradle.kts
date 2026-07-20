@@ -72,6 +72,9 @@ dependencies {
     // DataStore (settings)
     implementation(libs.androidx.datastore.preferences)
 
+    // MaterialKolor (seed-based Material3 color scheme generation)
+    implementation(libs.materialkolor)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

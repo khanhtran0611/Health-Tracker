@@ -3,8 +3,32 @@ package com.example.healthtracker.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // =====================================================================
+// Theme preset seed colors — mỗi seed sinh ra 1 bộ ColorScheme M3 đầy đủ
+// qua MaterialKolor (xem Theme.kt + domain/model/ThemePreset.kt). Đây là
+// giá trị TẠM — khi có mã hex chính xác từ Stitch thì chỉ sửa Color(...)
+// ở đây, không đổi cấu trúc.
+// =====================================================================
+
+/** Than chì — trầm, chắc chắn, tối giản. */
+val ThemeCarbonSeed = Color(0xFF2E7D32)
+
+/** Đất nung — ấm, mộc mạc, gần gũi thiên nhiên. */
+val ThemeTerraSeed = Color(0xFF8D6E63)
+
+/** Vitality Material — theme mặc định, seed = primary cũ (docs/design-system.md). */
+val ThemeVitalityMaterialSeed = Color(0xFF006E1C)
+
+/** Lụa — tím nhẹ, mềm mại, hiện đại. */
+val ThemeSilkSeed = Color(0xFF7C4DFF)
+
+/** Kẹo ngọt — hồng tươi, trẻ trung, năng động. */
+val ThemeCandySeed = Color(0xFFE91E63)
+
+// =====================================================================
 // Vitality Material — theme SÁNG (docs/design-system.md)
 // Token lấy nguyên hex từ frontmatter của file, không tự suy diễn.
+// GIỮ LẠI để tham khảo/trưng bày — Theme.kt không còn dùng bộ này trực
+// tiếp nữa (đã chuyển sang sinh ColorScheme từ seed qua MaterialKolor).
 // =====================================================================
 
 val VitalityPrimary = Color(0xFF006E1C)

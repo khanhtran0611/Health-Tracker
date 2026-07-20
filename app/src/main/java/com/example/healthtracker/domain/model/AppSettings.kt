@@ -14,9 +14,11 @@ enum class FontSize {
 }
 
 /**
- * Cài đặt app, lưu qua DataStore (không lưu Room). Theme sẽ thêm sau.
+ * Cài đặt app, lưu qua DataStore (không lưu Room).
  */
 data class AppSettings(
     val language: Language = Language.VI,
     val fontSize: FontSize = FontSize.MEDIUM,
+    val brightness: Brightness = Brightness.SYSTEM,
+    val themePreset: ThemePreset = ThemePreset.VITALITY_MATERIAL,
 )
