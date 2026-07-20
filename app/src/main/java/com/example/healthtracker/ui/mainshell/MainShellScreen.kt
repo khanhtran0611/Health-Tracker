@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.ActivityDiaryScreen
@@ -79,7 +80,11 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
                         selected = currentTab == tab,
                         onClick = { switchToTab(tab) },
                         icon = { Icon(tab.icon, contentDescription = stringResource(tab.labelRes)) },
-                        label = { Text(stringResource(tab.labelRes)) },
+                        label = { Text(
+                            text = stringResource(tab.labelRes),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis)
+                                },
                     )
                 }
             }
