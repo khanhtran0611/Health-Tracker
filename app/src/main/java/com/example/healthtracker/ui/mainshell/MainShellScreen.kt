@@ -23,11 +23,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.ActivityDiaryScreen
-import com.example.healthtracker.ui.component.PlaceholderScreen
 import com.example.healthtracker.ui.dashboard.DashboardScreen
 import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
 import com.example.healthtracker.ui.profile.ProfileScreen
+import com.example.healthtracker.ui.stats.StatisticsScreen
 
 // Thời lượng animation đổi tab (slide + fade) — giống hệt NavDisplay tầng
 // ngoài ở HealthTrackerApp.kt, để cảm giác chuyển màn nhất quán ở cả 2 tầng.
@@ -136,7 +136,7 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
                         },
                     )
                 }
-                entry<Route.Stats> { PlaceholderScreen("Stats") }
+                entry<Route.Stats> { StatisticsScreen() }
                 entry<Route.Profile> {
                     ProfileScreen(
                         onEditProfileClick = { onNavigateOuter(Route.EditProfile) },

@@ -19,6 +19,13 @@ interface ActivityEntryDao {
     @Query("SELECT COALESCE(SUM(calories_burned), 0) FROM activity_entries WHERE log_date = :date")
     fun observeTotalCaloriesBurnedByDate(date: LocalDate): Flow<Double>
 
+    /** Tổng calo ĐỐT theo từng ngày trong khoảng — dùng cho Stats (bar/line chart 7 ngày). */
+    @Query(
+        "SELECT log_date, COALESCE(SUM(calories_burned), 0) as total FROM activity_entries " +
+            "WHERE log_date BETWEEN :startDate AND :endDate GROUP BY log_date"
+    )
+    fun observeDailyTotalsBetween(startDate: LocalDate, endDate: LocalDate): Flow<List<DailyTotal>>
+
     @Query("SELECT * FROM activity_entries WHERE id = :id")
     suspend fun getById(id: Long): ActivityEntryEntity?
 

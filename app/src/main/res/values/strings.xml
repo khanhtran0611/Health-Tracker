@@ -226,5 +226,13 @@
     <string name="msg_activity_deleted">Đã xoá hoạt động</string>
     <string name="msg_activity_delete_failed">Không thể xoá — hoạt động này đang có nhật ký sử dụng</string>
 
+    <!-- Statistics -->
+    <string name="stats_bar_chart_title">Calo nạp vào — 7 ngày gần nhất</string>
+    <string name="stats_line_chart_title">Xu hướng calo theo tuần</string>
+    <string name="stats_summary_title">Tổng kết tuần</string>
+    <string name="stats_avg_eaten_label">TB calo nạp / ngày</string>
+    <string name="stats_avg_burned_label">TB calo tiêu thụ / ngày</string>
+    <string name="stats_days_goal_met_label">Số ngày đạt mục tiêu</string>
+    <string name="stats_days_goal_met_value">%1$d / %2$d ngày</string>
 
 </resources>
