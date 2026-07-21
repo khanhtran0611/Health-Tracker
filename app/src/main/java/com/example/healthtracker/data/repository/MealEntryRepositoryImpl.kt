@@ -20,6 +20,9 @@ class MealEntryRepositoryImpl @Inject constructor(
     override fun observeTotalCaloriesByDate(date: LocalDate): Flow<Double> =
         mealEntryDao.observeTotalCaloriesByDate(date)
 
+    override fun observeDailyTotalsByDateRange(startDate: LocalDate, endDate: LocalDate): Flow<Map<LocalDate, Double>> =
+        mealEntryDao.observeDailyTotalsBetween(startDate, endDate).map { list -> list.associate { it.logDate to it.total } }
+
     override suspend fun getEntry(id: Long): MealEntry? =
         mealEntryDao.getById(id)?.toDomain()
 

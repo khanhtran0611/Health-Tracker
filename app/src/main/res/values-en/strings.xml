@@ -225,4 +225,13 @@
     <string name="goal_lose_desc">−500 kcal per day</string>
     <string name="goal_maintain_desc">Keep your current calories</string>
     <string name="goal_gain_desc">+500 kcal per day</string>
+
+    <!-- Statistics -->
+    <string name="stats_bar_chart_title">Calories in — last 7 days</string>
+    <string name="stats_line_chart_title">Weekly calorie trend</string>
+    <string name="stats_summary_title">Weekly summary</string>
+    <string name="stats_avg_eaten_label">Avg. calories eaten / day</string>
+    <string name="stats_avg_burned_label">Avg. calories burned / day</string>
+    <string name="stats_days_goal_met_label">Days goal met</string>
+    <string name="stats_days_goal_met_value">%1$d / %2$d days</string>
 </resources>

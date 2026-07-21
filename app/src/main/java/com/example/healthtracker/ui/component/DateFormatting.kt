@@ -19,3 +19,10 @@ fun formatDiaryDate(date: LocalDate): String {
         formatted
     }
 }
+
+/** Tên viết tắt thứ trong tuần theo ngôn ngữ hiện tại — dùng cho nhãn trục ngày ở biểu đồ Stats. */
+@Composable
+fun formatWeekdayShort(date: LocalDate): String {
+    val formatter = remember { DateTimeFormatter.ofPattern("EEE", Locale.getDefault()) }
+    return date.format(formatter)
+}
