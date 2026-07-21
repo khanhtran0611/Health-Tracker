@@ -61,7 +61,7 @@ fun WeeklySummaryCard(
                 valueColor = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             SummaryRow(
                 label = stringResource(R.string.stats_avg_burned_label),
@@ -77,7 +77,7 @@ fun WeeklySummaryCard(
                 valueColor = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 dailyStats.forEach { stat ->

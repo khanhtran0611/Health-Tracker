@@ -63,7 +63,7 @@ class StatisticsViewModel @Inject constructor(
                         burned = burnedByDate[date] ?: 0.0,
                     )
                 }
-                StatisticsUiState(dailyStats = dailyStats, tdee = tdee)
+                StatisticsUiState(dailyStats = dailyStats, tdee = tdee, isLoading = false)
             }.collect { _uiState.value = it }
         }
     }
