@@ -198,6 +198,19 @@
     <string name="dialog_reset_data_message">Your profile, meal diary, and activity diary will be permanently deleted. This action cannot be undone.</string>
     <string name="msg_data_reset">Data reset</string>
 
+    <string name="section_reminders">Reminders</string>
+    <string name="label_daily_reminders">Daily logging reminders</string>
+    <string name="label_reminder_morning">Morning • 7:00 AM</string>
+    <string name="label_reminder_noon">Midday • 12:00 PM</string>
+    <string name="label_reminder_evening">Evening • 7:00 PM</string>
+
+    <string name="reminder_channel_name">Diary reminders</string>
+    <string name="reminder_channel_description">Reminders to log your meals/activities at your chosen times</string>
+    <string name="reminder_notification_title">Diary reminder</string>
+    <string name="reminder_message_morning">Time to log your breakfast!</string>
+    <string name="reminder_message_noon">Time to log your lunch!</string>
+    <string name="reminder_message_evening">Time to log your dinner !</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Delete food?</string>
     <string name="dialog_delete_food_message">“%1$s” will be removed from your food list. This action cannot be undone.</string>

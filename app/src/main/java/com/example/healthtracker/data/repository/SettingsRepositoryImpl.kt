@@ -2,6 +2,7 @@ package com.example.healthtracker.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.healthtracker.domain.model.AppSettings
@@ -19,6 +20,10 @@ private val LANGUAGE_KEY = stringPreferencesKey("language")
 private val FONT_SIZE_KEY = stringPreferencesKey("font_size")
 private val BRIGHTNESS_KEY = stringPreferencesKey("brightness")
 private val THEME_PRESET_KEY = stringPreferencesKey("theme_preset")
+private val REMINDERS_ENABLED_KEY = booleanPreferencesKey("reminders_enabled")
+private val MORNING_REMINDER_KEY = booleanPreferencesKey("morning_reminder_enabled")
+private val NOON_REMINDER_KEY = booleanPreferencesKey("noon_reminder_enabled")
+private val EVENING_REMINDER_KEY = booleanPreferencesKey("evening_reminder_enabled")
 
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
@@ -32,6 +37,10 @@ class SettingsRepositoryImpl @Inject constructor(
             fontSize = parseFontSize(prefs[FONT_SIZE_KEY]),
             brightness = parseBrightness(prefs[BRIGHTNESS_KEY]),
             themePreset = parseThemePreset(prefs[THEME_PRESET_KEY]),
+            remindersEnabled = prefs[REMINDERS_ENABLED_KEY] ?: false,
+            morningReminderEnabled = prefs[MORNING_REMINDER_KEY] ?: true,
+            noonReminderEnabled = prefs[NOON_REMINDER_KEY] ?: true,
+            eveningReminderEnabled = prefs[EVENING_REMINDER_KEY] ?: true,
         )
     }
 
@@ -50,6 +59,22 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun setThemePreset(themePreset: ThemePreset) {
         dataStore.edit { it[THEME_PRESET_KEY] = themePreset.name }
+    }
+
+    override suspend fun setRemindersEnabled(enabled: Boolean) {
+        dataStore.edit { it[REMINDERS_ENABLED_KEY] = enabled }
+    }
+
+    override suspend fun setMorningReminderEnabled(enabled: Boolean) {
+        dataStore.edit { it[MORNING_REMINDER_KEY] = enabled }
+    }
+
+    override suspend fun setNoonReminderEnabled(enabled: Boolean) {
+        dataStore.edit { it[NOON_REMINDER_KEY] = enabled }
+    }
+
+    override suspend fun setEveningReminderEnabled(enabled: Boolean) {
+        dataStore.edit { it[EVENING_REMINDER_KEY] = enabled }
     }
 }
 

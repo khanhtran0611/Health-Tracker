@@ -21,4 +21,9 @@ data class AppSettings(
     val fontSize: FontSize = FontSize.MEDIUM,
     val brightness: Brightness = Brightness.SYSTEM,
     val themePreset: ThemePreset = ThemePreset.VITALITY_MATERIAL,
+    /** Công tắc tổng — tắt thì cả 3 khung giờ bên dưới đều không nhắc. */
+    val remindersEnabled: Boolean = false,
+    val morningReminderEnabled: Boolean = true,
+    val noonReminderEnabled: Boolean = true,
+    val eveningReminderEnabled: Boolean = true,
 )

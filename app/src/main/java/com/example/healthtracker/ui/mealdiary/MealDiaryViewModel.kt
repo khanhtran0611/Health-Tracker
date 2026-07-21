@@ -26,7 +26,6 @@ class MealDiaryViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MealDiaryUiState())
     val uiState: StateFlow<MealDiaryUiState> = _uiState.asStateFlow()
-
     init {
         viewModelScope.launch {
             _selectedDate

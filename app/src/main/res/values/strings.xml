@@ -202,6 +202,19 @@
     <string name="dialog_reset_data_message">Toàn bộ hồ sơ, nhật ký bữa ăn và hoạt động sẽ bị xoá vĩnh viễn. Hành động này không thể hoàn tác.</string>
     <string name="msg_data_reset">Đã đặt lại dữ liệu</string>
 
+    <string name="section_reminders">Nhắc nhở</string>
+    <string name="label_daily_reminders">Nhắc ghi nhật ký hàng ngày</string>
+    <string name="label_reminder_morning">Buổi sáng • 7:00</string>
+    <string name="label_reminder_noon">Buổi trưa • 12:00</string>
+    <string name="label_reminder_evening">Buổi tối • 19:00</string>
+
+    <string name="reminder_channel_name">Nhắc ghi nhật ký</string>
+    <string name="reminder_channel_description">Thông báo nhắc ghi nhật ký bữa ăn/hoạt động theo khung giờ đã chọn</string>
+    <string name="reminder_notification_title">Nhắc ghi nhật ký</string>
+    <string name="reminder_message_morning">Hãy ghi lại hoạt động sáng hôm nay!</string>
+    <string name="reminder_message_noon">Hãy ghi lại hoạt động trưa hôm nay!</string>
+    <string name="reminder_message_evening">Hãy ghi lại hoạt động tối hôm nay!</string>
+
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
     <string name="dialog_delete_food_message">Món “%1$s” sẽ bị xoá khỏi danh sách. Hành động này không thể hoàn tác.</string>

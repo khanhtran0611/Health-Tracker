@@ -3,6 +3,7 @@ package com.example.healthtracker.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.healthtracker.R
+import com.example.healthtracker.core.reminder.ReminderScheduler
 import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.Language
@@ -28,6 +29,7 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val resetAppDataUseCase: ResetAppDataUseCase,
     private val toastController: ToastController,
+    private val reminderScheduler: ReminderScheduler,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -59,6 +61,34 @@ class SettingsViewModel @Inject constructor(
 
     fun onThemePresetChange(themePreset: ThemePreset) {
         viewModelScope.launch { settingsRepository.setThemePreset(themePreset) }
+    }
+
+    fun onRemindersEnabledChange(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setRemindersEnabled(enabled)
+            reminderScheduler.rescheduleAll(_uiState.value.settings.copy(remindersEnabled = enabled))
+        }
+    }
+
+    fun onMorningReminderChange(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setMorningReminderEnabled(enabled)
+            reminderScheduler.rescheduleAll(_uiState.value.settings.copy(morningReminderEnabled = enabled))
+        }
+    }
+
+    fun onNoonReminderChange(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setNoonReminderEnabled(enabled)
+            reminderScheduler.rescheduleAll(_uiState.value.settings.copy(noonReminderEnabled = enabled))
+        }
+    }
+
+    fun onEveningReminderChange(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setEveningReminderEnabled(enabled)
+            reminderScheduler.rescheduleAll(_uiState.value.settings.copy(eveningReminderEnabled = enabled))
+        }
     }
 
     fun onResetData() {

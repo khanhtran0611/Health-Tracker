@@ -17,4 +17,8 @@ interface SettingsRepository {
     suspend fun setFontSize(fontSize: FontSize)
     suspend fun setBrightness(brightness: Brightness)
     suspend fun setThemePreset(themePreset: ThemePreset)
+    suspend fun setRemindersEnabled(enabled: Boolean)
+    suspend fun setMorningReminderEnabled(enabled: Boolean)
+    suspend fun setNoonReminderEnabled(enabled: Boolean)
+    suspend fun setEveningReminderEnabled(enabled: Boolean)
 }

@@ -1,5 +1,10 @@
 package com.example.healthtracker.ui.settings
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,12 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
@@ -55,6 +62,10 @@ fun SettingScreen(
         onBrightnessChange = viewModel::onBrightnessChange,
         onThemePresetChange = viewModel::onThemePresetChange,
         onFontSizeChange = viewModel::onFontSizeChange,
+        onRemindersEnabledChange = viewModel::onRemindersEnabledChange,
+        onMorningReminderChange = viewModel::onMorningReminderChange,
+        onNoonReminderChange = viewModel::onNoonReminderChange,
+        onEveningReminderChange = viewModel::onEveningReminderChange,
         onResetData = viewModel::onResetData,
         modifier = modifier,
     )
@@ -72,10 +83,33 @@ fun SettingContent(
     onBrightnessChange: (Brightness) -> Unit,
     onThemePresetChange: (ThemePreset) -> Unit,
     onFontSizeChange: (FontSize) -> Unit,
+    onRemindersEnabledChange: (Boolean) -> Unit,
+    onMorningReminderChange: (Boolean) -> Unit,
+    onNoonReminderChange: (Boolean) -> Unit,
+    onEveningReminderChange: (Boolean) -> Unit,
     onResetData: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val settings = uiState.settings
+
+    // Từ Android 13 (API 33) phải có quyền POST_NOTIFICATIONS mới hiện được
+    // notification — xin quyền ngay lúc user bật switch tổng, không xin trước lúc
+    // chưa cần tới. Trên API < 33 (hoặc đã có quyền rồi) thì bật thẳng, khỏi hỏi.
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted -> onRemindersEnabledChange(granted) }
+
+    fun onRemindersToggle(enabled: Boolean) {
+        val needsPermission = enabled &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        if (needsPermission) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            onRemindersEnabledChange(enabled)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -181,35 +215,38 @@ fun SettingContent(
         Spacer(modifier = Modifier.height(24.dp))
 
 
-        // Reminders Section — UI mockup tạm, CHƯA có domain model/logic (làm sau).
-        SectionTitle(title = "Reminders")
+        // Reminders Section — 3 khung giờ cố định theo đề (7h sáng/12h trưa/19h tối).
+        SectionTitle(title = stringResource(R.string.section_reminders))
         SettingsCard(padding = 0.dp) {
             SwitchRow(
-                title = "Daily logging reminders",
-                checked = true,
-                onCheckedChange = {},
-                isBold = true
+                title = stringResource(R.string.label_daily_reminders),
+                checked = settings.remindersEnabled,
+                onCheckedChange = { onRemindersToggle(it) },
+                isBold = true,
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
-                title = "Morning • 7:00 AM",
-                checked = true,
-                onCheckedChange = {},
-                isBold = false
+                title = stringResource(R.string.label_reminder_morning),
+                checked = settings.morningReminderEnabled,
+                onCheckedChange = onMorningReminderChange,
+                isBold = false,
+                enabled = settings.remindersEnabled,
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
-                title = "Midday • 12:00 PM",
-                checked = false,
-                onCheckedChange = {},
-                isBold = false
+                title = stringResource(R.string.label_reminder_noon),
+                checked = settings.noonReminderEnabled,
+                onCheckedChange = onNoonReminderChange,
+                isBold = false,
+                enabled = settings.remindersEnabled,
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             SwitchRow(
-                title = "Evening • 7:00 PM",
-                checked = true,
-                onCheckedChange = {},
-                isBold = false
+                title = stringResource(R.string.label_reminder_evening),
+                checked = settings.eveningReminderEnabled,
+                onCheckedChange = onEveningReminderChange,
+                isBold = false,
+                enabled = settings.remindersEnabled,
             )
         }
 
@@ -382,7 +419,8 @@ private fun SwitchRow(
     title: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    isBold: Boolean
+    isBold: Boolean,
+    enabled: Boolean = true,
 ) {
     Row(
         modifier = Modifier
@@ -395,11 +433,12 @@ private fun SwitchRow(
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = if (isBold) FontWeight.Bold else FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
+            enabled = enabled,
         )
     }
 }
@@ -415,6 +454,10 @@ private fun SettingContentPreview() {
             onBrightnessChange = {},
             onThemePresetChange = {},
             onFontSizeChange = {},
+            onRemindersEnabledChange = {},
+            onMorningReminderChange = {},
+            onNoonReminderChange = {},
+            onEveningReminderChange = {},
             onResetData = {},
         )
     }
