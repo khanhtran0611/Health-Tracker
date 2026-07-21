@@ -7,9 +7,10 @@ data class DailyCalorieStat(
     val date: LocalDate,
     val eaten: Double,
     val burned: Double,
+    val toleranceKcal: Double = 50.0
 ) {
     /** Đạt mục tiêu = không vượt quá TDEE ngày đó, cùng công thức remaining với Dashboard. */
-    fun isGoalMet(tdee: Double): Boolean = tdee - eaten + burned >= 0
+    fun isGoalMet(tdee: Double): Boolean = kotlin.math.abs(tdee - eaten + burned) <= toleranceKcal
 }
 
 data class StatisticsUiState(
