@@ -55,6 +55,8 @@
     <string name="error_invalid_number">Giá trị không hợp lệ</string>
     <string name="error_must_be_positive">Giá trị phải lớn hơn 0</string>
 
+    <string name="text_loading">Đang tải…</string>
+
     <!-- Meal Diary -->
     <string name="meal_diary_title">Nhật ký bữa ăn</string>
     <string name="meal_type_breakfast">Bữa sáng</string>

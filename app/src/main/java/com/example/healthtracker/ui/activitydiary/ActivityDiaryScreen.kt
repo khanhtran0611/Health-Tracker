@@ -35,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.ActivityEntry
 import com.example.healthtracker.ui.component.DateNavigator
+import com.example.healthtracker.ui.component.LoadingOverlay
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
@@ -70,69 +71,75 @@ fun ActivityDiaryContent(
     onDeleteEntry: (ActivityEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            IconButton(
-                onClick = { /* TODO: mở drawer khi có logic */ },
-                modifier = Modifier.align(Alignment.CenterStart),
-            ) {
-                Icon(Icons.Default.Menu, contentDescription = null)
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                IconButton(
+                    onClick = { /* TODO: mở drawer khi có logic */ },
+                    modifier = Modifier.align(Alignment.CenterStart),
+                ) {
+                    Icon(Icons.Default.Menu, contentDescription = null)
+                }
+                Text(
+                    text = stringResource(R.string.activity_diary_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
             }
-            Text(
-                text = stringResource(R.string.activity_diary_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.align(Alignment.Center),
+
+            DateNavigator(
+                selectedDate = uiState.selectedDate,
+                onPreviousDay = onPreviousDay,
+                onNextDay = onNextDay,
+                onDateSelected = onDateSelected,
             )
-        }
 
-        DateNavigator(
-            selectedDate = uiState.selectedDate,
-            onPreviousDay = onPreviousDay,
-            onNextDay = onNextDay,
-            onDateSelected = onDateSelected,
-        )
+            TotalBurnedTodayCard(totalCalories = uiState.totalCaloriesBurnedToday)
 
-        TotalBurnedTodayCard(totalCalories = uiState.totalCaloriesBurnedToday)
+            if (uiState.entries.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.activity_diary_empty),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp),
+                    textAlign = TextAlign.Center,
+                )
+            } else {
+                uiState.entries.forEach { entry ->
+                    ActivityEntryCard(entry = entry, onDelete = { onDeleteEntry(entry) })
+                }
+            }
 
-        if (uiState.entries.isEmpty()) {
-            Text(
-                text = stringResource(R.string.activity_diary_empty),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            Button(
+                onClick = onAddActivity,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 24.dp),
-                textAlign = TextAlign.Center,
-            )
-        } else {
-            uiState.entries.forEach { entry ->
-                ActivityEntryCard(entry = entry, onDelete = { onDeleteEntry(entry) })
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                shape = RoundedCornerShape(28.dp),
+            ) {
+                Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.action_add_activity),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.titleMedium,
+                )
             }
         }
 
-        Button(
-            onClick = onAddActivity,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            shape = RoundedCornerShape(28.dp),
-        ) {
-            Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.action_add_activity),
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.titleMedium,
-            )
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
         }
     }
 }

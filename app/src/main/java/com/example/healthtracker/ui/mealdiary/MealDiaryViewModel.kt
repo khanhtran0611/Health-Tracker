@@ -10,38 +10,44 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MealDiaryViewModel @Inject constructor(
     private val mealEntryRepository: MealEntryRepository
 ) : ViewModel(){
     private val _selectedDate : MutableStateFlow<LocalDate> = MutableStateFlow(LocalDate.now())
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val uiState : StateFlow<MealDiaryUiState> = _selectedDate
-        .flatMapLatest { date ->
-            mealEntryRepository.observeEntriesByDate(date).map { entries ->
-                val entriesByMealType = MealType.entries.associateWith { type -> entries.filter { it.mealType == type } }
-                val totalCaloriesByMealType = entriesByMealType.mapValues { (_, list) ->
-                    list.sumOf { it.calories }
-                }
-                MealDiaryUiState(
-                    selectedDate = date,
-                    entriesByMealType = entriesByMealType,
-                    totalCaloriesByMealType = totalCaloriesByMealType,
-                    totalCaloriesToday = entries.sumOf { it.calories },
-                )
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),MealDiaryUiState())
+    private val _uiState = MutableStateFlow(MealDiaryUiState())
+    val uiState: StateFlow<MealDiaryUiState> = _uiState.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            _selectedDate
+                .flatMapLatest { date ->
+                    mealEntryRepository.observeEntriesByDate(date).map { entries ->
+                        val entriesByMealType = MealType.entries.associateWith { type -> entries.filter { it.mealType == type } }
+                        val totalCaloriesByMealType = entriesByMealType.mapValues { (_, list) ->
+                            list.sumOf { it.calories }
+                        }
+                        MealDiaryUiState(
+                            selectedDate = date,
+                            entriesByMealType = entriesByMealType,
+                            totalCaloriesByMealType = totalCaloriesByMealType,
+                            totalCaloriesToday = entries.sumOf { it.calories },
+                            isLoading = false,
+                        )
+                    }
+                }
+                .collect { _uiState.value = it }
+        }
+    }
 
     fun onPreviousDay() {
         _selectedDate.update { it.minusDays(1) }

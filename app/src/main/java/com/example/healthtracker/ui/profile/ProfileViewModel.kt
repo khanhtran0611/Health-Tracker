@@ -8,10 +8,11 @@ import com.example.healthtracker.domain.usecase.CalculateBmiUseCase
 import com.example.healthtracker.domain.usecase.CalculateBmrUseCase
 import com.example.healthtracker.domain.usecase.CalculateTdeeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,31 +24,38 @@ class ProfileViewModel @Inject constructor(
     calculateTdeeUseCase: CalculateTdeeUseCase,
 ) : ViewModel() {
 
-    val uiState: StateFlow<ProfileUiState> = userRepository.observeUser()
-        .map { user ->
-            if (user == null) {
-                ProfileUiState(isLoading = false)
-            } else {
-                val age = calculateAgeUseCase.calculate(user.dateOfBirth)
-                val bmr = calculateBmrUseCase.calculate(
-                    gender = user.gender,
-                    weightKg = user.weightKg,
-                    heightCm = user.heightCm,
-                    age = age,
-                )
-                ProfileUiState(
-                    isLoading = false,
-                    fullName = user.fullName,
-                    age = age,
-                    gender = user.gender,
-                    weightKg = user.weightKg,
-                    heightCm = user.heightCm,
-                    activityLevel = user.activityLevel,
-                    goal = user.goal,
-                    bmi = calculateBmiUseCase.calculate(weightKg = user.weightKg, heightCm = user.heightCm),
-                    tdee = calculateTdeeUseCase.calculate(bmr = bmr, activityLevel = user.activityLevel, goal = user.goal),
-                )
-            }
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            userRepository.observeUser()
+                .map { user ->
+                    if (user == null) {
+                        ProfileUiState(isLoading = false)
+                    } else {
+                        val age = calculateAgeUseCase.calculate(user.dateOfBirth)
+                        val bmr = calculateBmrUseCase.calculate(
+                            gender = user.gender,
+                            weightKg = user.weightKg,
+                            heightCm = user.heightCm,
+                            age = age,
+                        )
+                        ProfileUiState(
+                            isLoading = false,
+                            fullName = user.fullName,
+                            age = age,
+                            gender = user.gender,
+                            weightKg = user.weightKg,
+                            heightCm = user.heightCm,
+                            activityLevel = user.activityLevel,
+                            goal = user.goal,
+                            bmi = calculateBmiUseCase.calculate(weightKg = user.weightKg, heightCm = user.heightCm),
+                            tdee = calculateTdeeUseCase.calculate(bmr = bmr, activityLevel = user.activityLevel, goal = user.goal),
+                        )
+                    }
+                }
+                .collect { _uiState.value = it }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileUiState())
+    }
 }

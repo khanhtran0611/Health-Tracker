@@ -51,6 +51,8 @@
     <string name="error_invalid_number">Invalid value</string>
     <string name="error_must_be_positive">Value must be greater than 0</string>
 
+    <string name="text_loading">Loading…</string>
+
     <!-- Meal Diary -->
     <string name="meal_diary_title">Meal Diary</string>
     <string name="meal_type_breakfast">Breakfast</string>

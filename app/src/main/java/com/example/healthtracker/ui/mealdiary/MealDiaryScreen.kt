@@ -28,6 +28,7 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
 import com.example.healthtracker.ui.component.DateNavigator
+import com.example.healthtracker.ui.component.LoadingOverlay
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
@@ -63,49 +64,55 @@ fun MealDiaryContent(
     onDeleteEntry: (MealEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        // Box + Alignment (giống DateNavigator): tiêu đề LUÔN ở giữa dù icon drawer
-        // bên trái có mặt hay không — icon hiện để trưng, chưa có logic mở drawer.
-        Box(modifier = Modifier.fillMaxWidth()) {
-            IconButton(
-                onClick = { /* TODO: mở drawer khi có logic */ },
-                modifier = Modifier.align(Alignment.CenterStart),
-            ) {
-                Icon(Icons.Default.Menu, contentDescription = null)
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            // Box + Alignment (giống DateNavigator): tiêu đề LUÔN ở giữa dù icon drawer
+            // bên trái có mặt hay không — icon hiện để trưng, chưa có logic mở drawer.
+            Box(modifier = Modifier.fillMaxWidth()) {
+                IconButton(
+                    onClick = { /* TODO: mở drawer khi có logic */ },
+                    modifier = Modifier.align(Alignment.CenterStart),
+                ) {
+                    Icon(Icons.Default.Menu, contentDescription = null)
+                }
+                Text(
+                    text = stringResource(R.string.meal_diary_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
             }
-            Text(
-                text = stringResource(R.string.meal_diary_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.align(Alignment.Center),
+
+            DateNavigator(
+                selectedDate = uiState.selectedDate,
+                onPreviousDay = onPreviousDay,
+                onNextDay = onNextDay,
+                onDateSelected = onDateSelected,
             )
+
+            MealType.entries.forEach { mealType ->
+                MealTypeSection(
+                    mealType = mealType,
+                    entries = uiState.entriesByMealType.getValue(mealType),
+                    totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
+                    onAddFood = { onAddFood(mealType, uiState.selectedDate) },
+                    onDeleteEntry = onDeleteEntry,
+                )
+            }
+
+            TotalTodayCard(totalCalories = uiState.totalCaloriesToday)
         }
 
-        DateNavigator(
-            selectedDate = uiState.selectedDate,
-            onPreviousDay = onPreviousDay,
-            onNextDay = onNextDay,
-            onDateSelected = onDateSelected,
-        )
-
-        MealType.entries.forEach { mealType ->
-            MealTypeSection(
-                mealType = mealType,
-                entries = uiState.entriesByMealType.getValue(mealType),
-                totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
-                onAddFood = { onAddFood(mealType, uiState.selectedDate) },
-                onDeleteEntry = onDeleteEntry,
-            )
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
         }
-
-        TotalTodayCard(totalCalories = uiState.totalCaloriesToday)
     }
 }
 
