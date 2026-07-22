@@ -2,4 +2,13 @@
 <resources>
 
     <style name="Theme.HealthTracker" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Theme khởi động: Android vẽ màn này ngay khi process vừa start, TRƯỚC cả
+         khi Activity/Compose kịp chạy — dùng cơ chế SplashScreen chuẩn (core-splashscreen)
+         thay vì tự vẽ 1 Composable giả lập. Xem MainActivity.installSplashScreen(). -->
+    <style name="Theme.HealthTracker.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#F9F9F9</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.HealthTracker</item>
+    </style>
 </resources>

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +28,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activitydiary.activitypicker.ActivityPickerScreen
 import com.example.healthtracker.ui.activitydiary.enteractivity.EnterActivityScreen
+import com.example.healthtracker.ui.component.SplashScreen
 import com.example.healthtracker.ui.mainshell.MainShellScreen
 import com.example.healthtracker.ui.mealdiary.enterfood.EnterFoodManuallyScreen
 import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
@@ -54,16 +54,9 @@ fun HealthTrackerApp() {
     val startDestination by appStartViewModel.startDestination.collectAsStateWithLifecycle()
 
     when (startDestination) {
-        AppStartDestination.LOADING -> LoadingScreen()
+        AppStartDestination.LOADING -> SplashScreen()
         AppStartDestination.ONBOARDING -> HealthTrackerNavHost(startRoute = Route.Onboarding)
         AppStartDestination.MAIN_SHELL -> HealthTrackerNavHost(startRoute = Route.MainShell)
-    }
-}
-
-@Composable
-private fun LoadingScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }
 
