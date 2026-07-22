@@ -31,12 +31,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Goal
+import kotlin.math.roundToInt
 
 /** Hàng 3 thẻ Cân nặng / Chiều cao / Mục tiêu trên đầu màn Profile. */
 @Composable
 fun ProfileStatsRow(
-    weightKg: Int,
-    heightCm: Int,
+    weightKg: Double,
+    heightCm: Double,
     goal: Goal,
     modifier: Modifier = Modifier,
 ) {
@@ -49,19 +50,23 @@ fun ProfileStatsRow(
     ) {
         StatCard(
             title = stringResource(R.string.field_weight),
-            value = "$weightKg",
+            value = "${roundTo1Decimal(weightKg)}",
             unit = stringResource(R.string.unit_kg),
             modifier = Modifier.weight(1f).fillMaxHeight(),
         )
         StatCard(
             title = stringResource(R.string.field_height),
-            value = "$heightCm",
+            value = "${roundTo1Decimal(heightCm)}",
             unit = stringResource(R.string.unit_cm),
             modifier = Modifier.weight(1f).fillMaxHeight(),
         )
         GoalCard(goal = goal, modifier = Modifier.weight(1f).fillMaxHeight())
     }
 }
+
+// Làm tròn bằng số học (không String.format) — tránh dấu thập phân đổi theo
+// locale máy (vd "70,5" ở vi-VN thay vì "70.5"), giống cách BmiCard làm tròn BMI.
+private fun roundTo1Decimal(value: Double): Double = (value * 10).roundToInt() / 10.0
 
 @Composable
 private fun StatCard(title: String, value: String, unit: String, modifier: Modifier = Modifier) {

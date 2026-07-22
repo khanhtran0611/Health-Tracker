@@ -50,6 +50,8 @@
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_number">Invalid value</string>
     <string name="error_must_be_positive">Value must be greater than 0</string>
+    <string name="error_weight_out_of_range">Weight must be between 25 and 400 kg</string>
+    <string name="error_height_out_of_range">Height must be between 50 and 250 cm</string>
 
     <string name="text_loading">Loading…</string>
 

@@ -121,8 +121,8 @@ fun ProfileContent(
         }
 
         ProfileStatsRow(
-            weightKg = uiState.weightKg.toInt(),
-            heightCm = uiState.heightCm.toInt(),
+            weightKg = uiState.weightKg,
+            heightCm = uiState.heightCm,
             goal = uiState.goal,
         )
 
