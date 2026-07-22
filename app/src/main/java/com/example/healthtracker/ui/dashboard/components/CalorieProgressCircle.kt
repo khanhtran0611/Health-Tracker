@@ -39,7 +39,7 @@ fun CalorieProgressCircle(
         val progressColor = when (calorieStatus) {
             CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.error
             CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
-            CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.secondary
+            CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.tertiary
         }
         val strokeWidth = 24.dp
 
@@ -92,7 +92,7 @@ fun CalorieProgressCircle(
                 color = when (calorieStatus) {
                     CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.error
                     CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
-                    CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.onSurface
+                    CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.tertiary
                 }
             )
             Text(

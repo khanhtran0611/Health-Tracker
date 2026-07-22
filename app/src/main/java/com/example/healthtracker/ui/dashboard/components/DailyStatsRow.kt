@@ -42,7 +42,7 @@ fun DailyStatsRow(
         StatItem(
             label = stringResource(R.string.label_eaten),
             value = "$eaten",
-            valueColor = MaterialTheme.colorScheme.secondary
+            valueColor = MaterialTheme.colorScheme.tertiary
         )
 
         VerticalDivider(

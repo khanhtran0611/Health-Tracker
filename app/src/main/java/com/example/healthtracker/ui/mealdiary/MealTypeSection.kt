@@ -48,7 +48,7 @@ fun MealTypeSection(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -73,7 +73,7 @@ fun MealTypeSection(
                     text = "${totalCalories.toInt()} ${stringResource(R.string.unit_kcal)}",
                     style = MaterialTheme.typography.titleMedium,
                     color = if (totalCalories > 0) {
-                        MaterialTheme.colorScheme.secondary
+                        MaterialTheme.colorScheme.tertiary
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },

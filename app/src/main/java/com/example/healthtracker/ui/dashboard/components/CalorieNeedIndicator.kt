@@ -26,10 +26,18 @@ fun CalorieNeedIndicator(
     calorieStatus: CalorieStatus,
     modifier: Modifier = Modifier
 ) {
-    val contentColor = if (calorieStatus == CalorieStatus.OVER_TARGET) {
-        MaterialTheme.colorScheme.error
-    } else {
-        MaterialTheme.colorScheme.primary
+    // Cùng quy ước màu với CalorieProgressCircle: còn dư -> tertiary, vừa đủ ->
+    // primary, vượt quá -> error — để 2 chỗ hiển thị cùng 1 trạng thái trên
+    // Dashboard luôn khớp màu nhau.
+    val containerColor = when (calorieStatus) {
+        CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.errorContainer
+        CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primaryContainer
+        CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.tertiaryContainer
+    }
+    val contentColor = when (calorieStatus) {
+        CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.onErrorContainer
+        CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.onPrimaryContainer
+        CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.onTertiaryContainer
     }
     val text = when (calorieStatus) {
         CalorieStatus.UNDER_TARGET -> stringResource(R.string.dashboard_need_under_target, remainingCalories)
@@ -42,7 +50,7 @@ fun CalorieNeedIndicator(
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
             .clip(RoundedCornerShape(24.dp))
-            .background(contentColor.copy(alpha = 0.15f))
+            .background(containerColor)
             .padding(vertical = 16.dp),
         contentAlignment = Alignment.Center
     ) {

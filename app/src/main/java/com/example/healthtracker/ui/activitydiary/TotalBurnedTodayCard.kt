@@ -31,7 +31,7 @@ fun TotalBurnedTodayCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 32.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -39,7 +39,7 @@ fun TotalBurnedTodayCard(
             Text(
                 text = stringResource(R.string.total_burned_today_label),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 letterSpacing = 1.sp,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -47,13 +47,13 @@ fun TotalBurnedTodayCard(
                 Text(
                     text = "${totalCalories.toInt()}",
                     style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.unit_kcal),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
         }

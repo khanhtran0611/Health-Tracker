@@ -31,7 +31,7 @@ fun CalorieSummaryCard(
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
@@ -39,8 +39,8 @@ fun CalorieSummaryCard(
         ) {
             SummaryItem(
                 icon = Icons.Default.RestaurantMenu,
-                iconBgColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
-                iconColor = MaterialTheme.colorScheme.secondary,
+                iconBgColor = MaterialTheme.colorScheme.tertiaryContainer,
+                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 label = stringResource(R.string.label_calories_eaten_today),
                 value = "$eatenToday"
             )
@@ -52,8 +52,8 @@ fun CalorieSummaryCard(
 
             SummaryItem(
                 icon = Icons.Default.DirectionsRun,
-                iconBgColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                iconColor = MaterialTheme.colorScheme.primary,
+                iconBgColor = MaterialTheme.colorScheme.primaryContainer,
+                iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 label = stringResource(R.string.label_calories_burned_today),
                 value = "$burnedToday"
             )
