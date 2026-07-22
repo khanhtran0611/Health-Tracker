@@ -285,6 +285,13 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
     val options = listOf(Gender.MALE to R.string.gender_male, Gender.FEMALE to R.string.gender_female)
     val selectedText = stringResource(options.first { it.first == gender }.second)
 
+    // ExposedDropdownMenu dựng Popup riêng, bên trong tự lấy lại LocalContext/
+    // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản đã
+    // đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng ngôn ngữ)
+    // rồi re-provide vào các slot bên trong dùng stringResource().
+    val localContext = LocalContext.current
+    val localConfiguration = LocalConfiguration.current
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
@@ -302,14 +309,16 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { (option, labelRes) ->
-                DropdownMenuItem(
-                    text = { Text(stringResource(labelRes)) },
-                    onClick = {
-                        onGenderChange(option)
-                        expanded = false
-                    }
-                )
+            CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                options.forEach { (option, labelRes) ->
+                    DropdownMenuItem(
+                        text = { Text(stringResource(labelRes)) },
+                        onClick = {
+                            onGenderChange(option)
+                            expanded = false
+                        }
+                    )
+                }
             }
         }
     }

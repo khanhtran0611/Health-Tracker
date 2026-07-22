@@ -56,6 +56,7 @@
     <string name="error_must_be_positive">Giá trị phải lớn hơn 0</string>
     <string name="error_weight_out_of_range">Cân nặng phải trong khoảng 25 - 400 kg</string>
     <string name="error_height_out_of_range">Chiều cao phải trong khoảng 50 - 250 cm</string>
+    <string name="error_age_out_of_range">Tuổi phải trong khoảng 8 - 150</string>
 
     <string name="text_loading">Đang tải…</string>
 

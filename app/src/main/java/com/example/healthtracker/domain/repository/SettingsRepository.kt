@@ -21,4 +21,6 @@ interface SettingsRepository {
     suspend fun setMorningReminderEnabled(enabled: Boolean)
     suspend fun setNoonReminderEnabled(enabled: Boolean)
     suspend fun setEveningReminderEnabled(enabled: Boolean)
+    /** Xoá sạch mọi setting đã lưu -> lần đọc kế tiếp tự rơi về default (VI/MEDIUM/SYSTEM/Vitality...). */
+    suspend fun resetToDefaults()
 }

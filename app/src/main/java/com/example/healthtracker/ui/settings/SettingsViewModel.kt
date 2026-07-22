@@ -28,7 +28,6 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val resetAppDataUseCase: ResetAppDataUseCase,
-    private val toastController: ToastController,
     private val reminderScheduler: ReminderScheduler,
 ) : ViewModel() {
 
@@ -95,7 +94,6 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isResetting = true) }
             resetAppDataUseCase.execute()
-            toastController.show(ToastMessage(R.string.msg_data_reset, ToastType.SUCCESS))
             _uiState.update { it.copy(isResetting = false) }
             _resetEvent.send(Unit)
         }

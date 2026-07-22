@@ -16,6 +16,7 @@ enum class FieldError {
     MUST_BE_POSITIVE,
     WEIGHT_OUT_OF_RANGE,
     HEIGHT_OUT_OF_RANGE,
+    AGE_OUT_OF_RANGE,
 }
 
 /** Map FieldError sang chữ hiển thị (strings.xml) — dùng chung cho mọi form. */
@@ -27,4 +28,5 @@ fun fieldErrorText(error: FieldError?): String? = when (error) {
     FieldError.MUST_BE_POSITIVE -> stringResource(R.string.error_must_be_positive)
     FieldError.WEIGHT_OUT_OF_RANGE -> stringResource(R.string.error_weight_out_of_range)
     FieldError.HEIGHT_OUT_OF_RANGE -> stringResource(R.string.error_height_out_of_range)
+    FieldError.AGE_OUT_OF_RANGE -> stringResource(R.string.error_age_out_of_range)
 }

@@ -3,14 +3,17 @@ package com.example.healthtracker.ui.onboarding
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
@@ -28,7 +31,7 @@ fun OnboardingScreen(
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
+    val language by viewModel.language.collectAsStateWithLifecycle()
 
     // Onboarding sẽ tự collect cái event này để còn chuyển hướng sang dashboard
     LaunchedEffect(Unit) {
@@ -42,6 +45,18 @@ fun OnboardingScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.onboarding_title)) },
+                actions = {
+                    // "VI"/"EN" là tên ngôn ngữ, cố tình không dịch qua strings.xml
+                    // (giống language_english/language_vietnamese ở Settings) — bấm
+                    // để đổi ngay ngôn ngữ hiện tại sang ngôn ngữ còn lại.
+                    TextButton(onClick = viewModel::onToggleLanguage) {
+                        Text(
+                            text = language.name,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                },
                 windowInsets = WindowInsets(0, 0, 0, 0),
             )
         },

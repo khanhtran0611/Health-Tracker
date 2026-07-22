@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
+import com.example.healthtracker.domain.model.Language
 import com.example.healthtracker.domain.model.User
+import com.example.healthtracker.domain.repository.SettingsRepository
 import com.example.healthtracker.domain.repository.UserRepository
 import com.example.healthtracker.domain.usecase.CalculateAgeUseCase
 import com.example.healthtracker.ui.component.ProfileFormUiState
@@ -14,9 +16,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -26,10 +31,17 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val calculateAgeUseCase: CalculateAgeUseCase,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileFormUiState())
     val uiState: StateFlow<ProfileFormUiState> = _uiState.asStateFlow()
+
+    // Onboarding chưa có hồ sơ user nên không vào được Settings — cho đổi ngôn
+    // ngữ ngay tại đây qua nút "VI"/"EN" trên top bar.
+    val language: StateFlow<Language> = settingsRepository.observeSettings()
+        .map { it.language }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Language.VI)
 
     // One-shot event: hoàn tất onboarding. UI tự quyết định điều hướng khi nhận được.
     private val _completedEvent = Channel<Unit>(Channel.BUFFERED)
@@ -63,6 +75,13 @@ class OnboardingViewModel @Inject constructor(
 
     fun onGoalChange(value: Goal) {
         _uiState.update { it.copy(goal = value) }
+    }
+
+    fun onToggleLanguage() {
+        viewModelScope.launch {
+            val next = if (language.value == Language.VI) Language.EN else Language.VI
+            settingsRepository.setLanguage(next)
+        }
     }
 
     fun onSubmit() {

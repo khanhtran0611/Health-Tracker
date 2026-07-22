@@ -52,6 +52,7 @@
     <string name="error_must_be_positive">Value must be greater than 0</string>
     <string name="error_weight_out_of_range">Weight must be between 25 and 400 kg</string>
     <string name="error_height_out_of_range">Height must be between 50 and 250 cm</string>
+    <string name="error_age_out_of_range">Age must be between 8 and 150</string>
 
     <string name="text_loading">Loading…</string>
 

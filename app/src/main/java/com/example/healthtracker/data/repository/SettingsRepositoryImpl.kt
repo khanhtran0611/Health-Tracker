@@ -76,6 +76,10 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun setEveningReminderEnabled(enabled: Boolean) {
         dataStore.edit { it[EVENING_REMINDER_KEY] = enabled }
     }
+
+    override suspend fun resetToDefaults() {
+        dataStore.edit { it.clear() }
+    }
 }
 
 // Đọc giá trị language đã lưu ra enum. Không match hoặc chưa lưu lần nào -> default VI.

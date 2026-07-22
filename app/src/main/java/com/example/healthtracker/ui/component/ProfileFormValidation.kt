@@ -1,11 +1,13 @@
 package com.example.healthtracker.ui.component
 
-// Giới hạn hợp lý cho cân nặng/chiều cao con người — chặn ở validate để TDEE/BMI
-// tính ra không bị số khủng làm tràn/vỡ layout ở Dashboard, Profile...
+// Giới hạn hợp lý cho cân nặng/chiều cao/tuổi con người — chặn ở validate để
+// TDEE/BMI tính ra không bị số khủng làm tràn/vỡ layout ở Dashboard, Profile...
 private const val MIN_WEIGHT_KG = 25.0
 private const val MAX_WEIGHT_KG = 400.0
 private const val MIN_HEIGHT_CM = 50.0
 private const val MAX_HEIGHT_CM = 250.0
+private const val MIN_AGE = 8
+private const val MAX_AGE = 150
 
 /** Kiểm tra từng field, gắn lỗi (nếu có) vào state. Gọi lại mỗi khi 1 field đổi. */
 fun validateProfileForm(state: ProfileFormUiState): ProfileFormUiState {
@@ -14,7 +16,11 @@ fun validateProfileForm(state: ProfileFormUiState): ProfileFormUiState {
 
     val fullNameError = if (state.fullName.isBlank()) FieldError.REQUIRED else null
 
-    val dateOfBirthError = if (state.dateOfBirth == null) FieldError.REQUIRED else null
+    val dateOfBirthError = when {
+        state.dateOfBirth == null -> FieldError.REQUIRED
+        state.age != null && (state.age < MIN_AGE || state.age > MAX_AGE) -> FieldError.AGE_OUT_OF_RANGE
+        else -> null
+    }
 
     val weightError = when {
         state.weightKg.isBlank() -> FieldError.REQUIRED
