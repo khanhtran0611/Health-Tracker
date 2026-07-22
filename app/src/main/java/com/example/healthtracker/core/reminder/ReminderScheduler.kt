@@ -4,9 +4,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.provider.Settings
 import androidx.core.content.getSystemService
 import com.example.healthtracker.domain.model.AppSettings
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -20,50 +17,25 @@ import javax.inject.Singleton
  * optimization là chấp nhận được cho 1 lời nhắc, đổi lại KHÔNG cần xin quyền
  * SCHEDULE_EXACT_ALARM (chỉ bắt buộc cho alarm chính xác từ Android 12/API 31).
  */
+// Khi máy không được sạc, màn hình tắt lâu,
+// và không di chuyển (phát hiện qua cảm biến gia tốc),
+// hệ thống tự động chuyển sang trạng thái Doze
+// Trong trạng thái này,máy tiết kiệm pin, và chỉ "thức" lên theo từng chu kỳ ngắn
+// gọi là maintenance window để xử lý dồn các việc đang chờ
+// nếu là inexact alarm, có thể bị trễ một chút do phải đợi đến lúc phiên maintenance window
+// gần nhất để thực thi
 @Singleton
 class ReminderScheduler @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val alarmManager = context.getSystemService<AlarmManager>()
 
-    fun canScheduleExactAlarms(context: Context): Boolean {
-        val alarmManager = context.getSystemService<AlarmManager>() ?: return false
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // Android 12 (API 31) trở lên -> phải kiểm tra quyền thật sự
-            alarmManager.canScheduleExactAlarms()
-        } else {
-            // Android 26-30 -> không cần xin quyền gì, mặc định luôn được phép
-            true
-        }
-    }
-
-    fun requestExactAlarmPermission(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-                data = Uri.parse("package:${context.packageName}")
-            }
-            context.startActivity(intent)
-        }
-        // Android < 31: không cần làm gì, vì mặc định đã được phép rồi
-    }
-
     fun schedule(type: ReminderType) {
         val triggerAtMillis = nextTriggerTimeMillis(type.hour, type.minute)
-        val alarmManager = context.getSystemService<AlarmManager>()
-        val canSchedule = canScheduleExactAlarms(context)
-
-
-        if (!canSchedule) {
-            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-                data = Uri.parse("package:${context.packageName}")
-            }
-            context.startActivity(intent)
-        }
 
         // RTC_WAKEUP: quyết định loại đồng hồ dùng để tính thời gian,
         // và có đánh thức màn hình/CPU dậy hay không
-        alarmManager?.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntentFor(type))
+        alarmManager?.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntentFor(type))
     }
 
     fun cancel(type: ReminderType) {
