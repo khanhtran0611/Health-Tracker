@@ -45,7 +45,6 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
 
     fun switchToTab(tab: TopLevelTab) {
         isMovingForward = tab.ordinal >= currentTabIndex
-        navigateToTab(tabBackStacks.getValue(tab.route), tab.route)
         currentTabIndex = tab.ordinal
     }
 
@@ -71,7 +70,6 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             backStack = activeBackStack,
             onBack = { activeBackStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize().padding(padding),
-
             transitionSpec = {
                 val towards = if (isMovingForward) {
                     AnimatedContentTransitionScope.SlideDirection.Start

@@ -2,11 +2,12 @@ package com.example.healthtracker.ui.stats
 
 import java.time.LocalDate
 
+const val toleranceKcal: Double = 50.0
+
 data class DailyCalorieStat(
     val date: LocalDate,
     val eaten: Double,
     val burned: Double,
-    val toleranceKcal: Double = 50.0
 ) {
 
     fun isGoalMet(tdee: Double): Boolean = kotlin.math.abs(tdee - eaten + burned) <= toleranceKcal
