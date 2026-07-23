@@ -18,7 +18,6 @@ data class StatisticsUiState(
     val dailyStats: List<DailyCalorieStat> = emptyList(),
     /** TDEE hiện tại của user — dùng để xét "đạt mục tiêu" cho từng ngày. 0.0 khi chưa có hồ sơ. */
     val tdee: Double = 0.0,
-    val isLoading: Boolean = true,
 ) {
     val avgEatenPerDay: Double
         get() = if (dailyStats.isEmpty()) 0.0 else dailyStats.sumOf { it.eaten } / dailyStats.size

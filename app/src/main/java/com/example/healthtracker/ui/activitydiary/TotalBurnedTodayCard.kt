@@ -43,17 +43,19 @@ fun TotalBurnedTodayCard(
                 letterSpacing = 1.sp,
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.Bottom) {
+            Row {
                 Text(
                     text = "${totalCalories.toInt()}",
                     style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.alignByBaseline(),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.unit_kcal),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.alignByBaseline(),
                 )
             }
         }

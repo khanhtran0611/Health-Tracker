@@ -11,5 +11,4 @@ data class MealDiaryUiState (
     val entriesByMealType : Map<MealType, List<MealEntry>> = MealType.entries.associateWith { emptyList() },
     val totalCaloriesByMealType : Map<MealType, Double> = MealType.entries.associateWith { 0.0 },
     val totalCaloriesToday : Double = 0.0,
-    val isLoading: Boolean = true,
 )

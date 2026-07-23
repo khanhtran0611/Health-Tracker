@@ -67,6 +67,15 @@ class SettingsViewModel @Inject constructor(
             settingsRepository.setRemindersEnabled(enabled)
             reminderScheduler.rescheduleAll(_uiState.value.settings.copy(remindersEnabled = enabled))
         }
+        // Bật nhắc nhở -> nhắc thêm user tự cấp Autostart + bỏ tối ưu pin cho app,
+        // không thì AlarmManager dễ bị hệ thống chặn âm thầm trên nhiều máy Android.
+        if (enabled) {
+            _uiState.update { it.copy(showAutostartReminderDialog = true) }
+        }
+    }
+
+    fun onAutostartReminderDialogDismissed() {
+        _uiState.update { it.copy(showAutostartReminderDialog = false) }
     }
 
     fun onMorningReminderChange(enabled: Boolean) {

@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,6 +68,7 @@ fun SettingScreen(
         onNoonReminderChange = viewModel::onNoonReminderChange,
         onEveningReminderChange = viewModel::onEveningReminderChange,
         onResetData = viewModel::onResetData,
+        onAutostartReminderDialogDismissed = viewModel::onAutostartReminderDialogDismissed,
         modifier = modifier,
     )
 }
@@ -88,6 +90,7 @@ fun SettingContent(
     onNoonReminderChange: (Boolean) -> Unit,
     onEveningReminderChange: (Boolean) -> Unit,
     onResetData: () -> Unit,
+    onAutostartReminderDialogDismissed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val settings = uiState.settings
@@ -247,6 +250,28 @@ fun SettingContent(
                 onCheckedChange = onEveningReminderChange,
                 isBold = false,
                 enabled = settings.remindersEnabled,
+            )
+        }
+
+        if (uiState.showAutostartReminderDialog) {
+            // AlertDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
+            // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
+            // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
+            // ngôn ngữ) rồi re-provide vào slot bên trong dùng stringResource().
+            val localContext = LocalContext.current
+            val localConfiguration = LocalConfiguration.current
+
+            AlertDialog(
+                onDismissRequest = onAutostartReminderDialogDismissed,
+                title = { Text(stringResource(R.string.dialog_autostart_reminder_title)) },
+                text = { Text(stringResource(R.string.dialog_autostart_reminder_message)) },
+                confirmButton = {
+                    CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
+                        TextButton(onClick = onAutostartReminderDialogDismissed) {
+                            Text(stringResource(R.string.action_got_it))
+                        }
+                    }
+                },
             )
         }
 
@@ -459,6 +484,7 @@ private fun SettingContentPreview() {
             onNoonReminderChange = {},
             onEveningReminderChange = {},
             onResetData = {},
+            onAutostartReminderDialogDismissed = {},
         )
     }
 }

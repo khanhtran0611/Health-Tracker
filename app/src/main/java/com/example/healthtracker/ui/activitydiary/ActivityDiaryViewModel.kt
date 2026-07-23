@@ -35,7 +35,6 @@ class ActivityDiaryViewModel @Inject constructor(
                             selectedDate = date,
                             entries = entries,
                             totalCaloriesBurnedToday = entries.sumOf { it.caloriesBurned },
-                            isLoading = false,
                         )
                     }
                 }

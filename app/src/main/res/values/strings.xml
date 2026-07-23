@@ -213,6 +213,10 @@
 
     <string name="reminder_channel_name">Nhắc ghi nhật ký</string>
     <string name="reminder_channel_description">Thông báo nhắc ghi nhật ký bữa ăn/hoạt động theo khung giờ đã chọn</string>
+
+    <string name="dialog_autostart_reminder_title">Để nhắc nhở hoạt động ổn định</string>
+    <string name="dialog_autostart_reminder_message">Một số máy Android tự tắt ứng dụng chạy nền để tiết kiệm pin, khiến thông báo nhắc nhở không hiện đúng giờ. Vào Cài đặt hệ thống, bật \"Tự khởi chạy\" (Autostart) và chọn \"Không hạn chế\" pin cho HealthTracker để tính năng này hoạt động tốt hơn.</string>
+    <string name="action_got_it">Đã hiểu</string>
     <string name="reminder_notification_title">Nhắc ghi nhật ký</string>
     <string name="reminder_message_morning">Hãy ghi lại hoạt động sáng hôm nay!</string>
     <string name="reminder_message_noon">Hãy ghi lại hoạt động trưa hôm nay!</string>

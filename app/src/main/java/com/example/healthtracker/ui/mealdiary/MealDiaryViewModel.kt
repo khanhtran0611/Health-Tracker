@@ -40,7 +40,6 @@ class MealDiaryViewModel @Inject constructor(
                             entriesByMealType = entriesByMealType,
                             totalCaloriesByMealType = totalCaloriesByMealType,
                             totalCaloriesToday = entries.sumOf { it.calories },
-                            isLoading = false,
                         )
                     }
                 }

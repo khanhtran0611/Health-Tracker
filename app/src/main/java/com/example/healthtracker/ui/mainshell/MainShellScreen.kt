@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -65,9 +67,16 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
     val currentTab = TopLevelTab.entries[currentTabIndex]
     val activeBackStack = tabBackStacks.getValue(currentTab.route)
 
+    // Tab đích đứng SAU tab hiện tại trong bottom nav (vd Dashboard -> Stats)
+    // thì trượt "tiến" (vào từ phải); đứng TRƯỚC (vd Stats -> Dashboard) thì
+    // trượt "lùi" (vào từ trái) — giống cảm giác ViewPager, không phải lúc nào
+    // cũng trượt 1 chiều như trước.
+    var isMovingForward by remember { mutableStateOf(true) }
+
     // Dùng chung cho cả bottom nav lẫn shortcut trong Dashboard (Add meal/Add
     // activity) — mọi nơi muốn nhảy sang 1 trong 5 tab đều gọi qua đây.
     fun switchToTab(tab: TopLevelTab) {
+        isMovingForward = tab.ordinal >= currentTabIndex
         navigateToTab(tabBackStacks.getValue(tab.route), tab.route)
         currentTabIndex = tab.ordinal
     }
@@ -94,24 +103,39 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             backStack = activeBackStack,
             onBack = { activeBackStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize().padding(padding),
-            // Đổi tab: slide + fade y hệt NavDisplay tầng ngoài ở HealthTrackerApp.kt.
+            // Đổi tab: slide + fade y hệt NavDisplay tầng ngoài ở HealthTrackerApp.kt,
+            // nhưng hướng trượt phụ thuộc isMovingForward (xem switchToTab) thay vì
+            // luôn cố định 1 chiều — mỗi backstack tab là 1 object riêng biệt (không
+            // phải push/pop chung 1 stack) nên NavDisplay chỉ thực sự gọi tới
+            // transitionSpec, KHÔNG bao giờ tự gọi popTransitionSpec cho việc đổi tab
+            // này; set động cả 2 để đúng hướng dù sau này hành vi NavDisplay đổi khác.
             transitionSpec = {
+                val towards = if (isMovingForward) {
+                    AnimatedContentTransitionScope.SlideDirection.Start
+                } else {
+                    AnimatedContentTransitionScope.SlideDirection.End
+                }
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    towards = towards,
                     animationSpec = tween(TAB_TRANSITION_DURATION_MS),
                 ) + fadeIn(animationSpec = tween(TAB_TRANSITION_DURATION_MS)) togetherWith
                     slideOutOfContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        towards = towards,
                         animationSpec = tween(TAB_TRANSITION_DURATION_MS),
                     ) + fadeOut(animationSpec = tween(TAB_TRANSITION_DURATION_MS))
             },
             popTransitionSpec = {
+                val towards = if (isMovingForward) {
+                    AnimatedContentTransitionScope.SlideDirection.Start
+                } else {
+                    AnimatedContentTransitionScope.SlideDirection.End
+                }
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    towards = towards,
                     animationSpec = tween(TAB_TRANSITION_DURATION_MS),
                 ) + fadeIn(animationSpec = tween(TAB_TRANSITION_DURATION_MS)) togetherWith
                     slideOutOfContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        towards = towards,
                         animationSpec = tween(TAB_TRANSITION_DURATION_MS),
                     ) + fadeOut(animationSpec = tween(TAB_TRANSITION_DURATION_MS))
             },
