@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.stats.components.MonthlySummaryCard
+import com.example.healthtracker.ui.stats.components.StatsDateRangeNavigator
 import com.example.healthtracker.ui.stats.components.WeeklyBarChartCard
 import com.example.healthtracker.ui.stats.components.WeeklySummaryCard
 import com.example.healthtracker.ui.stats.components.WeeklyTrendChartCard
@@ -38,12 +40,22 @@ fun StatisticsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    StatisticsContent(uiState = uiState, modifier = modifier)
+    StatisticsContent(
+        uiState = uiState,
+        onPreviousRange = viewModel::onPreviousRange,
+        onNextRange = viewModel::onNextRange,
+        modifier = modifier,
+    )
 }
 
 /** Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được. */
 @Composable
-fun StatisticsContent(uiState: StatisticsUiState, modifier: Modifier = Modifier) {
+fun StatisticsContent(
+    uiState: StatisticsUiState,
+    onPreviousRange: () -> Unit,
+    onNextRange: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,6 +82,14 @@ fun StatisticsContent(uiState: StatisticsUiState, modifier: Modifier = Modifier)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            StatsDateRangeNavigator(
+                startDate = uiState.startDate,
+                endDate = uiState.endDate,
+                canGoToPreviousRange = uiState.canGoToPreviousRange,
+                canGoToNextRange = uiState.canGoToNextRange,
+                onPreviousRange = onPreviousRange,
+                onNextRange = onNextRange,
+            )
             WeeklyBarChartCard(dailyStats = uiState.dailyStats)
             WeeklyTrendChartCard(dailyStats = uiState.dailyStats)
             WeeklySummaryCard(
@@ -78,6 +98,12 @@ fun StatisticsContent(uiState: StatisticsUiState, modifier: Modifier = Modifier)
                 avgBurnedPerDay = uiState.avgBurnedPerDay,
                 daysGoalMet = uiState.daysGoalMet,
                 tdee = uiState.tdee,
+            )
+            MonthlySummaryCard(
+                avgEatenPerDay = uiState.monthlySummary.avgEatenPerDay,
+                avgBurnedPerDay = uiState.monthlySummary.avgBurnedPerDay,
+                daysGoalMet = uiState.monthlySummary.daysGoalMet,
+                totalDays = uiState.monthlySummary.totalDays,
             )
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -99,7 +125,19 @@ private fun StatisticsScreenPreview() {
                     )
                 },
                 tdee = 2200.0,
-            )
+                startDate = today.minusDays(6),
+                endDate = today,
+                canGoToPreviousRange = true,
+                canGoToNextRange = false,
+                monthlySummary = MonthlySummary(
+                    avgEatenPerDay = 1800.0,
+                    avgBurnedPerDay = 350.0,
+                    daysGoalMet = 18,
+                    totalDays = 30,
+                ),
+            ),
+            onPreviousRange = {},
+            onNextRange = {},
         )
     }
 }
