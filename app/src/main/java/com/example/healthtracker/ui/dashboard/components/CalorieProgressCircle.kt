@@ -1,10 +1,15 @@
 package com.example.healthtracker.ui.dashboard.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -43,15 +48,24 @@ fun CalorieProgressCircle(
         }
         val strokeWidth = 24.dp
 
+        // Chặn progress trong [0f, 1f] — user ăn vượt TDEE (progress > 1) không được
+        // làm cung tô tràn quá 1 vòng tròn.
+        val clampedProgress = progress.coerceIn(0f, 1f)
+        // Animate thay vì gán thẳng: mỗi khi progress đổi (ăn/đốt thêm calo, hoặc
+        // vừa tải xong dữ liệu), cung tròn "quét" mượt tới vị trí mới thay vì
+        // nhảy khựng 1 phát — cùng animationSpec với số ở dưới để 2 hiệu ứng khớp nhịp nhau.
+        val animatedProgress by animateFloatAsState(
+            targetValue = clampedProgress,
+            animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+            label = "calorieProgress",
+        )
+
         Canvas(
             modifier = Modifier.size(240.dp)
         ) {
             // -90f = đỉnh 12 giờ (quy ước Compose: 0f = 3 giờ, góc tăng theo chiều kim đồng hồ).
             val startAngle = -90f
             val sweepAngle = 360f
-            // Chặn progress trong [0f, 1f] — user ăn vượt TDEE (progress > 1) không được
-            // làm cung tô tràn quá 1 vòng tròn.
-            val clampedProgress = progress.coerceIn(0f, 1f)
             val inset = strokeWidth.toPx() / 2
             val arcSize = size.copy(width = size.width - strokeWidth.toPx(), height = size.height - strokeWidth.toPx())
 
@@ -70,7 +84,7 @@ fun CalorieProgressCircle(
             drawArc(
                 color = progressColor,
                 startAngle = startAngle,
-                sweepAngle = sweepAngle * clampedProgress,
+                sweepAngle = sweepAngle * animatedProgress,
                 useCenter = false,
                 topLeft = Offset(inset, inset),
                 size = arcSize,
@@ -85,8 +99,14 @@ fun CalorieProgressCircle(
             // caloriesLeft âm nghĩa là đã vượt ngân sách -> hiện trị tuyệt đối +
             // đổi nhãn "kcal left" thành "kcal over", KHÔNG hiện dấu trừ trần trụi
             // (vd "-150") vì user thường không hiểu ngay đó là "vượt bao nhiêu".
+            // Đếm chạy số cùng animationSpec với cung tròn ở trên cho khớp nhịp.
+            val animatedCaloriesLeft by animateIntAsState(
+                targetValue = abs(caloriesLeft),
+                animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+                label = "calorieCountUp",
+            )
             Text(
-                text = "${abs(caloriesLeft)}",
+                text = "$animatedCaloriesLeft",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = when (calorieStatus) {

@@ -1,5 +1,8 @@
 package com.example.healthtracker.ui.stats.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +21,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -83,6 +87,13 @@ fun WeeklyBarChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = 
 @Composable
 private fun DayBar(stat: DailyCalorieStat, maxEaten: Double, isToday: Boolean, modifier: Modifier = Modifier) {
     val heightRatio = (stat.eaten / maxEaten).toFloat().coerceIn(0f, 1f)
+    // Animate thay vì gán thẳng heightRatio: đổi tuần (StatsDateRangeNavigator) hay
+    // dữ liệu vừa tải xong đều làm cột "mọc" mượt lên đúng độ cao thay vì nhảy khựng.
+    val animatedHeightRatio by animateFloatAsState(
+        targetValue = heightRatio,
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
+        label = "barHeight",
+    )
     val barColor = if (isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
     val textColor = if (isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
 
@@ -106,7 +117,7 @@ private fun DayBar(stat: DailyCalorieStat, maxEaten: Double, isToday: Boolean, m
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(heightRatio)
+                    .fillMaxHeight(animatedHeightRatio)
                     .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
                     .background(if (heightRatio > 0f) barColor else Color.Transparent),
             )

@@ -1,5 +1,8 @@
 package com.example.healthtracker.ui.stats.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -59,6 +63,18 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
             val maxY = (dailyStats.maxOfOrNull { it.eaten } ?: 0.0).coerceAtLeast(1.0)
             val yLabels = (Y_LABEL_COUNT - 1 downTo 0).map { step -> (maxY * step / (Y_LABEL_COUNT - 1)).roundToInt() }
             val points = dailyStats.map { (it.eaten / maxY).toFloat().coerceIn(0f, 1f) }
+            // Animate từng điểm riêng (giống DayBar bên WeeklyBarChartCard) — đổi
+            // tuần hay dữ liệu vừa tải xong thì cả đường "trồi/sụt" mượt tới vị trí
+            // mới thay vì nhảy khựng. Gọi animateFloatAsState trong .map{} vẫn hợp lệ
+            // vì số điểm luôn cố định = dailyStats.size qua mọi lần recomposition.
+            val animatedPoints = points.map { target ->
+                val animated by animateFloatAsState(
+                    targetValue = target,
+                    animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
+                    label = "trendPoint",
+                )
+                animated
+            }
 
             Box(modifier = Modifier.fillMaxWidth().height(CHART_HEIGHT)) {
                 Column(
@@ -76,7 +92,7 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
                 }
 
                 TrendLine(
-                    points = points,
+                    points = animatedPoints,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(start = Y_AXIS_WIDTH),
