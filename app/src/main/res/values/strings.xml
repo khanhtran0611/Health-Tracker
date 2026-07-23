@@ -171,7 +171,7 @@
     <string name="bmi_category_overweight">Thừa cân</string>
     <string name="bmi_category_obese">Béo phì</string>
     <string name="profile_tdee_title">Nhu cầu calo hàng ngày (TDEE)</string>
-    <string name="profile_tdee_based_on">Dựa trên: %1$s</string>
+    <string name="profile_tdee_based_on">Dựa trên mức hoạt động: %1$s</string>
     <string name="action_edit_profile">Chỉnh sửa hồ sơ</string>
     <string name="action_settings">Cài đặt</string>
     <string name="msg_profile_saved">Đã lưu hồ sơ</string>
@@ -215,8 +215,8 @@
     <string name="reminder_channel_description">Thông báo nhắc ghi nhật ký bữa ăn/hoạt động theo khung giờ đã chọn</string>
 
     <string name="dialog_autostart_reminder_title">Để nhắc nhở hoạt động ổn định</string>
-    <string name="dialog_autostart_reminder_message">Một số máy Android tự tắt ứng dụng chạy nền để tiết kiệm pin, khiến thông báo nhắc nhở không hiện đúng giờ. Vào Cài đặt hệ thống, bật \"Tự khởi chạy\" (Autostart) và chọn \"Không hạn chế\" pin cho HealthTracker để tính năng này hoạt động tốt hơn.</string>
-    <string name="action_got_it">Đã hiểu</string>
+    <string name="dialog_autostart_reminder_message">Một số máy Android tự tắt ứng dụng chạy nền để tiết kiệm pin, khiến thông báo nhắc nhở không hiện đúng giờ. Bạn nên vào cài đặt hệ thống, bật \"Tự khởi chạy\" (Autostart) và chọn \"Không hạn chế\" pin cho HealthTracker để tính năng này hoạt động tốt hơn.</string>
+    <string name="action_got_it">Ok</string>
     <string name="reminder_notification_title">Nhắc ghi nhật ký</string>
     <string name="reminder_message_morning">Hãy ghi lại hoạt động sáng hôm nay!</string>
     <string name="reminder_message_noon">Hãy ghi lại hoạt động trưa hôm nay!</string>

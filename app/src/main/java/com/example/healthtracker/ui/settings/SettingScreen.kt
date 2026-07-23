@@ -256,15 +256,21 @@ fun SettingContent(
         if (uiState.showAutostartReminderDialog) {
             // AlertDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
             // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
-            // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
-            // ngôn ngữ) rồi re-provide vào slot bên trong dùng stringResource().
+            // đã đổi ngôn ngữ của LocalizedApp. KHÁC với ConfirmDeleteDialog (title/
+            // message truyền vào là String đã resolve sẵn từ ngoài), ở đây phải tự
+            // resolve title/message bằng stringResource() ở NGOÀI AlertDialog rồi mới
+            // truyền String thẳng vào slot — nếu gọi stringResource() trực tiếp BÊN
+            // TRONG title/text lambda thì vẫn dính đúng bug cũ (chỉ confirmButton
+            // được re-provide Local nên chỉ mỗi nút "Đã hiểu" dịch đúng).
+            val dialogTitle = stringResource(R.string.dialog_autostart_reminder_title)
+            val dialogMessage = stringResource(R.string.dialog_autostart_reminder_message)
             val localContext = LocalContext.current
             val localConfiguration = LocalConfiguration.current
 
             AlertDialog(
                 onDismissRequest = onAutostartReminderDialogDismissed,
-                title = { Text(stringResource(R.string.dialog_autostart_reminder_title)) },
-                text = { Text(stringResource(R.string.dialog_autostart_reminder_message)) },
+                title = { Text(dialogTitle) },
+                text = { Text(dialogMessage) },
                 confirmButton = {
                     CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {
                         TextButton(onClick = onAutostartReminderDialogDismissed) {

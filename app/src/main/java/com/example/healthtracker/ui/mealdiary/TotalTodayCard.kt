@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -43,16 +42,17 @@ fun TotalTodayCard(
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Row(verticalAlignment = Alignment.Bottom) {
+            Row {
                 Text(
                     "${totalCalories.toInt()}",
                     style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier.alignByBaseline(),
                 )
                 Text(
                     " ${stringResource(R.string.unit_kcal)}",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.alignByBaseline(),
                 )
             }
         }

@@ -167,7 +167,7 @@
     <string name="bmi_category_overweight">Overweight</string>
     <string name="bmi_category_obese">Obese</string>
     <string name="profile_tdee_title">Daily calorie goal (TDEE)</string>
-    <string name="profile_tdee_based_on">Based on: %1$s</string>
+    <string name="profile_tdee_based_on">Based on activity level: %1$s</string>
     <string name="action_edit_profile">Edit Profile</string>
     <string name="action_settings">Settings</string>
     <string name="msg_profile_saved">Profile saved</string>
@@ -211,8 +211,8 @@
     <string name="reminder_channel_description">Reminders to log your meals/activities at your chosen times</string>
 
     <string name="dialog_autostart_reminder_title">For reliable reminders</string>
-    <string name="dialog_autostart_reminder_message">Some Android phones automatically stop background apps to save battery, which can prevent reminders from showing on time. Go to your system settings, enable \"Autostart\" and set battery usage to \"Unrestricted\" for HealthTracker so this feature works better.</string>
-    <string name="action_got_it">Got it</string>
+    <string name="dialog_autostart_reminder_message">Some Android phones automatically stop background apps to save battery, which can prevent reminders from showing on time. You should go to your system settings, enable \"Autostart\" and set battery usage to \"Unrestricted\" for HealthTracker so this feature works better.</string>
+    <string name="action_got_it">Ok</string>
     <string name="reminder_notification_title">Diary reminder</string>
     <string name="reminder_message_morning">Time to log your breakfast!</string>
     <string name="reminder_message_noon">Time to log your lunch!</string>
