@@ -62,7 +62,36 @@ class ReminderNotifier @Inject constructor(
         NotificationManagerCompat.from(context).notify(type.requestCode, notification)
     }
 
+    fun showTestReminderNotification() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        val contentIntent = PendingIntent.getActivity(
+            context,
+            TEST_REQUEST_CODE,
+            Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.reminder_notification_title))
+            .setContentText(context.getString(R.string.reminder_message_test))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .setContentIntent(contentIntent)
+            .build()
+
+        NotificationManagerCompat.from(context).notify(TEST_REQUEST_CODE, notification)
+    }
+
     companion object {
         const val CHANNEL_ID = "meal_reminders"
+        private const val TEST_REQUEST_CODE = 1099
     }
 }

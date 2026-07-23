@@ -29,6 +29,7 @@ class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val resetAppDataUseCase: ResetAppDataUseCase,
     private val reminderScheduler: ReminderScheduler,
+    private val toastController: ToastController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -94,6 +95,13 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             settingsRepository.setEveningReminderEnabled(enabled)
             reminderScheduler.rescheduleAll(_uiState.value.settings.copy(eveningReminderEnabled = enabled))
+        }
+    }
+
+    fun onTestReminderClick() {
+        reminderScheduler.scheduleTestReminder()
+        viewModelScope.launch {
+            toastController.show(ToastMessage(R.string.msg_test_reminder_scheduled, ToastType.SUCCESS))
         }
     }
 

@@ -7,12 +7,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -20,15 +16,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +32,8 @@ import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.Language
 import com.example.healthtracker.domain.model.ThemePreset
-import com.example.healthtracker.ui.component.ConfirmDeleteDialog
+import com.example.healthtracker.ui.component.overlay.ConfirmDeleteDialog
+import com.example.healthtracker.ui.settings.components.*
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
 @Composable
@@ -66,6 +60,7 @@ fun SettingScreen(
         onMorningReminderChange = viewModel::onMorningReminderChange,
         onNoonReminderChange = viewModel::onNoonReminderChange,
         onEveningReminderChange = viewModel::onEveningReminderChange,
+        onTestReminderClick = viewModel::onTestReminderClick,
         onResetData = viewModel::onResetData,
         onAutostartReminderDialogDismissed = viewModel::onAutostartReminderDialogDismissed,
         modifier = modifier,
@@ -84,6 +79,7 @@ fun SettingContent(
     onMorningReminderChange: (Boolean) -> Unit,
     onNoonReminderChange: (Boolean) -> Unit,
     onEveningReminderChange: (Boolean) -> Unit,
+    onTestReminderClick: () -> Unit,
     onResetData: () -> Unit,
     onAutostartReminderDialogDismissed: () -> Unit,
     modifier: Modifier = Modifier,
@@ -239,6 +235,16 @@ fun SettingContent(
                 isBold = false,
                 enabled = settings.remindersEnabled,
             )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            Box(modifier = Modifier.padding(16.dp)) {
+                OutlinedButton(
+                    onClick = onTestReminderClick,
+                    enabled = settings.remindersEnabled,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.action_test_reminder))
+                }
+            }
         }
 
         if (uiState.showAutostartReminderDialog) {
@@ -328,131 +334,6 @@ private fun fontSizeLabelRes(fontSize: FontSize): Int = when (fontSize) {
     FontSize.LARGE -> R.string.font_size_large
 }
 
-@Composable
-private fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-    )
-}
-
-@Composable
-private fun SettingsCard(
-    padding: Dp = 16.dp,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Column(
-            modifier = Modifier.padding(padding),
-            content = content
-        )
-    }
-}
-
-@Composable
-private fun CustomSegmentedControl(
-    options: List<String>,
-    selectedIndex: Int,
-    onOptionSelected: (Int) -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-            .padding(4.dp)
-    ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            options.forEachIndexed { index, text ->
-                val isSelected = index == selectedIndex
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(if (isSelected) MaterialTheme.colorScheme.surfaceContainerLowest else Color.Transparent)
-                        .clickable { onOptionSelected(index) }
-                        .padding(vertical = 10.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                        color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ColorThemeSelector(
-    colors: List<Color>,
-    selectedIndex: Int,
-    onColorSelected: (Int) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        colors.forEachIndexed { index, color ->
-            val isSelected = index == selectedIndex
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .border(
-                        width = if (isSelected) 2.dp else 0.dp,
-                        color = if (isSelected) color else Color.Transparent,
-                        shape = CircleShape
-                    )
-                    .padding(4.dp)
-                    .background(color, CircleShape)
-                    .clickable { onColorSelected(index) }
-            )
-        }
-    }
-}
-
-@Composable
-private fun SwitchRow(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    isBold: Boolean,
-    enabled: Boolean = true,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = if (isBold) FontWeight.Bold else FontWeight.Medium,
-            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            enabled = enabled,
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun SettingContentPreview() {
@@ -468,6 +349,7 @@ private fun SettingContentPreview() {
             onMorningReminderChange = {},
             onNoonReminderChange = {},
             onEveningReminderChange = {},
+            onTestReminderClick = {},
             onResetData = {},
             onAutostartReminderDialogDismissed = {},
         )

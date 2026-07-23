@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.component.formatting.formatDiaryDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset

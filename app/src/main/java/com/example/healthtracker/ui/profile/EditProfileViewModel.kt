@@ -8,9 +8,9 @@ import com.example.healthtracker.domain.model.Goal
 import com.example.healthtracker.domain.model.User
 import com.example.healthtracker.domain.repository.UserRepository
 import com.example.healthtracker.domain.usecase.CalculateAgeUseCase
-import com.example.healthtracker.ui.component.ProfileFormUiState
-import com.example.healthtracker.ui.component.isProfileFormValid
-import com.example.healthtracker.ui.component.validateProfileForm
+import com.example.healthtracker.ui.component.profileform.ProfileFormUiState
+import com.example.healthtracker.ui.component.profileform.isProfileFormValid
+import com.example.healthtracker.ui.component.profileform.validateProfileForm
 import com.example.healthtracker.ui.toast.ToastController
 import com.example.healthtracker.ui.toast.ToastMessage
 import com.example.healthtracker.ui.toast.ToastType

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
-import com.example.healthtracker.ui.component.ProfileForm
+import com.example.healthtracker.ui.component.profileform.ProfileForm
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

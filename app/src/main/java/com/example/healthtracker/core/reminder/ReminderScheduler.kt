@@ -23,6 +23,12 @@ class ReminderScheduler @Inject constructor(
         alarmManager?.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntentFor(type))
     }
 
+    fun scheduleTestReminder() {
+        val triggerAtMillis = System.currentTimeMillis() + TEST_REMINDER_DELAY_MILLIS
+
+        alarmManager?.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, testPendingIntent())
+    }
+
     fun cancel(type: ReminderType) {
 
         alarmManager?.cancel(pendingIntentFor(type))
@@ -58,6 +64,19 @@ class ReminderScheduler @Inject constructor(
         )
     }
 
+    private fun testPendingIntent(): PendingIntent {
+        val intent = Intent(context, ReminderReceiver::class.java).apply {
+            putExtra(ReminderReceiver.EXTRA_REMINDER_TYPE, TEST_REMINDER_NAME)
+        }
+
+        return PendingIntent.getBroadcast(
+            context,
+            TEST_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+    }
+
     private fun nextTriggerTimeMillis(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
@@ -69,5 +88,11 @@ class ReminderScheduler @Inject constructor(
             }
         }
         return calendar.timeInMillis
+    }
+
+    companion object {
+        const val TEST_REMINDER_NAME = "TEST"
+        private const val TEST_REQUEST_CODE = 1099
+        private const val TEST_REMINDER_DELAY_MILLIS = 2 * 60 * 1000L
     }
 }

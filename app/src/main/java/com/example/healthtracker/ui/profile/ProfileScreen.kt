@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
-import com.example.healthtracker.ui.component.activityLevelTitleRes
+import com.example.healthtracker.ui.component.profileform.activityLevelTitleRes
 import com.example.healthtracker.ui.profile.components.BmiCard
 import com.example.healthtracker.ui.profile.components.ProfileStatsRow
 import com.example.healthtracker.ui.profile.components.TdeeCard

@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
-import com.example.healthtracker.ui.component.formatWeekdayShort
+import com.example.healthtracker.ui.component.formatting.formatWeekdayShort
 import com.example.healthtracker.ui.stats.DailyCalorieStat
 import java.time.LocalDate
 import kotlin.math.roundToInt

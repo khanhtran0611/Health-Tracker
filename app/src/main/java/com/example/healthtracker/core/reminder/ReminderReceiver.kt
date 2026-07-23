@@ -13,10 +13,14 @@ class ReminderReceiver : BroadcastReceiver() {
     @Inject lateinit var reminderNotifier: ReminderNotifier
 
     override fun onReceive(context: Context, intent: Intent) {
-        val type = intent.getStringExtra(EXTRA_REMINDER_TYPE)
-            ?.let { name -> ReminderType.entries.find { it.name == name } }
-            ?: return
+        val name = intent.getStringExtra(EXTRA_REMINDER_TYPE) ?: return
 
+        if (name == ReminderScheduler.TEST_REMINDER_NAME) {
+            reminderNotifier.showTestReminderNotification()
+            return
+        }
+
+        val type = ReminderType.entries.find { it.name == name } ?: return
         reminderNotifier.showReminderNotification(type)
         reminderScheduler.schedule(type)
     }

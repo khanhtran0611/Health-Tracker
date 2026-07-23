@@ -26,12 +26,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.healthtracker.ui.activitydiary.activitypicker.ActivityPickerScreen
-import com.example.healthtracker.ui.activitydiary.enteractivity.EnterActivityScreen
+import com.example.healthtracker.ui.activity.activitypicker.ActivityPickerScreen
+import com.example.healthtracker.ui.activity.enteractivity.EnterActivityScreen
 import com.example.healthtracker.ui.component.SplashScreen
 import com.example.healthtracker.ui.mainshell.MainShellScreen
-import com.example.healthtracker.ui.mealdiary.enterfood.EnterFoodManuallyScreen
-import com.example.healthtracker.ui.mealdiary.foodpicker.FoodPickerScreen
+import com.example.healthtracker.ui.meal.enterfood.EnterFoodManuallyScreen
+import com.example.healthtracker.ui.meal.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
 import com.example.healthtracker.ui.settings.SettingScreen

@@ -217,6 +217,9 @@
     <string name="reminder_message_morning">Time to log your breakfast!</string>
     <string name="reminder_message_noon">Time to log your lunch!</string>
     <string name="reminder_message_evening">Time to log your dinner !</string>
+    <string name="reminder_message_test">This is a test reminder notification!</string>
+    <string name="action_test_reminder">Test notification (in 2 min)</string>
+    <string name="msg_test_reminder_scheduled">Test reminder scheduled in 2 minutes</string>
 
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Delete food?</string>

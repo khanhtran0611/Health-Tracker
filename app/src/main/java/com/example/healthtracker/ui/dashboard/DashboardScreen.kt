@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.healthtracker.ui.component.formatDiaryDate
+import com.example.healthtracker.ui.component.formatting.formatDiaryDate
 import com.example.healthtracker.ui.dashboard.components.*
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate

@@ -24,9 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.example.healthtracker.ui.activitydiary.ActivityDiaryScreen
+import com.example.healthtracker.ui.activity.activitydiary.ActivityDiaryScreen
 import com.example.healthtracker.ui.dashboard.DashboardScreen
-import com.example.healthtracker.ui.mealdiary.MealDiaryScreen
+import com.example.healthtracker.ui.meal.mealdiary.MealDiaryScreen
 import com.example.healthtracker.ui.navigation.Route
 import com.example.healthtracker.ui.profile.ProfileScreen
 import com.example.healthtracker.ui.stats.StatisticsScreen

@@ -221,6 +221,9 @@
     <string name="reminder_message_morning">Hãy ghi lại hoạt động sáng hôm nay!</string>
     <string name="reminder_message_noon">Hãy ghi lại hoạt động trưa hôm nay!</string>
     <string name="reminder_message_evening">Hãy ghi lại hoạt động tối hôm nay!</string>
+    <string name="reminder_message_test">Đây là thông báo nhắc nhở thử nghiệm!</string>
+    <string name="action_test_reminder">Thử thông báo (sau 2 phút)</string>
+    <string name="msg_test_reminder_scheduled">Đã đặt báo thức thử sau 2 phút</string>
 
     <!-- Confirm delete dialog -->
     <string name="dialog_delete_food_title">Xoá món ăn?</string>
