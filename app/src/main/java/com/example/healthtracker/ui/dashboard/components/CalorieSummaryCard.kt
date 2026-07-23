@@ -18,6 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.elevation
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun CalorieSummaryCard(
@@ -29,13 +33,13 @@ fun CalorieSummaryCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        shape = RoundedCornerShape(16.dp),
+            .padding(horizontal = MaterialTheme.spacing.xl),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.elevation.flat)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.spacing.lg)
         ) {
             SummaryItem(
                 icon = Icons.Default.RestaurantMenu,
@@ -46,7 +50,7 @@ fun CalorieSummaryCard(
             )
 
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 12.dp, horizontal = 48.dp),
+                modifier = Modifier.padding(vertical = MaterialTheme.spacing.md, horizontal = MaterialTheme.spacing.xxxl),
                 color = MaterialTheme.colorScheme.outlineVariant
             )
 
@@ -58,7 +62,7 @@ fun CalorieSummaryCard(
                 value = "$burnedToday"
             )
 
-            Spacer(modifier = Modifier.height(19.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lgPlus))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -71,7 +75,7 @@ fun CalorieSummaryCard(
 
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
 
                 Text(
                     text = "$balance",
@@ -98,7 +102,7 @@ private fun SummaryItem(
     ) {
         Box(
             modifier = Modifier
-                .size(36.dp)
+                .size(MaterialTheme.sizing.iconContainerSize)
                 .clip(CircleShape)
                 .background(iconBgColor),
             contentAlignment = Alignment.Center
@@ -107,11 +111,11 @@ private fun SummaryItem(
                 imageVector = icon,
                 contentDescription = null,
                 tint = iconColor,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(MaterialTheme.sizing.iconMedium)
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.lg))
 
         Text(
             text = label,

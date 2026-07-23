@@ -13,6 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun DailyStatsRow(
@@ -24,7 +26,7 @@ fun DailyStatsRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = MaterialTheme.spacing.sm),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -35,7 +37,7 @@ fun DailyStatsRow(
         )
 
         VerticalDivider(
-            modifier = Modifier.height(32.dp),
+            modifier = Modifier.height(MaterialTheme.sizing.statDividerHeight),
             color = MaterialTheme.colorScheme.outlineVariant
         )
 
@@ -46,7 +48,7 @@ fun DailyStatsRow(
         )
 
         VerticalDivider(
-            modifier = Modifier.height(32.dp),
+            modifier = Modifier.height(MaterialTheme.sizing.statDividerHeight),
             color = MaterialTheme.colorScheme.outlineVariant
         )
 
@@ -72,7 +74,7 @@ private fun StatItem(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             letterSpacing = 1.sp
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
         Text(
             text = value,
             style = MaterialTheme.typography.titleLarge,

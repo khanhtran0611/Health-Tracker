@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.ui.component.formatting.FieldError
 import com.example.healthtracker.ui.component.formatting.fieldErrorText
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun LabeledOutlinedField(
@@ -32,7 +34,7 @@ fun LabeledOutlinedField(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -43,7 +45,7 @@ fun LabeledOutlinedField(
             singleLine = true,
             keyboardOptions = keyboardOptions,
             trailingIcon = trailingIcon,
-            shape = RoundedCornerShape(12.dp),
+            shape = MaterialTheme.appShapes.medium,
         )
     }
 }

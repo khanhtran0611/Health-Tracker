@@ -32,6 +32,10 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Goal
 import kotlin.math.roundToInt
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ProfileStatsRow(
@@ -43,7 +47,7 @@ fun ProfileStatsRow(
 
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
     ) {
         StatCard(
             title = stringResource(R.string.field_weight),
@@ -67,17 +71,17 @@ private fun roundTo1Decimal(value: Double): Double = (value * 10).roundToInt() /
 private fun StatCard(title: String, value: String, unit: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(vertical = 16.dp),
+            modifier = Modifier.fillMaxSize().padding(vertical = MaterialTheme.spacing.lg),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             Text(text = title, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
             Row {
                 Text(
                     text = value,
@@ -86,7 +90,7 @@ private fun StatCard(title: String, value: String, unit: String, modifier: Modif
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.alignByBaseline(),
                 )
-                Spacer(modifier = Modifier.width(2.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                 Text(
                     text = unit,
                     style = MaterialTheme.typography.bodySmall,
@@ -108,12 +112,12 @@ private fun GoalCard(goal: Goal, modifier: Modifier = Modifier) {
 
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(vertical = 16.dp, horizontal = 8.dp),
+            modifier = Modifier.fillMaxSize().padding(vertical = MaterialTheme.spacing.lg, horizontal = MaterialTheme.spacing.sm),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -122,16 +126,16 @@ private fun GoalCard(goal: Goal, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
-                        .size(12.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                        .padding(2.dp)
+                        .size(MaterialTheme.sizing.legendDotSize)
+                        .border(MaterialTheme.borderWidths.borderThick, MaterialTheme.colorScheme.primary, CircleShape)
+                        .padding(MaterialTheme.spacing.xxs)
                         .background(MaterialTheme.colorScheme.primary, CircleShape),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                 Text(
                     text = stringResource(goalLabelRes),
                     style = MaterialTheme.typography.labelMedium,

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun EntryFormTopBar(
@@ -30,7 +31,7 @@ fun EntryFormTopBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+                .padding(horizontal = MaterialTheme.spacing.xs, vertical = MaterialTheme.spacing.sm),
         ) {
             IconButton(
                 onClick = onClose,

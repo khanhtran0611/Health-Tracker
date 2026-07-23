@@ -43,6 +43,9 @@ import com.example.healthtracker.ui.activity.addactivityentry.components.Duratio
 import com.example.healthtracker.ui.component.formatting.formatDiaryDate
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +100,7 @@ fun AddActivityEntryContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm),
     ) {
 
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -121,22 +124,22 @@ fun AddActivityEntryContent(
             ) {
                 if (uiState.isSaving) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(MaterialTheme.sizing.iconSmall),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                        strokeWidth = 2.dp,
+                        strokeWidth = MaterialTheme.borderWidths.borderThick,
                     )
-                    Spacer(Modifier.padding(end = 8.dp))
+                    Spacer(Modifier.padding(end = MaterialTheme.spacing.sm))
                 }
                 Text(stringResource(R.string.action_save))
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
         val activity = uiState.activity
         if (activity == null) {
             Box(
-                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.xxl),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
@@ -145,24 +148,24 @@ fun AddActivityEntryContent(
 
             ActivitySummaryCard(activity = activity)
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.xxl))
             Text(
                 stringResource(R.string.label_duration),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.SemiBold,
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
             DurationStepper(
                 durationMinutes = uiState.durationMinutes,
                 onDecrease = onDecreaseDuration,
                 onIncrease = onIncreaseDuration,
             )
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.xxl))
             CaloriesBurnedCard(caloriesBurned = uiState.caloriesBurned)
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -176,7 +179,7 @@ fun AddActivityEntryContent(
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.spacing.lg))
     }
 }
 

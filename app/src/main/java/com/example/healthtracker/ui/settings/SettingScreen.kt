@@ -35,6 +35,8 @@ import com.example.healthtracker.domain.model.ThemePreset
 import com.example.healthtracker.ui.component.overlay.ConfirmDeleteDialog
 import com.example.healthtracker.ui.settings.components.*
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun SettingScreen(
@@ -112,7 +114,7 @@ fun SettingContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.lg)
         ) {
             IconButton(
                 onClick = onBackClick,
@@ -135,7 +137,7 @@ fun SettingContent(
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
         SectionTitle(title = stringResource(R.string.section_language))
         SettingsCard {
@@ -145,7 +147,7 @@ fun SettingContent(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
             CustomSegmentedControl(
                 options = Language.entries.map { stringResource(languageLabelRes(it)) },
                 selectedIndex = Language.entries.indexOf(settings.language),
@@ -153,7 +155,7 @@ fun SettingContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
         SectionTitle(title = stringResource(R.string.section_appearance))
         SettingsCard {
@@ -163,14 +165,14 @@ fun SettingContent(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
             CustomSegmentedControl(
                 options = Brightness.entries.map { stringResource(brightnessLabelRes(it)) },
                 selectedIndex = Brightness.entries.indexOf(settings.brightness),
                 onOptionSelected = { index -> onBrightnessChange(Brightness.entries[index]) }
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
+            HorizontalDivider(modifier = Modifier.padding(vertical = MaterialTheme.spacing.lg), color = MaterialTheme.colorScheme.outlineVariant)
 
             Text(
                 text = stringResource(R.string.label_color_theme),
@@ -178,14 +180,14 @@ fun SettingContent(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
             ColorThemeSelector(
                 colors = ThemePreset.entries.map { it.seedColor },
                 selectedIndex = ThemePreset.entries.indexOf(settings.themePreset),
                 onColorSelected = { index -> onThemePresetChange(ThemePreset.entries[index]) }
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
+            HorizontalDivider(modifier = Modifier.padding(vertical = MaterialTheme.spacing.lg), color = MaterialTheme.colorScheme.outlineVariant)
 
             Text(
                 text = stringResource(R.string.label_font_size),
@@ -193,7 +195,7 @@ fun SettingContent(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
             CustomSegmentedControl(
                 options = FontSize.entries.map { stringResource(fontSizeLabelRes(it)) },
                 selectedIndex = FontSize.entries.indexOf(settings.fontSize),
@@ -201,10 +203,10 @@ fun SettingContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
         SectionTitle(title = stringResource(R.string.section_reminders))
-        SettingsCard(padding = 0.dp) {
+        SettingsCard(padding = MaterialTheme.spacing.none) {
             SwitchRow(
                 title = stringResource(R.string.label_daily_reminders),
                 checked = settings.remindersEnabled,
@@ -236,7 +238,7 @@ fun SettingContent(
                 enabled = settings.remindersEnabled,
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            Box(modifier = Modifier.padding(16.dp)) {
+            Box(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
                 OutlinedButton(
                     onClick = onTestReminderClick,
                     enabled = settings.remindersEnabled,
@@ -268,7 +270,7 @@ fun SettingContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
         SectionTitle(title = stringResource(R.string.section_data_management))
         SettingsCard {
@@ -277,14 +279,14 @@ fun SettingContent(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             var showResetConfirm by remember { mutableStateOf(false) }
             OutlinedButton(
                 onClick = { showResetConfirm = true },
                 enabled = !uiState.isResetting,
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.error),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(stringResource(R.string.action_reset_data))
@@ -303,7 +305,7 @@ fun SettingContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
 
         Text(
             text = stringResource(R.string.settings_app_version),
@@ -313,7 +315,7 @@ fun SettingContent(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
     }
 }
 

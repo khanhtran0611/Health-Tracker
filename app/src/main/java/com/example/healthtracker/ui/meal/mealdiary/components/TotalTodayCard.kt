@@ -17,6 +17,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun TotalTodayCard(
@@ -26,16 +29,16 @@ fun TotalTodayCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(MaterialTheme.appShapes.medium)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Box(
             modifier = Modifier
-                .width(4.dp)
+                .width(MaterialTheme.sizing.accentBarWidth)
                 .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.primary),
         )
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 stringResource(R.string.total_today_label),
                 style = MaterialTheme.typography.labelMedium,

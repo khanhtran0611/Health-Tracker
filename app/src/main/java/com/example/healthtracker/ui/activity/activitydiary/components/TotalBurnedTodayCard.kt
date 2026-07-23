@@ -20,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun TotalBurnedTodayCard(
@@ -29,9 +31,9 @@ fun TotalBurnedTodayCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(MaterialTheme.appShapes.large)
             .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(vertical = 32.dp),
+            .padding(vertical = MaterialTheme.spacing.xxl),
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -41,7 +43,7 @@ fun TotalBurnedTodayCard(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 letterSpacing = 1.sp,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
             Row {
                 Text(
                     text = "${totalCalories.toInt()}",
@@ -49,7 +51,7 @@ fun TotalBurnedTodayCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.alignByBaseline(),
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                 Text(
                     text = stringResource(R.string.unit_kcal),
                     style = MaterialTheme.typography.titleLarge,

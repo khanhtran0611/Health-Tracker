@@ -39,6 +39,9 @@ import com.example.healthtracker.ui.activity.activitydiary.components.TotalBurne
 import com.example.healthtracker.ui.component.DateNavigator
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ActivityDiaryScreen(
@@ -71,8 +74,8 @@ fun ActivityDiaryContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(MaterialTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             IconButton(
@@ -106,7 +109,7 @@ fun ActivityDiaryContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 24.dp),
+                    .padding(vertical = MaterialTheme.spacing.xl),
                 textAlign = TextAlign.Center,
             )
         } else {
@@ -119,12 +122,12 @@ fun ActivityDiaryContent(
             onClick = onAddActivity,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.sizing.buttonHeight),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            shape = RoundedCornerShape(28.dp),
+            shape = MaterialTheme.appShapes.full,
         ) {
             Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
             Text(
                 text = stringResource(R.string.action_add_activity),
                 color = MaterialTheme.colorScheme.onPrimary,

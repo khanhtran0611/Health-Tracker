@@ -26,6 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun EnterNewFoodCard(
@@ -33,6 +37,8 @@ fun EnterNewFoodCard(
     modifier: Modifier = Modifier,
 ) {
     val outlineColor = MaterialTheme.colorScheme.outlineVariant
+    val dashedBorderWidth = MaterialTheme.borderWidths.borderThick
+    val dashedCornerRadius = MaterialTheme.sizing.dashedCardCornerRadius
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -40,23 +46,23 @@ fun EnterNewFoodCard(
                 drawRoundRect(
                     color = outlineColor,
                     style = Stroke(
-                        width = 2.dp.toPx(),
+                        width = dashedBorderWidth.toPx(),
                         pathEffect = PathEffect.dashPathEffect(floatArrayOf(12f, 8f)),
                     ),
-                    cornerRadius = CornerRadius(16.dp.toPx()),
+                    cornerRadius = CornerRadius(dashedCornerRadius.toPx()),
                 )
             }
-            .padding(24.dp),
+            .padding(MaterialTheme.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
     ) {
         Icon(
             Icons.Default.Edit,
             contentDescription = null,
             modifier = Modifier
-                .size(48.dp)
+                .size(MaterialTheme.sizing.touchTarget)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape)
-                .padding(12.dp),
+                .padding(MaterialTheme.spacing.md),
         )
         Text(
             stringResource(R.string.food_picker_empty_title),
@@ -75,7 +81,7 @@ fun EnterNewFoodCard(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ),
-            shape = RoundedCornerShape(999.dp),
+            shape = MaterialTheme.appShapes.full,
         ) {
             Text(stringResource(R.string.action_enter_new_food))
         }

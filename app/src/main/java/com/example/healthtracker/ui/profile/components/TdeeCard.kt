@@ -24,23 +24,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun TdeeCard(tdee: Int, activityLevelTitleRes: Int, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.profile_tdee_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
             Row {
                 Text(
@@ -50,7 +54,7 @@ fun TdeeCard(tdee: Int, activityLevelTitleRes: Int, modifier: Modifier = Modifie
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.alignByBaseline(),
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                 Text(
                     text = stringResource(R.string.unit_kcal),
                     style = MaterialTheme.typography.titleLarge,
@@ -59,16 +63,16 @@ fun TdeeCard(tdee: Int, activityLevelTitleRes: Int, modifier: Modifier = Modifie
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Default.DirectionsRun,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconSmall),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                 Text(
                     text = stringResource(R.string.profile_tdee_based_on, stringResource(activityLevelTitleRes)),
                     style = MaterialTheme.typography.bodyMedium,

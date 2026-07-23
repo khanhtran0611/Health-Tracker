@@ -12,20 +12,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun SettingsCard(
-    padding: Dp = 16.dp,
+    padding: Dp = MaterialTheme.spacing.lg,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        shape = RoundedCornerShape(16.dp),
+            .padding(horizontal = MaterialTheme.spacing.xlMinus),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier.padding(padding),

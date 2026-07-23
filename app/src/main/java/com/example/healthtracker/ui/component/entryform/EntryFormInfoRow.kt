@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun EntryFormInfoRow(text: String) {
@@ -25,9 +27,9 @@ fun EntryFormInfoRow(text: String) {
             imageVector = Icons.Outlined.Info,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(MaterialTheme.sizing.iconMedium),
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,

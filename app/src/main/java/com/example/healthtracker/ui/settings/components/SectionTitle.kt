@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun SectionTitle(title: String) {
@@ -15,6 +16,6 @@ fun SectionTitle(title: String) {
         style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.xl, vertical = MaterialTheme.spacing.sm)
     )
 }

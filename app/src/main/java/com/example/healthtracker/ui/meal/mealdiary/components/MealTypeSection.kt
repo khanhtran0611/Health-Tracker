@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun MealTypeSection(
@@ -40,10 +42,10 @@ fun MealTypeSection(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -59,7 +61,7 @@ fun MealTypeSection(
                         stringResource(mealTypeLabelRes(mealType)),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp),
+                        modifier = Modifier.padding(start = MaterialTheme.spacing.sm),
                     )
                 }
                 Text(
@@ -79,7 +81,7 @@ fun MealTypeSection(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
-                        .padding(vertical = 24.dp)
+                        .padding(vertical = MaterialTheme.spacing.xl)
                         .align(Alignment.CenterHorizontally),
                 )
             } else {
@@ -95,7 +97,7 @@ fun MealTypeSection(
                 Icon(Icons.Default.Add, contentDescription = null)
                 Text(
                     stringResource(R.string.action_add_food),
-                    modifier = Modifier.padding(start = 4.dp),
+                    modifier = Modifier.padding(start = MaterialTheme.spacing.xs),
                 )
             }
         }

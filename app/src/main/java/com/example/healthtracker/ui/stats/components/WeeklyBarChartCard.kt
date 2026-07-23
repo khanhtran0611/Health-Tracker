@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,25 +27,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.component.formatting.formatWeekdayShort
 import com.example.healthtracker.ui.stats.DailyCalorieStat
 import java.time.LocalDate
 import kotlin.math.roundToInt
-
-private val CHART_HEIGHT = 200.dp
-private val BAR_WIDTH = 32.dp
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun WeeklyBarChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.stats_bar_chart_title),
                 style = MaterialTheme.typography.titleMedium,
@@ -54,7 +53,7 @@ fun WeeklyBarChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = 
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             val maxEaten = (dailyStats.maxOfOrNull { it.eaten } ?: 0.0).coerceAtLeast(1.0)
             val today = LocalDate.now()
@@ -62,7 +61,7 @@ fun WeeklyBarChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(CHART_HEIGHT),
+                    .height(MaterialTheme.sizing.barChartHeight),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 dailyStats.forEach { stat ->
@@ -99,22 +98,22 @@ private fun DayBar(stat: DailyCalorieStat, maxEaten: Double, isToday: Boolean, m
             fontWeight = FontWeight.Bold,
             color = textColor,
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
         Box(
             modifier = Modifier
                 .weight(1f)
-                .width(BAR_WIDTH),
+                .width(MaterialTheme.sizing.barChartBarWidth),
             contentAlignment = Alignment.BottomCenter,
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(animatedHeightRatio)
-                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                    .clip(MaterialTheme.appShapes.barTopCorner)
                     .background(if (heightRatio > 0f) barColor else Color.Transparent),
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
         Text(
             text = formatWeekdayShort(stat.date),
             style = MaterialTheme.typography.labelMedium,

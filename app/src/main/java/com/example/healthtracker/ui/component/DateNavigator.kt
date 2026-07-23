@@ -36,6 +36,8 @@ import com.example.healthtracker.ui.component.formatting.formatDiaryDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,8 +54,8 @@ fun DateNavigator(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(999.dp))
-            .padding(vertical = 4.dp, horizontal = 4.dp),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.appShapes.full)
+            .padding(vertical = MaterialTheme.spacing.xs, horizontal = MaterialTheme.spacing.xs),
     ) {
         Row(
             modifier = Modifier.align(Alignment.Center),

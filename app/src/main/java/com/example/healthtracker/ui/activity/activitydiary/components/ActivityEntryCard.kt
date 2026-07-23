@@ -23,6 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.ActivityEntry
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.elevation
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ActivityEntryCard(
@@ -32,14 +36,14 @@ fun ActivityEntryCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.elevation.entryCard),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MaterialTheme.spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -61,11 +65,11 @@ fun ActivityEntryCard(
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier.padding(end = MaterialTheme.spacing.md),
                 )
                 IconButton(
                     onClick = onDelete,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconLarge),
                 ) {
                     Icon(
                         Icons.Default.Delete,

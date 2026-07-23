@@ -3,6 +3,7 @@ package com.example.healthtracker.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.ThemePreset
@@ -25,9 +26,17 @@ fun HealthTrackerTheme(
         isDark = isDark,
         isAmoled = false,
     )
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = appTypography(fontSize),
-        content = content
-    )
+    CompositionLocalProvider(
+        LocalSpacing provides Spacing(),
+        LocalSizing provides Sizing(),
+        LocalAppShapes provides AppShapes(),
+        LocalBorderWidths provides BorderWidths(),
+        LocalElevation provides Elevation(),
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = appTypography(fontSize),
+            content = content
+        )
+    }
 }

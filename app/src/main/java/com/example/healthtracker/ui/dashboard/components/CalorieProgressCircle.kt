@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.dashboard.CalorieStatus
 import kotlin.math.abs
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun CalorieProgressCircle(
@@ -33,7 +35,7 @@ fun CalorieProgressCircle(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp),
+            .padding(vertical = MaterialTheme.spacing.lg),
         contentAlignment = Alignment.Center
     ) {
         val trackColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -43,7 +45,7 @@ fun CalorieProgressCircle(
             CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
             CalorieStatus.UNDER_TARGET -> MaterialTheme.colorScheme.tertiary
         }
-        val strokeWidth = 24.dp
+        val strokeWidth = MaterialTheme.sizing.progressRingThickness
 
         val clampedProgress = progress.coerceIn(0f, 1f)
 
@@ -54,7 +56,7 @@ fun CalorieProgressCircle(
         )
 
         Canvas(
-            modifier = Modifier.size(240.dp)
+            modifier = Modifier.size(MaterialTheme.sizing.progressRingSize)
         ) {
 
             val startAngle = -90f
@@ -85,7 +87,7 @@ fun CalorieProgressCircle(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = MaterialTheme.spacing.lg)
         ) {
 
             val animatedCaloriesLeft by animateIntAsState(

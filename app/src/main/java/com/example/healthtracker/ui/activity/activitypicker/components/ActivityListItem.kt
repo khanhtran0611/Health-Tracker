@@ -24,6 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Activity
 import com.example.healthtracker.ui.component.formatting.formatActivityMetInfo
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.elevation
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ActivityListItem(
@@ -35,14 +39,14 @@ fun ActivityListItem(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.appShapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.elevation.listItem),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(MaterialTheme.spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -60,15 +64,15 @@ fun ActivityListItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(
                     onClick = onEditClick,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconLarge),
                 ) {
                     Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit))
                 }
                 IconButton(
                     onClick = onClick,
                     modifier = Modifier
-                        .padding(start = 16.dp)
-                        .size(24.dp),
+                        .padding(start = MaterialTheme.spacing.lg)
+                        .size(MaterialTheme.sizing.iconLarge),
                 ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_add_activity))
                 }

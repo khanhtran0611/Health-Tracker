@@ -31,6 +31,7 @@ import com.example.healthtracker.ui.stats.components.WeeklySummaryCard
 import com.example.healthtracker.ui.stats.components.WeeklyTrendChartCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun StatisticsScreen(
@@ -63,7 +64,7 @@ fun StatisticsContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = MaterialTheme.spacing.lg),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -77,8 +78,8 @@ fun StatisticsContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = MaterialTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
             StatsDateRangeNavigator(
                 startDate = uiState.startDate,
@@ -103,7 +104,7 @@ fun StatisticsContent(
                 daysGoalMet = uiState.monthlySummary.daysGoalMet,
                 totalDays = uiState.monthlySummary.totalDays,
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
         }
     }
 }

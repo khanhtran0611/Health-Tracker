@@ -46,6 +46,9 @@ import com.example.healthtracker.ui.meal.addmealentry.components.QuantityStepper
 import com.example.healthtracker.ui.meal.addmealentry.components.TotalForEntryCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,7 +105,7 @@ fun AddMealEntryContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm),
     ) {
 
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -126,22 +129,22 @@ fun AddMealEntryContent(
             ) {
                 if (uiState.isSaving) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(MaterialTheme.sizing.iconSmall),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                        strokeWidth = 2.dp
+                        strokeWidth = MaterialTheme.borderWidths.borderThick
                     )
-                    Spacer(Modifier.padding(end = 8.dp))
+                    Spacer(Modifier.padding(end = MaterialTheme.spacing.sm))
                 }
                 Text(stringResource(R.string.action_save))
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
         val food = uiState.food
         if (food == null) {
             Box(
-                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.xxl),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
@@ -149,16 +152,16 @@ fun AddMealEntryContent(
         } else {
             FoodSummaryCard(food = food)
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.xl))
             Text(stringResource(R.string.label_quantity), style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.sm))
             QuantityStepper(
                 quantity = uiState.quantity,
                 onDecrease = onDecreaseQuantity,
                 onIncrease = onIncreaseQuantity,
             )
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.xl))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -171,11 +174,11 @@ fun AddMealEntryContent(
                 Text(formatDiaryDate(uiState.logDate), style = MaterialTheme.typography.bodyMedium)
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
             TotalForEntryCard(totalCalories = uiState.totalCalories)
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.spacing.lg))
     }
 }
 

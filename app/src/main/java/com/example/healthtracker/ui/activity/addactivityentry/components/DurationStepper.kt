@@ -23,6 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun DurationStepper(
@@ -39,13 +42,13 @@ fun DurationStepper(
         IconButton(
             onClick = onDecrease,
             modifier = Modifier
-                .size(48.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
+                .size(MaterialTheme.sizing.touchTarget)
+                .border(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant, CircleShape),
         ) {
             Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.action_decrease_duration))
         }
 
-        Spacer(Modifier.width(32.dp))
+        Spacer(Modifier.width(MaterialTheme.spacing.xxl))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -60,13 +63,13 @@ fun DurationStepper(
             )
         }
 
-        Spacer(Modifier.width(32.dp))
+        Spacer(Modifier.width(MaterialTheme.spacing.xxl))
 
         IconButton(
             onClick = onIncrease,
             modifier = Modifier
-                .size(48.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
+                .size(MaterialTheme.sizing.touchTarget)
+                .border(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant, CircleShape),
         ) {
             Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_increase_duration))
         }

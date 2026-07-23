@@ -26,6 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.elevation
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 data class ToastData(
     @param:StringRes val textRes: Int,
@@ -66,16 +70,16 @@ fun SharedToast(
             }
 
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = MaterialTheme.appShapes.large,
                 colors = CardDefaults.cardColors(containerColor = backgroundColor),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.elevation.toast),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm)
             ) {
                 Row(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(MaterialTheme.spacing.lg)
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -84,9 +88,9 @@ fun SharedToast(
 
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(MaterialTheme.sizing.iconLarge)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
                     Text(
 
                         text = stringResource(data.textRes),

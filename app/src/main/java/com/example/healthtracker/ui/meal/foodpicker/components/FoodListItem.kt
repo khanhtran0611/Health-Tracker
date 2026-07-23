@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.ui.component.formatting.formatFoodCalorieInfo
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun FoodListItem(
@@ -32,7 +34,7 @@ fun FoodListItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .padding(vertical = MaterialTheme.spacing.md),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -48,15 +50,15 @@ fun FoodListItem(
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = onEditClick,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(MaterialTheme.sizing.iconLarge),
             ) {
                 Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit))
             }
             IconButton(
                 onClick = onClick,
                 modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(24.dp),
+                    .padding(start = MaterialTheme.spacing.lg)
+                    .size(MaterialTheme.sizing.iconLarge),
             ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_add_food))
             }

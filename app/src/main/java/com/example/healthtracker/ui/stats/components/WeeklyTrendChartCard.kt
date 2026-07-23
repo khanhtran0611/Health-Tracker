@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -33,24 +32,25 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.stats.DailyCalorieStat
 import kotlin.math.roundToInt
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
-private val CHART_HEIGHT = 180.dp
-private val Y_AXIS_WIDTH = 40.dp
 private const val Y_LABEL_COUNT = 5
 
 @Composable
 fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.stats_line_chart_title),
                 style = MaterialTheme.typography.titleMedium,
@@ -58,7 +58,7 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             val maxY = (dailyStats.maxOfOrNull { it.eaten } ?: 0.0).coerceAtLeast(1.0)
             val yLabels = (Y_LABEL_COUNT - 1 downTo 0).map { step -> (maxY * step / (Y_LABEL_COUNT - 1)).roundToInt() }
@@ -73,9 +73,9 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
                 animated
             }
 
-            Box(modifier = Modifier.fillMaxWidth().height(CHART_HEIGHT)) {
+            Box(modifier = Modifier.fillMaxWidth().height(MaterialTheme.sizing.trendChartHeight)) {
                 Column(
-                    modifier = Modifier.fillMaxHeight().width(Y_AXIS_WIDTH),
+                    modifier = Modifier.fillMaxHeight().width(MaterialTheme.sizing.trendChartYAxisWidth),
                     verticalArrangement = Arrangement.SpaceBetween,
                 ) {
                     yLabels.forEach { label ->
@@ -83,7 +83,7 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
                             text = label.toString(),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.offset(y = (-6).dp),
+                            modifier = Modifier.offset(y = -MaterialTheme.sizing.chartAxisLabelOffset),
                         )
                     }
                 }
@@ -92,7 +92,7 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
                     points = animatedPoints,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = Y_AXIS_WIDTH),
+                        .padding(start = MaterialTheme.sizing.trendChartYAxisWidth),
                 )
             }
         }
@@ -105,6 +105,10 @@ private fun TrendLine(points: List<Float>, modifier: Modifier = Modifier) {
 
     val lineColor = MaterialTheme.colorScheme.primary
     val fillColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+    val gridLineWidth = MaterialTheme.borderWidths.borderThin
+    val lineWidth = MaterialTheme.sizing.chartLineWidth
+    val pointOuterRadius = MaterialTheme.sizing.chartPointOuterRadius
+    val pointInnerRadius = MaterialTheme.sizing.chartPointInnerRadius
 
     Canvas(modifier = modifier) {
         val width = size.width
@@ -117,7 +121,7 @@ private fun TrendLine(points: List<Float>, modifier: Modifier = Modifier) {
                 color = lineColor.copy(alpha = 0.15f),
                 start = Offset(0f, y),
                 end = Offset(width, y),
-                strokeWidth = 1.dp.toPx(),
+                strokeWidth = gridLineWidth.toPx(),
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f),
             )
         }
@@ -146,11 +150,11 @@ private fun TrendLine(points: List<Float>, modifier: Modifier = Modifier) {
             path = fillPath,
             brush = Brush.verticalGradient(colors = listOf(fillColor, Color.Transparent), startY = 0f, endY = height),
         )
-        drawPath(path = path, color = lineColor, style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round))
+        drawPath(path = path, color = lineColor, style = Stroke(width = lineWidth.toPx(), cap = StrokeCap.Round))
 
         coords.forEach { point ->
-            drawCircle(color = lineColor, radius = 6.dp.toPx(), center = point)
-            drawCircle(color = Color.White, radius = 4.dp.toPx(), center = point)
+            drawCircle(color = lineColor, radius = pointOuterRadius.toPx(), center = point)
+            drawCircle(color = Color.White, radius = pointInnerRadius.toPx(), center = point)
         }
     }
 }

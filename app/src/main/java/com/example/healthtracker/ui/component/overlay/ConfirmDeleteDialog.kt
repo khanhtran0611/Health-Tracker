@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
 
 @Composable
 fun ConfirmDeleteDialog(
@@ -39,7 +40,7 @@ fun ConfirmDeleteDialog(
         },
         title = { Text(title) },
         text = { Text(message) },
-        shape = RoundedCornerShape(24.dp),
+        shape = MaterialTheme.appShapes.extraLarge,
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         confirmButton = {
             CompositionLocalProvider(LocalContext provides localContext, LocalConfiguration provides localConfiguration) {

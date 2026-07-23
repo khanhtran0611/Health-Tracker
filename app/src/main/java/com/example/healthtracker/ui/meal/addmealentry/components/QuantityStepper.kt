@@ -21,6 +21,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun QuantityStepper(
@@ -31,7 +35,7 @@ fun QuantityStepper(
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Row(
-            modifier = Modifier.border(BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), androidx.compose.foundation.shape.RoundedCornerShape(999.dp)),
+            modifier = Modifier.border(BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant), MaterialTheme.appShapes.full),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             StepperButton(
@@ -42,7 +46,7 @@ fun QuantityStepper(
             Text(
                 text = formatQuantity(quantity),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.lg),
             )
             StepperButton(
                 icon = Icons.Default.Add,
@@ -54,7 +58,7 @@ fun QuantityStepper(
             text = stringResource(R.string.unit_serving_short),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(start = 12.dp),
+            modifier = Modifier.padding(start = MaterialTheme.spacing.md),
         )
     }
 }
@@ -67,14 +71,14 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(36.dp)
+            .size(MaterialTheme.sizing.quantityStepperButtonSize)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(MaterialTheme.sizing.stepperIconSize),
         )
     }
 }

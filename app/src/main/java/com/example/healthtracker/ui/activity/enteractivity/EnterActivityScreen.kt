@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,6 +33,7 @@ import com.example.healthtracker.ui.component.entryform.EntryFormSaveBar
 import com.example.healthtracker.ui.component.entryform.EntryFormTopBar
 import com.example.healthtracker.ui.component.overlay.ConfirmDeleteDialog
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,14 +102,14 @@ fun EnterActivityContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(MaterialTheme.spacing.lg),
         ) {
             EntryFormBanner(
                 icon = Icons.Default.DirectionsRun,
                 text = stringResource(R.string.text_custom_activity_banner),
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             LabeledOutlinedField(
                 label = stringResource(R.string.field_activity_name),
@@ -117,7 +119,7 @@ fun EnterActivityContent(
                 error = uiState.nameError,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             LabeledOutlinedField(
                 label = stringResource(R.string.field_met_required),
@@ -128,7 +130,7 @@ fun EnterActivityContent(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             EntryFormInfoRow(text = stringResource(R.string.text_custom_activity_info))
         }

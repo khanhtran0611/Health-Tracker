@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun TotalForEntryCard(
@@ -23,8 +25,8 @@ fun TotalForEntryCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(16.dp))
-            .padding(16.dp),
+            .background(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.appShapes.large)
+            .padding(MaterialTheme.spacing.lg),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -42,7 +44,7 @@ fun TotalForEntryCard(
                 " ${stringResource(R.string.unit_kcal)}",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier.padding(bottom = MaterialTheme.spacing.sm),
             )
         }
     }

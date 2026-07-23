@@ -16,6 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun CustomSegmentedControl(
@@ -26,9 +28,9 @@ fun CustomSegmentedControl(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
+            .clip(MaterialTheme.appShapes.extraLarge)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-            .padding(4.dp)
+            .padding(MaterialTheme.spacing.xs)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             options.forEachIndexed { index, text ->
@@ -36,10 +38,10 @@ fun CustomSegmentedControl(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(MaterialTheme.appShapes.segmentedControlInner)
                         .background(if (isSelected) MaterialTheme.colorScheme.surfaceContainerLowest else Color.Transparent)
                         .clickable { onOptionSelected(index) }
-                        .padding(vertical = 10.dp),
+                        .padding(vertical = MaterialTheme.spacing.smPlus),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

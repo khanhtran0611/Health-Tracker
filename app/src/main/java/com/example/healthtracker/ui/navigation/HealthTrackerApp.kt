@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +36,8 @@ import com.example.healthtracker.ui.meal.foodpicker.FoodPickerScreen
 import com.example.healthtracker.ui.onboarding.OnboardingScreen
 import com.example.healthtracker.ui.profile.EditProfileScreen
 import com.example.healthtracker.ui.settings.SettingScreen
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 import com.example.healthtracker.ui.toast.SharedToast
 import com.example.healthtracker.ui.toast.ToastData
 import com.example.healthtracker.ui.toast.ToastViewModel
@@ -181,7 +184,8 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                     }
                 },
             )
-            val topPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 64.dp + 8.dp
+            val topPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
+                MaterialTheme.sizing.topBarHeight + MaterialTheme.spacing.sm
             SharedToast(
                 toastData = currentToast,
                 modifier = Modifier

@@ -32,6 +32,10 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.profile.BmiCategory
 import kotlin.math.roundToInt
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 private const val BMI_SCALE_MAX = 40.0
 
@@ -43,18 +47,18 @@ fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.profile_bmi_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -63,12 +67,12 @@ fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.ExtraBold,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(MaterialTheme.appShapes.medium)
                         .background(categoryColor)
-                        .padding(horizontal = 12.dp, vertical = 4.dp),
+                        .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
                 ) {
                     Text(
                         text = stringResource(bmiCategoryLabelRes(category)),
@@ -79,11 +83,11 @@ fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             BmiBar(bmi = bmi)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("18.5", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -96,15 +100,15 @@ fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
 
 @Composable
 private fun BmiBar(bmi: Double, modifier: Modifier = Modifier) {
-    val thumbSize = 16.dp
+    val thumbSize = MaterialTheme.sizing.bmiThumbSize
     val fraction = (bmi / BMI_SCALE_MAX).coerceIn(0.0, 1.0).toFloat()
 
     BoxWithConstraints(modifier = modifier.fillMaxWidth().height(thumbSize), contentAlignment = Alignment.CenterStart) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .height(MaterialTheme.sizing.progressBarHeight)
+                .clip(MaterialTheme.appShapes.full),
         ) {
             Box(modifier = Modifier.weight(18.5f).fillMaxHeight().background(bmiCategoryColor(BmiCategory.UNDERWEIGHT)))
             Box(modifier = Modifier.weight(6.5f).fillMaxHeight().background(bmiCategoryColor(BmiCategory.NORMAL)))
@@ -117,7 +121,7 @@ private fun BmiBar(bmi: Double, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(start = thumbOffsetPx)
                 .size(thumbSize)
-                .border(2.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
+                .border(MaterialTheme.borderWidths.borderThick, MaterialTheme.colorScheme.onSurface, CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceContainerLowest, CircleShape),
         )
     }

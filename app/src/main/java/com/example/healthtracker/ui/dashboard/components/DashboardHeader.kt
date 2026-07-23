@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun DashboardHeader(
@@ -25,11 +27,11 @@ fun DashboardHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(horizontal = MaterialTheme.spacing.xl, vertical = MaterialTheme.spacing.lg)
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .size(MaterialTheme.sizing.avatarSize)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 .align(Alignment.CenterStart),

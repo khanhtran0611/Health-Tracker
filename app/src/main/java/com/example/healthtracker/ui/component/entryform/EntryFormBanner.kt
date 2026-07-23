@@ -17,6 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun EntryFormBanner(
@@ -28,9 +31,9 @@ fun EntryFormBanner(
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = RoundedCornerShape(16.dp),
+                shape = MaterialTheme.appShapes.large,
             )
-            .padding(24.dp),
+            .padding(MaterialTheme.spacing.xl),
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -38,9 +41,9 @@ fun EntryFormBanner(
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(MaterialTheme.sizing.bannerIconSize),
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,

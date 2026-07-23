@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import com.example.healthtracker.ui.theme.sizing
 
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier) {
@@ -32,7 +33,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(R.drawable.ic_app_logo),
             contentDescription = null,
-            modifier = Modifier.size(140.dp),
+            modifier = Modifier.size(MaterialTheme.sizing.splashLogoSize),
             contentScale = ContentScale.Fit
         )
     }

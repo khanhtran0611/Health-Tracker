@@ -23,6 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun CaloriesBurnedCard(
@@ -31,13 +34,13 @@ fun CaloriesBurnedCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.appShapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 24.dp),
+                .padding(vertical = MaterialTheme.spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -45,9 +48,9 @@ fun CaloriesBurnedCard(
                     Icons.Default.LocalFireDepartment,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconSmall),
                 )
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(MaterialTheme.spacing.xs))
                 Text(
                     stringResource(R.string.label_calories_burned),
                     style = MaterialTheme.typography.labelMedium,
@@ -55,7 +58,7 @@ fun CaloriesBurnedCard(
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.sm))
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
                     text = "${caloriesBurned.toInt()}",

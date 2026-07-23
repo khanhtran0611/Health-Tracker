@@ -16,6 +16,7 @@ import com.example.healthtracker.ui.component.formatting.formatDiaryDate
 import com.example.healthtracker.ui.dashboard.components.*
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun DashboardScreen(
@@ -59,7 +60,7 @@ fun DashboardContent(
             goal = uiState.tdee.toInt(),
             eaten = uiState.eatenToday.toInt(),
             burned = uiState.burnedToday.toInt(),
-            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+            modifier = Modifier.padding(top = MaterialTheme.spacing.sm, bottom = MaterialTheme.spacing.lg)
         )
 
         CalorieSummaryCard(
@@ -68,14 +69,14 @@ fun DashboardContent(
             balance = uiState.balance.toInt(),
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
         CalorieNeedIndicator(
             remainingCalories = uiState.remaining.toInt(),
             calorieStatus = uiState.calorieStatus,
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
         DashboardActionButtons(
             calorieStatus = uiState.calorieStatus,
@@ -83,7 +84,7 @@ fun DashboardContent(
             onAddActivityClick = onAddActivityClick
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
     }
 }
 

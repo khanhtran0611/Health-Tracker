@@ -18,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun MealEntryRow(
@@ -28,11 +30,11 @@ fun MealEntryRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = MaterialTheme.spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(entry.foodName, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(bottom = 2.dp))
+            Text(entry.foodName, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(bottom = MaterialTheme.spacing.xxs))
             Text(
                 formatQuantity(entry.quantity),
                 style = MaterialTheme.typography.bodySmall,
@@ -45,12 +47,12 @@ fun MealEntryRow(
                 text = "${entry.calories.toInt()} ${stringResource(R.string.unit_kcal)}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(end = 6.dp)
+                modifier = Modifier.padding(end = MaterialTheme.spacing.xsPlus)
             )
 
             IconButton(
                 onClick = onDelete,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(MaterialTheme.sizing.iconLarge),
             ) {
                 Icon(
                     Icons.Default.Delete,

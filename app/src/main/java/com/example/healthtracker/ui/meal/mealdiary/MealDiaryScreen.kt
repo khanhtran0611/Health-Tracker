@@ -32,6 +32,7 @@ import com.example.healthtracker.ui.meal.mealdiary.components.MealTypeSection
 import com.example.healthtracker.ui.meal.mealdiary.components.TotalTodayCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun MealDiaryScreen(
@@ -64,8 +65,8 @@ fun MealDiaryContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(MaterialTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
     ) {
 
         Box(modifier = Modifier.fillMaxWidth()) {

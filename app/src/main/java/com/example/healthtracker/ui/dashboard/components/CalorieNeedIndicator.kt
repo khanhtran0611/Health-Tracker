@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.dashboard.CalorieStatus
 import kotlin.math.abs
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun CalorieNeedIndicator(
@@ -41,10 +43,10 @@ fun CalorieNeedIndicator(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-            .clip(RoundedCornerShape(24.dp))
+            .padding(horizontal = MaterialTheme.spacing.xl)
+            .clip(MaterialTheme.appShapes.extraLarge)
             .background(containerColor)
-            .padding(vertical = 16.dp),
+            .padding(vertical = MaterialTheme.spacing.lg),
         contentAlignment = Alignment.Center
     ) {
         Text(

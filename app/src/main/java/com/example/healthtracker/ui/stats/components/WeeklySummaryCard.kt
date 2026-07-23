@@ -27,6 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.stats.DailyCalorieStat
 import kotlin.math.roundToInt
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun WeeklySummaryCard(
@@ -41,11 +45,11 @@ fun WeeklySummaryCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.stats_summary_title),
                 style = MaterialTheme.typography.titleMedium,
@@ -53,7 +57,7 @@ fun WeeklySummaryCard(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             SummaryRow(
                 label = stringResource(R.string.stats_avg_eaten_label),
@@ -61,7 +65,7 @@ fun WeeklySummaryCard(
                 valueColor = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             SummaryRow(
                 label = stringResource(R.string.stats_avg_burned_label),
@@ -69,7 +73,7 @@ fun WeeklySummaryCard(
                 valueColor = MaterialTheme.colorScheme.primary,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             SummaryRow(
                 label = stringResource(R.string.stats_days_goal_met_label),
@@ -77,7 +81,7 @@ fun WeeklySummaryCard(
                 valueColor = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 dailyStats.forEach { stat ->
@@ -86,7 +90,7 @@ fun WeeklySummaryCard(
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     }
-                    Box(modifier = Modifier.size(12.dp).background(dotColor, CircleShape))
+                    Box(modifier = Modifier.size(MaterialTheme.sizing.legendDotSize).background(dotColor, CircleShape))
                 }
             }
         }

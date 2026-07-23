@@ -82,6 +82,10 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ProfileForm(
@@ -108,10 +112,10 @@ fun ProfileForm(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(MaterialTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
             Text(stringResource(R.string.field_full_name), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             OutlinedTextField(
                 value = state.fullName,
@@ -119,7 +123,7 @@ fun ProfileForm(
                 isError = state.fullNameError != null,
                 supportingText = fieldErrorText(state.fullNameError)?.let { { Text(it) } },
                 singleLine = true,
-                shape = RoundedCornerShape(8.dp),
+                shape = MaterialTheme.appShapes.small,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -131,16 +135,16 @@ fun ProfileForm(
             onDateChange = onDateOfBirthChange,
         )
 
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
             Text(stringResource(R.string.section_gender), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             GenderSelector(gender = state.gender, onGenderChange = onGenderChange)
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1f)) {
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs), modifier = Modifier.weight(1f)) {
                 Text(stringResource(R.string.field_weight), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 OutlinedTextField(
                     value = state.weightKg,
@@ -150,11 +154,11 @@ fun ProfileForm(
                     supportingText = fieldErrorText(state.weightError)?.let { { Text(it) } },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = MaterialTheme.appShapes.small,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.weight(1f)) {
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs), modifier = Modifier.weight(1f)) {
                 Text(stringResource(R.string.field_height), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 OutlinedTextField(
                     value = state.heightCm,
@@ -164,14 +168,14 @@ fun ProfileForm(
                     supportingText = fieldErrorText(state.heightError)?.let { { Text(it) } },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = MaterialTheme.appShapes.small,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
 
         Text(stringResource(R.string.section_activity_level), style = MaterialTheme.typography.titleMedium)
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
             ActivityLevelOption.entries.forEach { option ->
                 ActivityLevelCard(
                     option = option,
@@ -205,7 +209,7 @@ private fun DateOfBirthField(
     var showDatePicker by remember { mutableStateOf(false) }
     val formatter = remember { DateTimeFormatter.ofPattern("dd/MM/yyyy") }
 
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
         Text(stringResource(R.string.field_date_of_birth), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(
             value = dateOfBirth?.format(formatter) ?: "",
@@ -219,7 +223,7 @@ private fun DateOfBirthField(
             isError = error != null,
             supportingText = fieldErrorText(error)?.let { { Text(it) } },
             singleLine = true,
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.appShapes.small,
             modifier = Modifier.fillMaxWidth(),
         )
         if (age != null) {
@@ -227,7 +231,7 @@ private fun DateOfBirthField(
                 text = stringResource(R.string.field_age_value, age),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                modifier = Modifier.padding(start = MaterialTheme.spacing.xs, top = MaterialTheme.spacing.xs),
             )
         }
     }
@@ -294,7 +298,7 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.fillMaxWidth().menuAnchor(),
-            shape = RoundedCornerShape(8.dp)
+            shape = MaterialTheme.appShapes.small
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -329,26 +333,26 @@ private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
         GoalOption(Goal.MAINTAIN, R.string.goal_maintain, R.string.goal_maintain_desc, Icons.Filled.TrendingFlat),
         GoalOption(Goal.GAIN, R.string.goal_gain, R.string.goal_gain_desc, Icons.Filled.TrendingUp),
     )
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
         options.forEach { option ->
             val selected = goal == option.goal
             Surface(
                 onClick = { onGoalChange(option.goal) },
-                shape = RoundedCornerShape(16.dp),
+                shape = MaterialTheme.appShapes.large,
                 color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
                 border = BorderStroke(
-                    width = if (selected) 1.5.dp else 1.dp,
+                    width = if (selected) MaterialTheme.borderWidths.borderMedium else MaterialTheme.borderWidths.borderThin,
                     color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                 ),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
-                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.md, horizontal = MaterialTheme.spacing.lg),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
+                            .size(MaterialTheme.sizing.selectionIconContainerSize)
                             .background(
                                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
                                 shape = CircleShape,
@@ -359,11 +363,11 @@ private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
                             imageVector = option.icon,
                             contentDescription = null,
                             tint = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(MaterialTheme.sizing.iconMedium),
                         )
                     }
 
-                    Spacer(Modifier.width(12.dp))
+                    Spacer(Modifier.width(MaterialTheme.spacing.md))
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
@@ -409,16 +413,16 @@ private fun ActivityLevelCard(
 ) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
         border = BorderStroke(
-            width = 1.dp,
+            width = MaterialTheme.borderWidths.borderThin,
             color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
         ),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(MaterialTheme.spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -436,15 +440,15 @@ private fun ActivityLevelCard(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(MaterialTheme.sizing.iconLarge)
                         .background(MaterialTheme.colorScheme.primary, CircleShape)
-                        .padding(4.dp),
+                        .padding(MaterialTheme.spacing.xs),
                 )
             } else {
                 Box(
                     modifier = Modifier
-                        .size(24.dp)
-                        .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                        .size(MaterialTheme.sizing.iconLarge)
+                        .border(MaterialTheme.borderWidths.borderThin, MaterialTheme.colorScheme.outline, CircleShape),
                 )
             }
         }

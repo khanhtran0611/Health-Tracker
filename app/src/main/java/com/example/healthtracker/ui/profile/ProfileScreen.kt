@@ -39,6 +39,8 @@ import com.example.healthtracker.ui.profile.components.BmiCard
 import com.example.healthtracker.ui.profile.components.ProfileStatsRow
 import com.example.healthtracker.ui.profile.components.TdeeCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ProfileScreen(
@@ -75,10 +77,10 @@ fun ProfileContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(horizontal = MaterialTheme.spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
     ) {
-        Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
+        Box(modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.spacing.lg)) {
             Text(
                 text = stringResource(R.string.profile_title),
                 style = MaterialTheme.typography.titleLarge,
@@ -127,14 +129,14 @@ fun ProfileContent(
 
         OutlinedButton(
             onClick = onEditProfileClick,
-            modifier = Modifier.fillMaxWidth().height(56.dp),
+            modifier = Modifier.fillMaxWidth().height(MaterialTheme.sizing.buttonHeight),
         ) {
-            Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(20.dp))
-            Spacer(modifier = Modifier.width(8.dp))
+            Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(MaterialTheme.sizing.iconMedium))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
             Text(stringResource(R.string.action_edit_profile), fontWeight = FontWeight.SemiBold)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
     }
 }
 

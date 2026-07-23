@@ -24,6 +24,8 @@ import com.example.healthtracker.R
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun StatsDateRangeNavigator(
@@ -41,8 +43,8 @@ fun StatsDateRangeNavigator(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(999.dp))
-            .padding(vertical = 4.dp, horizontal = 4.dp),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.appShapes.full)
+            .padding(vertical = MaterialTheme.spacing.xs, horizontal = MaterialTheme.spacing.xs),
     ) {
         Row(
             modifier = Modifier.align(Alignment.Center),

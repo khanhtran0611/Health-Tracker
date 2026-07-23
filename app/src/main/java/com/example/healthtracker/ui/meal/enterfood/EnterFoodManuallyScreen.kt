@@ -34,6 +34,7 @@ import com.example.healthtracker.ui.component.entryform.EntryFormTopBar
 import com.example.healthtracker.ui.component.overlay.ConfirmDeleteDialog
 import com.example.healthtracker.ui.meal.enterfood.components.LabeledOutlinedField
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,14 +105,14 @@ fun EnterFoodManuallyContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(MaterialTheme.spacing.lg),
         ) {
             EntryFormBanner(
                 icon = Icons.Default.Restaurant,
                 text = stringResource(R.string.text_custom_food_banner),
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             LabeledOutlinedField(
                 label = stringResource(R.string.field_food_name),
@@ -121,7 +122,7 @@ fun EnterFoodManuallyContent(
                 error = uiState.nameError,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             LabeledOutlinedField(
                 label = stringResource(R.string.field_calories_required),
@@ -135,12 +136,12 @@ fun EnterFoodManuallyContent(
                         text = stringResource(R.string.unit_kcal),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(end = 16.dp),
+                        modifier = Modifier.padding(end = MaterialTheme.spacing.lg),
                     )
                 },
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             LabeledOutlinedField(
                 label = stringResource(R.string.field_serving_unit_optional),
@@ -149,7 +150,7 @@ fun EnterFoodManuallyContent(
                 placeholder = stringResource(R.string.field_serving_unit_placeholder),
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             EntryFormInfoRow(text = stringResource(R.string.text_custom_food_info))
         }

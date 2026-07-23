@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun ColorThemeSelector(
@@ -23,19 +27,19 @@ fun ColorThemeSelector(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
     ) {
         colors.forEachIndexed { index, color ->
             val isSelected = index == selectedIndex
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(MaterialTheme.sizing.colorSwatchSize)
                     .border(
-                        width = if (isSelected) 2.dp else 0.dp,
+                        width = if (isSelected) MaterialTheme.borderWidths.borderThick else MaterialTheme.borderWidths.borderNone,
                         color = if (isSelected) color else Color.Transparent,
                         shape = CircleShape
                     )
-                    .padding(4.dp)
+                    .padding(MaterialTheme.spacing.xs)
                     .background(color, CircleShape)
                     .clickable { onColorSelected(index) }
             )

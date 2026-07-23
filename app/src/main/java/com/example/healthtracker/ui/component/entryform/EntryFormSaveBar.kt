@@ -17,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.borderWidths
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun EntryFormSaveBar(
@@ -35,15 +39,15 @@ fun EntryFormSaveBar(
             enabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(12.dp),
+                .padding(MaterialTheme.spacing.lg)
+                .height(MaterialTheme.sizing.buttonHeight),
+            shape = MaterialTheme.appShapes.medium,
         ) {
             if (isSaving) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.iconMedium),
                     color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp,
+                    strokeWidth = MaterialTheme.borderWidths.borderThick,
                 )
             } else {
                 Text(stringResource(R.string.action_save_and_use))

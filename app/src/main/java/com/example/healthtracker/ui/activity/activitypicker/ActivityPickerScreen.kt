@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import com.example.healthtracker.ui.activity.activitypicker.components.ManualAct
 import com.example.healthtracker.ui.activity.addactivityentry.AddActivityEntryScreen
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
+import com.example.healthtracker.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,7 +96,7 @@ fun ActivityPickerContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(MaterialTheme.spacing.lg),
     ) {
         OutlinedTextField(
             value = uiState.searchQuery,
@@ -107,7 +109,7 @@ fun ActivityPickerContent(
 
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
         ) {
             items(uiState.activities, key = { it.id }) { activity ->
                 ActivityListItem(
@@ -119,7 +121,7 @@ fun ActivityPickerContent(
             item {
                 ManualActivityEntryCard(
                     onClick = onEnterNewActivity,
-                    modifier = Modifier.padding(top = 16.dp),
+                    modifier = Modifier.padding(top = MaterialTheme.spacing.lg),
                 )
             }
         }

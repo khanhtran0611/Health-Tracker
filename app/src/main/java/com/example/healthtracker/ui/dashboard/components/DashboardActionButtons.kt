@@ -17,6 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.dashboard.CalorieStatus
+import com.example.healthtracker.ui.theme.appShapes
+import com.example.healthtracker.ui.theme.sizing
+import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun DashboardActionButtons(
@@ -30,8 +33,8 @@ fun DashboardActionButtons(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = MaterialTheme.spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
     ) {
         if (calorieStatus == CalorieStatus.UNDER_TARGET) {
             CustomActionButton(
@@ -58,10 +61,10 @@ private fun CustomActionButton(
     Card(
         onClick = onClick,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.appShapes.large,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Box(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+        Box(modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.lg)) {
             Column(modifier = Modifier.align(Alignment.CenterStart)) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -69,9 +72,9 @@ private fun CustomActionButton(
                         Icons.Default.Lightbulb,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(MaterialTheme.sizing.iconMedium)
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.xsPlus))
                     Text(
                         stringResource(R.string.label_hint_prefix),
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
@@ -79,11 +82,11 @@ private fun CustomActionButton(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                     Text(
                         text = text,
                         color = MaterialTheme.colorScheme.onPrimary,
