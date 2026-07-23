@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.healthtracker.ui.activity.activitydiary.ActivityDiaryScreen
 import com.example.healthtracker.ui.dashboard.DashboardScreen
@@ -35,16 +36,16 @@ private const val TAB_TRANSITION_DURATION_MS = 300
 
 @Composable
 fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
-    val tabBackStacks = rememberTabBackStacks()
+    val backStack = rememberNavBackStack(Route.Dashboard)
 
     var currentTabIndex by rememberSaveable { mutableIntStateOf(TopLevelTab.DASHBOARD.ordinal) }
     val currentTab = TopLevelTab.entries[currentTabIndex]
-    val activeBackStack = tabBackStacks.getValue(currentTab.route)
 
     var isMovingForward by remember { mutableStateOf(true) }
 
     fun switchToTab(tab: TopLevelTab) {
         isMovingForward = tab.ordinal >= currentTabIndex
+        navigateToTab(backStack, tab.route)
         currentTabIndex = tab.ordinal
     }
 
@@ -67,8 +68,8 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
         },
     ) { padding ->
         NavDisplay(
-            backStack = activeBackStack,
-            onBack = { activeBackStack.removeLastOrNull() },
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize().padding(padding),
             transitionSpec = {
                 val towards = if (isMovingForward) {
