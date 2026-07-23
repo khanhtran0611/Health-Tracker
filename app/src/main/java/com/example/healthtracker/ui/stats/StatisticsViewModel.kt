@@ -91,9 +91,13 @@ class StatisticsViewModel @Inject constructor(
         )
     }
 
+    // val uiState: StateFlow<StatisticsUiState> = combine(weeklyFlow, monthlyFlow) { weekly, monthly ->
+    //     weekly.copy(monthlySummary = monthly)
+    // }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(Lazily), StatisticsUiState())
+
     val uiState: StateFlow<StatisticsUiState> = combine(weeklyFlow, monthlyFlow) { weekly, monthly ->
         weekly.copy(monthlySummary = monthly)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), StatisticsUiState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(0), StatisticsUiState())
 
     private fun computeTdee(user: User?): Double {
         if (user == null) return 0.0
