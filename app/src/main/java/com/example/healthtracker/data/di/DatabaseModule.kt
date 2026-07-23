@@ -40,7 +40,7 @@ object DatabaseModule {
         ).addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                // Nạp catalog seed 1 lần khi DB được tạo lần đầu.
+
                 CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
                     val database = databaseProvider.get()
                     val foodDao = database.foodDao()
@@ -51,10 +51,6 @@ object DatabaseModule {
             }
         }).build()
     }
-
-    // Khi provideDatabase sinh ra object dependency , thì cái object nó cũng sẽ chứa sẵn triển khai
-    // cho các hàm như userDao(),foodDao() ,... Khi các hàm này được gọi trong provideUserDao,...
-    // thì các ọbject DAO tương ứng được sinh ra.
 
     @Provides
     fun provideUserDao(db: HealthTrackerDatabase): UserDao = db.userDao()
@@ -67,10 +63,6 @@ object DatabaseModule {
 
     @Provides
     fun provideMealEntryDao(db: HealthTrackerDatabase): MealEntryDao = db.mealEntryDao()
-
-    // Các tham số của các hàm có annotation @Provides => Hilt sẽ tự tìm dependency cho nó
-    // Muốn tạo UserDao → tôi cần một HealthTrackerDatabase. Ai cung cấp nó?"
-    // → thấy provideDatabase(...) (cũng @Provides). Nó gọi provideDatabase trước, lấy kết quả nhét vào db.
 
     @Provides
     fun provideActivityEntryDao(db: HealthTrackerDatabase): ActivityEntryDao = db.activityEntryDao()

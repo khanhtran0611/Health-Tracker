@@ -25,10 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.ui.component.formatFoodCalorieInfo
 
-/**
- * Thẻ hiện món đã chọn: chỉ tên + "{kcal} kcal / {servingUnit}" — KHÔNG có nút
- * đổi món (đổi món thì back về Food Picker để chọn lại, không sửa ở đây).
- */
 @Composable
 fun FoodSummaryCard(
     food: Food,
@@ -50,4 +46,3 @@ fun FoodSummaryCard(
         }
     }
 }
-

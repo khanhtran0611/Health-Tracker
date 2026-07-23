@@ -22,10 +22,6 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.ui.component.formatFoodCalorieInfo
 
-/**
- * 1 dòng món ăn trong danh sách chọn: tên + khẩu phần/calo bên trái, nút sửa (edit)
- * + nút "+" bên phải.
- */
 @Composable
 fun FoodListItem(
     food: Food,
@@ -48,9 +44,7 @@ fun FoodListItem(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        // IconButton mặc định chiếm khối 48dp (vùng chạm a11y) dù icon chỉ 24dp -> ép
-        // size(24.dp) lên chính IconButton để khối bằng đúng icon, áp sát mép phải
-        // (giống fix đã làm ở MealEntryRow).
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = onEditClick,

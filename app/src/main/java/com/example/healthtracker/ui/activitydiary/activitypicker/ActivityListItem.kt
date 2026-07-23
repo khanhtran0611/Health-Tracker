@@ -25,7 +25,6 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Activity
 import com.example.healthtracker.ui.component.formatActivityMetInfo
 
-/** 1 dòng hoạt động trong danh sách chọn: tên + MET bên trái, nút sửa + nút "+" bên phải. */
 @Composable
 fun ActivityListItem(
     activity: Activity,

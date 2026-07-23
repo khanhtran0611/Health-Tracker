@@ -37,10 +37,7 @@ fun CalorieProgressCircle(
         contentAlignment = Alignment.Center
     ) {
         val trackColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        // Vượt quá (remaining < 0) -> đỏ; vừa đủ (remaining == 0) -> xanh lá;
-        // còn dư (remaining > 0) -> cam như mặc định. Cung progress lúc vượt
-        // quá đã full 360° (coerce bên dưới) nên đè kín track xám, "cả vòng
-        // tròn" sẽ hiện đúng màu như yêu cầu.
+
         val progressColor = when (calorieStatus) {
             CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.error
             CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primary
@@ -48,12 +45,8 @@ fun CalorieProgressCircle(
         }
         val strokeWidth = 24.dp
 
-        // Chặn progress trong [0f, 1f] — user ăn vượt TDEE (progress > 1) không được
-        // làm cung tô tràn quá 1 vòng tròn.
         val clampedProgress = progress.coerceIn(0f, 1f)
-        // Animate thay vì gán thẳng: mỗi khi progress đổi (ăn/đốt thêm calo, hoặc
-        // vừa tải xong dữ liệu), cung tròn "quét" mượt tới vị trí mới thay vì
-        // nhảy khựng 1 phát — cùng animationSpec với số ở dưới để 2 hiệu ứng khớp nhịp nhau.
+
         val animatedProgress by animateFloatAsState(
             targetValue = clampedProgress,
             animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
@@ -63,13 +56,12 @@ fun CalorieProgressCircle(
         Canvas(
             modifier = Modifier.size(240.dp)
         ) {
-            // -90f = đỉnh 12 giờ (quy ước Compose: 0f = 3 giờ, góc tăng theo chiều kim đồng hồ).
+
             val startAngle = -90f
             val sweepAngle = 360f
             val inset = strokeWidth.toPx() / 2
             val arcSize = size.copy(width = size.width - strokeWidth.toPx(), height = size.height - strokeWidth.toPx())
 
-            // Draw background track
             drawArc(
                 color = trackColor,
                 startAngle = startAngle,
@@ -80,7 +72,6 @@ fun CalorieProgressCircle(
                 style = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
             )
 
-            // Draw progress track
             drawArc(
                 color = progressColor,
                 startAngle = startAngle,
@@ -96,10 +87,7 @@ fun CalorieProgressCircle(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(top = 16.dp)
         ) {
-            // caloriesLeft âm nghĩa là đã vượt ngân sách -> hiện trị tuyệt đối +
-            // đổi nhãn "kcal left" thành "kcal over", KHÔNG hiện dấu trừ trần trụi
-            // (vd "-150") vì user thường không hiểu ngay đó là "vượt bao nhiêu".
-            // Đếm chạy số cùng animationSpec với cung tròn ở trên cho khớp nhịp.
+
             val animatedCaloriesLeft by animateIntAsState(
                 targetValue = abs(caloriesLeft),
                 animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),

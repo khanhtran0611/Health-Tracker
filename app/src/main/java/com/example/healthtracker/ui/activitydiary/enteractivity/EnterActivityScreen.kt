@@ -48,11 +48,6 @@ import com.example.healthtracker.ui.component.ConfirmDeleteDialog
 import com.example.healthtracker.ui.component.fieldErrorText
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/**
- * Điểm vào thật — nối ViewModel qua Hilt. Dùng chung cho cả thêm hoạt động mới
- * (activity = null) và sửa hoạt động có sẵn (activity khác null) — chỉ khác
- * tiêu đề. Phần hiển thị thật nằm ở [EnterActivityContent].
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterActivityScreen(
@@ -81,14 +76,11 @@ fun EnterActivityScreen(
         onMetChange = viewModel::onMetChange,
         onSave = viewModel::onSubmit,
         onClose = onClose,
-        // Nút xoá chỉ hiện khi đang sửa hoạt động có sẵn (activity != null).
+
         onDelete = if (activity != null) viewModel::onDelete else null,
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterActivityContent(
@@ -173,7 +165,7 @@ fun EnterActivityContent(
                 .padding(padding)
                 .padding(16.dp),
         ) {
-            // Banner
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -202,7 +194,6 @@ fun EnterActivityContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Activity name
             Text(
                 text = stringResource(R.string.field_activity_name),
                 style = MaterialTheme.typography.labelLarge,
@@ -222,7 +213,6 @@ fun EnterActivityContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // MET
             Text(
                 text = stringResource(R.string.field_met_required),
                 style = MaterialTheme.typography.labelLarge,
@@ -243,7 +233,6 @@ fun EnterActivityContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Info text
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,

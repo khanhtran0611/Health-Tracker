@@ -17,7 +17,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** Tạo NotificationChannel (1 lần lúc app khởi động) + build/hiện notification cho từng [ReminderType]. */
 @Singleton
 class ReminderNotifier @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -30,17 +29,12 @@ class ReminderNotifier @Inject constructor(
         ).apply {
             description = context.getString(R.string.reminder_channel_description)
         }
-        // lấy NotificationManager (system service,
-        // giống cách lấy AlarmManager đã nói ở câu trả lời trước)
-        // rồi đăng ký NotificationChannel với hệ thống.
+
         context.getSystemService<NotificationManager>()?.createNotificationChannel(channel)
     }
 
     fun showReminderNotification(type: ReminderType) {
-        // Từ Android 13 (API 33) phải xin quyền POST_NOTIFICATIONS mới hiện được
-        // notification — chưa có quyền thì bỏ qua thay vì để hệ thống crash/no-op
-        // âm thầm. Trên API < 33, hàm check này luôn trả GRANTED (quyền không áp
-        // dụng), nên không cần rẽ nhánh theo Build.VERSION.
+
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -55,7 +49,6 @@ class ReminderNotifier @Inject constructor(
             },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)

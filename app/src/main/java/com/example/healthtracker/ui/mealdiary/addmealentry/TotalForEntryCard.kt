@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 
-/** Thẻ nền xanh nhạt: tổng calo của riêng entry đang thêm (food.calories × quantity). */
 @Composable
 fun TotalForEntryCard(
     totalCalories: Double,

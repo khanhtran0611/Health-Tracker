@@ -31,7 +31,6 @@ import com.example.healthtracker.ui.component.DateNavigator
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [MealDiaryContent]. */
 @Composable
 fun MealDiaryScreen(
     onAddFood: (MealType, LocalDate) -> Unit,
@@ -49,10 +48,6 @@ fun MealDiaryScreen(
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [MealDiaryScreen]
- * để @Preview dùng được (màn Preview không có Hilt container để dựng ViewModel thật).
- */
 @Composable
 fun MealDiaryContent(
     uiState: MealDiaryUiState,
@@ -70,11 +65,10 @@ fun MealDiaryContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        // Box + Alignment (giống DateNavigator): tiêu đề LUÔN ở giữa dù icon drawer
-        // bên trái có mặt hay không — icon hiện để trưng, chưa có logic mở drawer.
+
         Box(modifier = Modifier.fillMaxWidth()) {
             IconButton(
-                onClick = { /* TODO: mở drawer khi có logic */ },
+                onClick = {  },
                 modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(Icons.Default.Menu, contentDescription = null)

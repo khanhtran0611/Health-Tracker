@@ -40,7 +40,6 @@ import com.example.healthtracker.ui.profile.components.ProfileStatsRow
 import com.example.healthtracker.ui.profile.components.TdeeCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [ProfileContent]. */
 @Composable
 fun ProfileScreen(
     onEditProfileClick: () -> Unit,
@@ -58,10 +57,6 @@ fun ProfileScreen(
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [ProfileScreen]
- * để @Preview dùng được (màn Preview không có Hilt container để dựng ViewModel thật).
- */
 @Composable
 fun ProfileContent(
     uiState: ProfileUiState,

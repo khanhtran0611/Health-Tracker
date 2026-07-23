@@ -12,7 +12,6 @@ fun ActivityEntryEntity.toDomain(): ActivityEntry = ActivityEntry(
     caloriesBurned = caloriesBurned,
 )
 
-/** createdAt để mặc định (now) khi insert; repository giữ createdAt cũ khi update. */
 fun ActivityEntry.toEntity(): ActivityEntryEntity = ActivityEntryEntity(
     id = id,
     activityId = activityId,

@@ -41,13 +41,8 @@ import com.example.healthtracker.ui.toast.ToastViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
-// Thời lượng animation chuyển màn (slide + fade) khi push/pop trong NavDisplay tầng ngoài.
 private const val NAV_TRANSITION_DURATION_MS = 300
 
-/**
- * Gốc app: chờ [AppStartViewModel] xác định đã có hồ sơ user chưa rồi mới dựng
- * backstack — tránh chớp màn Onboarding rồi nhảy sang MainShell.
- */
 @Composable
 fun HealthTrackerApp() {
     val appStartViewModel: AppStartViewModel = hiltViewModel()
@@ -60,43 +55,19 @@ fun HealthTrackerApp() {
     }
 }
 
-/**
- * Khung điều hướng TẦNG NGOÀI — 2 tầng NavDisplay lồng nhau:
- * - Tầng ngoài (ở đây): Onboarding, [Route.MainShell] (đại diện cho cả shell
- *   5-tab), và mọi màn con đứng NGOÀI phạm vi 1 tab cụ thể (FoodPicker,
- *   EnterFoodManually, ChooseActivity, EnterActivityManually, Settings,
- *   EditProfile) — những màn này ẩn bottom bar vì bottom bar giờ sống hẳn bên
- *   trong [MainShellScreen], không còn ở tầng này nữa.
- * - Tầng trong: xem [MainShellScreen] — NavDisplay riêng cho 5 tab, mỗi tab giữ
- *   backstack riêng.
- *
- * Route con nào đó muốn được add từ TRONG MainShellScreen (vd bấm "+ Thêm món
- * ăn" ở MealDiary) phải bubble ra qua `onNavigateOuter` để add vào ĐÚNG
- * backstack tầng ngoài này, không phải backstack riêng của tab hay của
- * MainShell.
- */
 @Composable
 private fun HealthTrackerNavHost(startRoute: Route) {
     val backStack = rememberNavBackStack(startRoute)
 
-    // Toast dùng chung toàn app: bất kỳ ViewModel nào cũng gửi message được
-    // (qua ToastController), hiện ở ĐÚNG 1 chỗ này (tầng NGOÀI CÙNG) vì đây là
-    // nơi duy nhất sống xuyên suốt mọi lần chuyển màn Ở CẢ 2 TẦNG — kể cả khi
-    // đang đứng ở FoodPicker/Settings (tầng ngoài) lẫn Dashboard/MealDiary (tầng
-    // trong) — xem thêm ui/toast/ToastController.kt.
     val toastViewModel: ToastViewModel = hiltViewModel()
-    // vì toast có thể null => phải type "T?", không phải mỗi "T"
+
     var currentToast by remember { mutableStateOf<ToastData?>(null) }
 
     LaunchedEffect(Unit) {
         toastViewModel.messages.collect { message ->
-            // Chờ pop/push transition của NavDisplay chạy xong rồi mới hiện toast,
-            // để enter animation không bị rớt frame vì main thread đang bận vẽ transition.
+
             delay(NAV_TRANSITION_DURATION_MS.toLong())
-            // Giữ nguyên textRes, KHÔNG resolve String ở đây bằng context.getString():
-            // LaunchedEffect(Unit) không bao giờ chạy lại nên context bị đóng băng ở
-            // lần compose đầu tiên -> đổi ngôn ngữ ở Settings sau đó sẽ không còn tác
-            // dụng với toast. Để SharedToast tự stringResource() lúc render.
+
             currentToast = ToastData(textRes = message.textRes, type = message.type)
             delay(3000)
             currentToast = null
@@ -108,12 +79,9 @@ private fun HealthTrackerNavHost(startRoute: Route) {
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
-                // KHÔNG áp `Modifier.padding(padding)` chung ở đây — MainShell cần
-                // toàn bộ màn hình thật (nó có bottom bar riêng, tự lo insets của
-                // chính nó). padding được áp RIÊNG cho từng route con khác bên dưới.
+
                 modifier = Modifier.fillMaxSize(),
-                // Đi tới màn mới: màn mới trượt vào từ bên phải + fade in,
-                // màn cũ trượt sang trái + fade out.
+
                 transitionSpec = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -124,8 +92,7 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                             animationSpec = tween(NAV_TRANSITION_DURATION_MS),
                         ) + fadeOut(animationSpec = tween(NAV_TRANSITION_DURATION_MS))
                 },
-                // Back (pop): ngược lại — màn trước trượt vào từ bên trái + fade in,
-                // màn hiện tại trượt sang phải + fade out.
+
                 popTransitionSpec = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.End,
@@ -137,12 +104,12 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                         ) + fadeOut(animationSpec = tween(NAV_TRANSITION_DURATION_MS))
                 },
                 entryProvider = entryProvider {
-                    // ----- Onboarding (ngoài shell) -----
+
                     entry<Route.Onboarding> {
                         Box(modifier = Modifier.padding(padding)) {
                             OnboardingScreen(
                                 onFinishOnboarding = {
-                                    // Xoá backstack để không back về Onboarding được nữa.
+
                                     backStack.clear()
                                     backStack.add(Route.MainShell)
                                 },
@@ -150,14 +117,12 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                         }
                     }
 
-                    // ----- Shell 5-tab (bottom bar sống bên trong MainShellScreen) -----
                     entry<Route.MainShell> {
                         MainShellScreen(
                             onNavigateOuter = { route -> backStack.add(route) },
                         )
                     }
 
-                    // ----- Màn con Meal (ẩn bottom bar) -----
                     entry<Route.FoodPicker> { route ->
                         Box(modifier = Modifier.padding(padding)) {
                             FoodPickerScreen(
@@ -178,7 +143,6 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                         }
                     }
 
-                    // ----- Màn con Activity (ẩn bottom bar) -----
                     entry<Route.ChooseActivity> { route ->
                         Box(modifier = Modifier.padding(padding)) {
                             ActivityPickerScreen(
@@ -198,14 +162,12 @@ private fun HealthTrackerNavHost(startRoute: Route) {
                         }
                     }
 
-                    // ----- Màn con Profile (ẩn bottom bar) -----
                     entry<Route.Settings> {
                         Box(modifier = Modifier.padding(padding)) {
                             SettingScreen(
                                 onBackClick = { backStack.removeLastOrNull() },
                                 onResetComplete = {
-                                    // Giống onFinishOnboarding: xoá sạch backstack, không cho back
-                                    // trở lại MainShell/Settings vì hồ sơ đã bị xoá.
+
                                     backStack.clear()
                                     backStack.add(Route.Onboarding)
                                 },

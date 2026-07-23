@@ -11,16 +11,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * AlarmManager bị hệ thống xoá sạch mỗi khi khởi động lại máy — receiver này
- * chạy đúng 1 lần lúc boot xong, đọc lại AppSettings từ DataStore rồi đặt lại
- * lịch cho các reminder đang bật.
- *
- * onReceive() không phải hàm suspend nhưng cần đọc DataStore (suspend) -> dùng
- * goAsync() xin hệ thống cho thêm thời gian chạy nền, chạy trong 1 CoroutineScope
- * riêng rồi gọi pendingResult.finish() khi xong (bắt buộc, không thì hệ thống có
- * thể giết tiến trình trước khi coroutine kịp hoàn tất).
- */
 @AndroidEntryPoint
 class BootCompletedReceiver : BroadcastReceiver() {
 

@@ -33,14 +33,12 @@ import com.example.healthtracker.R
 import com.example.healthtracker.ui.profile.BmiCategory
 import kotlin.math.roundToInt
 
-/** Thang hiển thị của thanh BMI — bao trọn cả 4 mức (Thiếu cân..Béo phì), khớp mốc 18.5/25/30 theo đề. */
 private const val BMI_SCALE_MAX = 40.0
 
 @Composable
 fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
     val categoryColor = bmiCategoryColor(category)
-    // Làm tròn 1 chữ số thập phân bằng số học thay vì String.format — tránh dấu
-    // thập phân đổi theo locale máy (vd "22,9" ở vi-VN thay vì "22.9").
+
     val roundedBmi = (bmi * 10).roundToInt() / 10.0
 
     Card(
@@ -96,7 +94,6 @@ fun BmiCard(bmi: Double, category: BmiCategory, modifier: Modifier = Modifier) {
     }
 }
 
-/** Thanh 4 đoạn (Thiếu cân/Bình thường/Thừa cân/Béo phì) + chấm tròn đánh dấu vị trí BMI hiện tại. */
 @Composable
 private fun BmiBar(bmi: Double, modifier: Modifier = Modifier) {
     val thumbSize = 16.dp

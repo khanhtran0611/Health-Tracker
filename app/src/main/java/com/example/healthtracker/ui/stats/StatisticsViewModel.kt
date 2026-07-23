@@ -24,10 +24,6 @@ import javax.inject.Inject
 
 private const val STATS_DAYS = 7L
 
-// Giới hạn xem lịch sử — lùi quá xa thì dữ liệu thưa dần (mới ghi nhật ký gần
-// đây), lùi vô hạn chỉ tổ cho query DB tốn công vô ích. Đồng thời đây cũng CHÍNH
-// LÀ độ dài cửa sổ cho thẻ "Tổng kết 30 ngày qua" (monthlyFlow bên dưới) — 2 khái
-// niệm trùng số ngày nên dùng chung 1 hằng số, tránh khai 2 số riêng dễ lệch nhau.
 private const val MAX_HISTORY_DAYS = 30L
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,16 +39,8 @@ class StatisticsViewModel @Inject constructor(
 
     private val today: LocalDate = LocalDate.now()
 
-    // 0 = 7 ngày gần nhất tính đến hôm nay, 1 = lùi thêm 7 ngày trước đó, v.v.
-    // Đây là "trang" đang xem, không phải ngày cụ thể — nhân với STATS_DAYS mới
-    // ra được endDate thật.
     private val _weekOffset = MutableStateFlow(0)
 
-    // flatMapLatest tự huỷ combine() cũ, chạy combine() mới mỗi khi offset đổi —
-    // giống foods ở FoodPickerViewModel: đổi cửa sổ ngày là đổi hẳn nguồn dữ liệu,
-    // không phải chỉnh state tại chỗ. Phần dailyStats/startDate/endDate/canGoTo...
-    // của UiState đến từ flow này; monthlySummary được combine() thêm vào riêng
-    // ở "uiState" bên dưới (xem monthlyFlow).
     private val weeklyFlow: Flow<StatisticsUiState> = _weekOffset
         .flatMapLatest { offset ->
             val endDate = today.minusDays(offset * STATS_DAYS)
@@ -78,16 +66,12 @@ class StatisticsViewModel @Inject constructor(
                     startDate = startDate,
                     endDate = endDate,
                     canGoToPreviousRange = canGoBackFrom(startDate),
-                    // offset = 0 nghĩa là đang ở đúng 7 ngày gần nhất -> không có "tương lai" để tiến tới.
+
                     canGoToNextRange = offset > 0,
                 )
             }
         }
 
-    // Thẻ "Tổng kết 30 ngày qua" LUÔN nhìn về đúng 30 ngày gần nhất tính đến hôm
-    // nay — KHÔNG phụ thuộc _weekOffset, nên tách flow riêng thay vì nhét chung
-    // vào weeklyFlow (nếu chung, mỗi lần lùi/tiến tuần sẽ vô tình re-subscribe cả
-    // phần 30 ngày dù số liệu đó không hề đổi).
     private val monthlyStartDate: LocalDate = today.minusDays(MAX_HISTORY_DAYS - 1)
     private val monthlyFlow: Flow<MonthlySummary> = combine(
         userRepository.observeUser(),
@@ -111,7 +95,6 @@ class StatisticsViewModel @Inject constructor(
         weekly.copy(monthlySummary = monthly)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), StatisticsUiState())
 
-    /** BMR -> TDEE runtime từ hồ sơ user — dùng chung cho cả weeklyFlow lẫn monthlyFlow, tránh lặp code 2 nơi. */
     private fun computeTdee(user: User?): Double {
         if (user == null) return 0.0
         val age = calculateAgeUseCase.calculate(user.dateOfBirth)
@@ -124,7 +107,6 @@ class StatisticsViewModel @Inject constructor(
         return calculateTdeeUseCase.calculate(bmr = bmr, activityLevel = user.activityLevel, goal = user.goal)
     }
 
-    /** Lùi thêm 7 ngày nữa (từ [startDate] hiện tại) có vượt quá giới hạn MAX_HISTORY_DAYS không. */
     private fun canGoBackFrom(startDate: LocalDate): Boolean =
         startDate.minusDays(STATS_DAYS) >= today.minusDays(MAX_HISTORY_DAYS - 1)
 
@@ -132,8 +114,7 @@ class StatisticsViewModel @Inject constructor(
         _weekOffset.update { offset ->
             val endDate = today.minusDays(offset * STATS_DAYS)
             val startDate = endDate.minusDays(STATS_DAYS - 1)
-            // Tính lại canGoBackFrom ngay tại đây (không đọc uiState.value) để chặn
-            // đúng lúc, không bị trễ 1 nhịp so với flow chưa kịp emit.
+
             if (canGoBackFrom(startDate)) offset + 1 else offset
         }
     }

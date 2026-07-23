@@ -24,11 +24,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-/**
- * mealType không có trong UiState vì màn này không cho đổi bữa (đã cố định từ
- * lúc bấm "+ Thêm món ăn" ở đúng bữa đó bên Meal Diary) — chỉ giữ làm biến nội
- * bộ để biết log vào bữa nào lúc Save, không cần hiển thị lên UI.
- */
 @HiltViewModel
 class AddMealEntryViewModel @Inject constructor(
     private val foodRepository: FoodRepository,
@@ -41,18 +36,9 @@ class AddMealEntryViewModel @Inject constructor(
 
     private var mealType: MealType = MealType.BREAKFAST
 
-    // One-shot event: lưu xong. UI tự quyết định đóng bottom sheet khi nhận được.
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
-    /**
-     * Gọi mỗi lần modal mở, mang theo food/mealType/logDate đã chọn.
-     * Gán lại NGUYÊN state (không .copy() lên state cũ) vì FoodPickerScreen giữ
-     * modal ở dạng state cục bộ — cùng 1 ViewModel instance có thể bị dùng lại
-     * cho nhiều lần mở modal khác nhau (mỗi lần chọn 1 food khác) trong lúc vẫn
-     * đứng ở Food Picker. Nếu chỉ .copy() thì quantity của lần chọn trước sẽ dính
-     * sang lần chọn sau — phải reset sạch.
-     */
     fun initialize(food: Food, mealType: MealType, logDate: LocalDate) {
         this.mealType = mealType
         _uiState.value = AddMealEntryUiState(food = food, logDate = logDate, mealType = mealType)

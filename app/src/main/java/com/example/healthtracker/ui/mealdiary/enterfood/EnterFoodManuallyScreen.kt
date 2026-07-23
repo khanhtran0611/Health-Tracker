@@ -49,11 +49,6 @@ import com.example.healthtracker.ui.component.ConfirmDeleteDialog
 import com.example.healthtracker.ui.component.fieldErrorText
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/**
- * Điểm vào thật — nối ViewModel qua Hilt. Dùng chung cho cả thêm món mới
- * (food = null) và sửa món có sẵn (food khác null) — chỉ khác tiêu đề.
- * Phần hiển thị thật nằm ở [EnterFoodManuallyContent].
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterFoodManuallyScreen(
@@ -83,15 +78,11 @@ fun EnterFoodManuallyScreen(
         onServingUnitChange = viewModel::onServingUnitChange,
         onSave = viewModel::onSubmit,
         onClose = onClose,
-        // Nút xoá chỉ hiện khi đang sửa món có sẵn (food != null) — thêm mới
-        // thì chưa có gì để xoá.
+
         onDelete = if (food != null) viewModel::onDelete else null,
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterFoodManuallyContent(
@@ -177,7 +168,7 @@ fun EnterFoodManuallyContent(
                 .padding(padding)
                 .padding(16.dp),
         ) {
-            // Banner
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -206,7 +197,6 @@ fun EnterFoodManuallyContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Food name
             Text(
                 text = stringResource(R.string.field_food_name),
                 style = MaterialTheme.typography.labelLarge,
@@ -226,7 +216,6 @@ fun EnterFoodManuallyContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Calories
             Text(
                 text = stringResource(R.string.field_calories_required),
                 style = MaterialTheme.typography.labelLarge,
@@ -255,7 +244,6 @@ fun EnterFoodManuallyContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Serving unit
             Text(
                 text = stringResource(R.string.field_serving_unit_optional),
                 style = MaterialTheme.typography.labelLarge,
@@ -273,7 +261,6 @@ fun EnterFoodManuallyContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Info text
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,

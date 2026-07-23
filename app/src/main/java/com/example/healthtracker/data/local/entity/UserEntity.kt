@@ -7,10 +7,6 @@ import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
 import java.time.LocalDate
 
-/**
- * Hồ sơ người dùng. App chỉ có 1 user duy nhất (row id = 1).
- * BMR / TDEE / BMI / tuổi đều derive runtime từ các trường này, KHÔNG lưu.
- */
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey(autoGenerate = true)
@@ -30,7 +26,6 @@ data class UserEntity(
     @ColumnInfo(name = "height_cm")
     val heightCm: Double,
 
-    /** 1..5 → hệ số 1.2 / 1.375 / 1.55 / 1.725 / 1.9 */
     @ColumnInfo(name = "activity_level")
     val activityLevel: Int,
 

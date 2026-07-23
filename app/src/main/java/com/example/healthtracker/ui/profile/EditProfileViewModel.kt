@@ -37,7 +37,6 @@ class EditProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ProfileFormUiState(isLoading = true))
     val uiState: StateFlow<ProfileFormUiState> = _uiState.asStateFlow()
 
-    // One-shot event: lưu xong. UI tự quyết định back về màn trước.
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
@@ -115,11 +114,11 @@ class EditProfileViewModel @Inject constructor(
                 _uiState.update { it.copy(isSaving = false) }
                 _savedEvent.send(Unit)
             } catch (e: CancellationException) {
-                throw e // huỷ coroutine bình thường (vd rời màn) — không phải lỗi, không báo
+                throw e
             } catch (e: Exception) {
                 toastController.show(ToastMessage(R.string.msg_profile_save_failed, ToastType.ERROR))
                 _uiState.update { it.copy(isSaving = false) }
-                // KHÔNG gửi savedEvent -> màn không đóng, user sửa/thử lại được.
+
             }
         }
     }

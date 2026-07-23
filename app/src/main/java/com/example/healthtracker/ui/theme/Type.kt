@@ -7,24 +7,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.healthtracker.domain.model.FontSize
 
-/**
- * Type scale lấy từ token `typography` trong docs/design-system.md (font Inter).
- * Dùng chung cho cả 2 theme (sáng/tối) — chỉ màu sắc đổi theo theme, không đổi font.
- *
- * Chưa có file font Inter (.ttf) trong res/font nên tạm dùng FontFamily.Default
- * (font hệ thống). Khi có file Inter, chỉ cần đổi FontFamily.Default ở đây.
- *
- * displayLarge dùng số đo của token "stat-lg" (45sp) thay vì "display-lg" gốc (57sp):
- * doc liệt kê 2 token này thay thế cho nhau để hiển thị số liệu lớn (vd remaining
- * calories), và 45sp phù hợp màn hình điện thoại hơn.
- * headlineLarge dùng "headline-lg-mobile" (28sp) thay vì bản desktop (32sp) vì app
- * chỉ nhắm điện thoại.
- * Các slot không có token tương ứng trong doc (displayMedium/Small, headlineMedium/Small,
- * titleMedium/Small, bodySmall, labelSmall) giữ nguyên mặc định của Material3.
- */
 fun appTypography(fontSize: FontSize): Typography {
-    // Cỡ chữ user chọn ở Settings — nhân vào fontSize/lineHeight gốc, KHÔNG đổi
-    // letterSpacing (giãn chữ không nên phóng to/nhỏ theo cỡ chữ).
+
     val scale = when (fontSize) {
         FontSize.SMALL -> 0.85f
         FontSize.MEDIUM -> 1.0f

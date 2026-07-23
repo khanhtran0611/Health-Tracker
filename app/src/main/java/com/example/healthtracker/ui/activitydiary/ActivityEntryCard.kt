@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.ActivityEntry
 
-/** 1 dòng hoạt động trong nhật ký: tên + thời lượng bên trái, calo đốt + nút xoá bên phải. */
 @Composable
 fun ActivityEntryCard(
     entry: ActivityEntry,

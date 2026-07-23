@@ -3,7 +3,6 @@ package com.example.healthtracker.ui.profile
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
 
-/** Phân loại BMI theo đề — <18.5 Thiếu cân | 18.5-25 Bình thường | 25-30 Thừa cân | ≥30 Béo phì. */
 enum class BmiCategory {
     UNDERWEIGHT,
     NORMAL,
@@ -21,7 +20,7 @@ data class ProfileUiState(
     val activityLevel: Int = 1,
     val goal: Goal = Goal.MAINTAIN,
     val bmi: Double = 0.0,
-    /** TDEE đã điều chỉnh theo goal — công thức giống Dashboard. */
+
     val tdee: Double = 0.0,
 ) {
     val bmiCategory: BmiCategory

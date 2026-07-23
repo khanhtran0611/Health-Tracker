@@ -29,22 +29,11 @@ class EnterFoodManuallyViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EnterFoodManuallyUiState())
     val uiState: StateFlow<EnterFoodManuallyUiState> = _uiState.asStateFlow()
 
-    /** id của food đang sửa (null = đang thêm mới) — chỉ dùng nội bộ lúc Save. */
     private var foodId: Long? = null
 
-    // One-shot event: lưu xong. UI tự quyết định đóng màn khi nhận được.
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
-    /**
-     * food = null -> thêm mới (form rỗng); food khác null -> sửa, điền sẵn form
-     * NGAY từ chính object đã có, KHÔNG query lại FoodRepository — nơi gọi (Food
-     * Picker) đã có sẵn Food trong tay rồi.
-     *
-     * Gán lại NGUYÊN state (không .copy() lên state cũ) vì Composable có thể tái
-     * dùng cùng 1 ViewModel instance cho nhiều lần mở modal khác nhau (khi vẫn còn
-     * đứng ở Food Picker) — reset sạch để không dính quantity/lỗi của lần trước.
-     */
     fun initialize(food: Food?) {
         foodId = food?.id
         _uiState.value = EnterFoodManuallyUiState(
@@ -89,20 +78,15 @@ class EnterFoodManuallyViewModel @Inject constructor(
                 _uiState.update { it.copy(isSaving = false) }
                 _savedEvent.send(Unit)
             } catch (e: CancellationException) {
-                throw e // huỷ coroutine bình thường (vd rời màn) — không phải lỗi, không báo
+                throw e
             } catch (e: Exception) {
                 toastController.show(ToastMessage(R.string.msg_food_save_failed, ToastType.ERROR))
                 _uiState.update { it.copy(isSaving = false) }
-                // KHÔNG gửi savedEvent -> màn không đóng, user sửa/thử lại được.
+
             }
         }
     }
 
-    /**
-     * Chỉ gọi được khi đang sửa (foodId != null) — UI đã ẩn nút xoá lúc thêm
-     * mới. FK food_id ở meal_entries là RESTRICT nên nếu món đang có nhật ký
-     * dùng, deleteFood() sẽ ném lỗi — bắt lại và báo toast, KHÔNG đóng màn.
-     */
     fun onDelete() {
         val id = foodId ?: return
         val state = _uiState.value
@@ -120,7 +104,7 @@ class EnterFoodManuallyViewModel @Inject constructor(
                 )
                 toastController.show(ToastMessage(R.string.msg_food_deleted, ToastType.SUCCESS))
                 _uiState.update { it.copy(isDeleting = false) }
-                _savedEvent.send(Unit) // đóng màn — dùng chung kênh với lưu thành công
+                _savedEvent.send(Unit)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -131,7 +115,6 @@ class EnterFoodManuallyViewModel @Inject constructor(
     }
 }
 
-/** vd 130.0 -> "130", 130.5 -> "130.5" — bỏ ".0" thừa khi là số nguyên. */
 private fun formatCalories(calories: Double): String {
     return if (calories == calories.toInt().toDouble()) {
         calories.toInt().toString()

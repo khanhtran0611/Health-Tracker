@@ -14,15 +14,6 @@ import com.example.healthtracker.data.local.entity.FoodEntity
 import com.example.healthtracker.data.local.entity.MealEntryEntity
 import com.example.healthtracker.data.local.entity.UserEntity
 
-
-// Vì sao phải tạo abstract class:  Room dùng annotation processor (KSP/KAPT) để tự sinh ra một class con
-// Và đồng thời triển khai code thực tế cho class con đó luôn, ta ko cần viết code này.
-// Vì sao cần builder để build mà ko tạo thẳng object, lại phải qua abstract class + builder ?
-// Là vì Room không biết bạn muốn cấu hình DB như thế nào —
-// mà Builder cho phép bạn tùy biến rất nhiều thứ trước khi DB thực sự được tạo
-// Ví dụ như: .addCallback(...) - seed data , .addMigrations(...) - Xử lý khi thay đổi schema
-
-
 @Database(
     entities = [
         UserEntity::class,

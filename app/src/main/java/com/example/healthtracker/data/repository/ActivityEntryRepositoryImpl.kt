@@ -31,7 +31,7 @@ class ActivityEntryRepositoryImpl @Inject constructor(
 
     override suspend fun updateEntry(entry: ActivityEntry) {
         val existing = activityEntryDao.getById(entry.id) ?: return
-        // Giữ nguyên thời điểm log gốc.
+
         activityEntryDao.update(entry.toEntity().copy(createdAt = existing.createdAt))
     }
 

@@ -23,7 +23,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun saveUser(user: User) {
         val now = System.currentTimeMillis()
         val existing = userDao.getUser()
-        // Giữ nguyên createdAt của row cũ, chỉ bump updatedAt.
+
         val entity = user.toEntity().copy(
             id = existing?.id ?: user.id,
             createdAt = existing?.createdAt ?: now,

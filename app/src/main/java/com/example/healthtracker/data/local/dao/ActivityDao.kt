@@ -20,14 +20,12 @@ interface ActivityDao {
     @Query("SELECT * FROM activities WHERE id = :id")
     suspend fun getById(id: Long): ActivityEntity?
 
-    /** Trả về id của row vừa insert — dùng để tạo entry trỏ tới. */
     @Insert
     suspend fun insert(activity: ActivityEntity): Long
 
     @Update
     suspend fun update(activity: ActivityEntity)
 
-    /** Sẽ ném SQLiteConstraintException nếu activity đang được entry tham chiếu (RESTRICT). */
     @Delete
     suspend fun delete(activity: ActivityEntity)
 }

@@ -38,7 +38,6 @@ import com.example.healthtracker.ui.component.DateNavigator
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [ActivityDiaryContent]. */
 @Composable
 fun ActivityDiaryScreen(
     onAddActivity: (LocalDate) -> Unit,
@@ -56,10 +55,6 @@ fun ActivityDiaryScreen(
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [ActivityDiaryScreen]
- * để @Preview dùng được.
- */
 @Composable
 fun ActivityDiaryContent(
     uiState: ActivityDiaryUiState,
@@ -79,7 +74,7 @@ fun ActivityDiaryContent(
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             IconButton(
-                onClick = { /* TODO: mở drawer khi có logic */ },
+                onClick = {  },
                 modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(Icons.Default.Menu, contentDescription = null)

@@ -24,11 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 
-/**
- * Stepper thời lượng dạng "hero" (số lớn ở giữa, nút tròn viền 2 bên) — khác
- * QuantityStepper bên Meal Diary (pill nhỏ, Double khẩu phần): ở đây là Int phút,
- * kiểu hiển thị to hơn theo đúng mockup, nên tách riêng thay vì dùng chung.
- */
 @Composable
 fun DurationStepper(
     durationMinutes: Int,

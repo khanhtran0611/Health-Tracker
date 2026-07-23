@@ -63,10 +63,7 @@ fun WeeklyTrendChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier 
             val maxY = (dailyStats.maxOfOrNull { it.eaten } ?: 0.0).coerceAtLeast(1.0)
             val yLabels = (Y_LABEL_COUNT - 1 downTo 0).map { step -> (maxY * step / (Y_LABEL_COUNT - 1)).roundToInt() }
             val points = dailyStats.map { (it.eaten / maxY).toFloat().coerceIn(0f, 1f) }
-            // Animate từng điểm riêng (giống DayBar bên WeeklyBarChartCard) — đổi
-            // tuần hay dữ liệu vừa tải xong thì cả đường "trồi/sụt" mượt tới vị trí
-            // mới thay vì nhảy khựng. Gọi animateFloatAsState trong .map{} vẫn hợp lệ
-            // vì số điểm luôn cố định = dailyStats.size qua mọi lần recomposition.
+
             val animatedPoints = points.map { target ->
                 val animated by animateFloatAsState(
                     targetValue = target,

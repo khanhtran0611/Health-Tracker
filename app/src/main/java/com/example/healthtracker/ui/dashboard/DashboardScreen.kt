@@ -17,7 +17,6 @@ import com.example.healthtracker.ui.dashboard.components.*
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [DashboardContent]. */
 @Composable
 fun DashboardScreen(
     onAddMealClick: () -> Unit,
@@ -35,9 +34,6 @@ fun DashboardScreen(
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được.
- */
 @Composable
 fun DashboardContent(
     uiState: DashboardUiState,

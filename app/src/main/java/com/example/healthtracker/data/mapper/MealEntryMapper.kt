@@ -13,7 +13,6 @@ fun MealEntryEntity.toDomain(): MealEntry = MealEntry(
     calories = calories,
 )
 
-/** createdAt để mặc định (now) khi insert; repository giữ createdAt cũ khi update. */
 fun MealEntry.toEntity(): MealEntryEntity = MealEntryEntity(
     id = id,
     foodId = foodId,

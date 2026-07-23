@@ -81,10 +81,6 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-/**
- * Form nhập hồ sơ dùng CHUNG cho Onboarding và Edit Profile — 2 màn chỉ khác nhau
- * ở topBar bên ngoài (có back hay không) và nhãn nút submit ("Next"/"Save").
- */
 @Composable
 fun ProfileForm(
     state: ProfileFormUiState,
@@ -235,10 +231,7 @@ private fun DateOfBirthField(
     }
 
     if (showDatePicker) {
-        // DatePickerDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
-        // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
-        // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
-        // ngôn ngữ) rồi re-provide vào các slot bên trong.
+
         val localContext = LocalContext.current
         val localConfiguration = LocalConfiguration.current
 
@@ -285,10 +278,6 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
     val options = listOf(Gender.MALE to R.string.gender_male, Gender.FEMALE to R.string.gender_female)
     val selectedText = stringResource(options.first { it.first == gender }.second)
 
-    // ExposedDropdownMenu dựng Popup riêng, bên trong tự lấy lại LocalContext/
-    // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản đã
-    // đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng ngôn ngữ)
-    // rồi re-provide vào các slot bên trong dùng stringResource().
     val localContext = LocalContext.current
     val localConfiguration = LocalConfiguration.current
 
@@ -324,7 +313,6 @@ private fun GenderSelector(gender: Gender, onGenderChange: (Gender) -> Unit) {
     }
 }
 
-/** Cấu hình hiển thị cho 1 lựa chọn Goal — gộp icon xu hướng + text res vào 1 chỗ cho gọn. */
 private data class GoalOption(
     val goal: Goal,
     val titleRes: Int,
@@ -332,21 +320,6 @@ private data class GoalOption(
     val icon: ImageVector,
 )
 
-/**
- * Bộ chọn Goal (Lose/Maintain/Gain weight) — mỗi lựa chọn nằm riêng 1 hàng dọc
- * (giống cấu trúc Column của ActivityLevelCard bên dưới: xếp dọc, full-width),
- * NHƯNG cố tình thiết kế khác để 2 khối không bị lẫn với nhau dù đứng cạnh nhau
- * trong form:
- *   - ActivityLevelCard: text bên trái, icon check/circle bên phải.
- *   - GoalOption ở đây: icon xu hướng trong vòng tròn màu BÊN TRÁI (mũi tên
- *     xuống/ngang/lên tương ứng giảm/giữ/tăng cân), có thêm dòng phụ mô tả tác
- *     động lên TDEE (đúng công thức đã chốt ở CLAUDE.md: -500 / +0 / +500 kcal),
- *     và dùng RadioButton chuẩn Material3 bên phải thay vì icon check tự vẽ.
- *
- * Nhờ mỗi lựa chọn chiếm trọn 1 hàng full-width (không còn ép 3 ô chung 1 hàng
- * như SegmentedButton trước đây), chữ "Maintain weight" luôn có đủ chỗ nằm gọn
- * 1 dòng — không còn lỗi tràn/wrap chữ ra ngoài khung nữa.
- */
 @Composable
 private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
     val options = listOf(
@@ -415,7 +388,6 @@ private fun GoalSelector(goal: Goal, onGoalChange: (Goal) -> Unit) {
     }
 }
 
-/** 5 mức hoạt động cố định theo đề — level khớp activity_level 1..5 lưu trong User. */
 private enum class ActivityLevelOption(val level: Int, val titleRes: Int, val descriptionRes: Int) {
     SEDENTARY(1, R.string.activity_level_sedentary_title, R.string.activity_level_sedentary_desc),
     LIGHT(2, R.string.activity_level_light_title, R.string.activity_level_light_desc),
@@ -424,7 +396,6 @@ private enum class ActivityLevelOption(val level: Int, val titleRes: Int, val de
     VERY_ACTIVE(5, R.string.activity_level_very_active_title, R.string.activity_level_very_active_desc),
 }
 
-/** Tên hiển thị (string res) của 1 mức activity_level 1..5 — dùng lại ở Profile để hiện "Dựa trên: <mức>". */
 fun activityLevelTitleRes(level: Int): Int =
     ActivityLevelOption.entries.first { it.level == level }.titleRes
 

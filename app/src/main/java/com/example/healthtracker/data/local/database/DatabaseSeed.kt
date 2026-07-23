@@ -3,13 +3,8 @@ package com.example.healthtracker.data.local.database
 import com.example.healthtracker.data.local.entity.ActivityEntity
 import com.example.healthtracker.data.local.entity.FoodEntity
 
-/**
- * Dữ liệu seed cho catalog. Được nạp 1 lần khi DB được tạo (onCreate).
- * Món/hoạt động user tự thêm sau này sẽ INSERT thẳng vào cùng bảng, không phân biệt.
- */
 object DatabaseSeed {
 
-    /** ≥ 30 món ăn phổ biến (kcal / khẩu phần chuẩn). */
     val foods: List<FoodEntity> = listOf(
         FoodEntity(name = "Cơm trắng", calories = 130.0, servingUnit = "1 chén (100g)"),
         FoodEntity(name = "Phở bò", calories = 350.0, servingUnit = "1 tô"),
@@ -45,7 +40,6 @@ object DatabaseSeed {
         FoodEntity(name = "Yến mạch", calories = 150.0, servingUnit = "40g khô"),
     )
 
-    /** ≥ 15 hoạt động phổ biến (MET). */
     val activities: List<ActivityEntity> = listOf(
         ActivityEntity(name = "Đi bộ", met = 3.5),
         ActivityEntity(name = "Đi bộ nhanh", met = 4.3),

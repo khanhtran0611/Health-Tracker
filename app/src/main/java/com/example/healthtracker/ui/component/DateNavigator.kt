@@ -36,14 +36,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
-/**
- * Thanh chuyển ngày: "< Hôm nay, 14 tháng 7 >" ở giữa, icon lịch ghim mép phải.
- * Dùng Box + Alignment (không phải Row + SpaceBetween) để cụm giữa LUÔN ở chính
- * giữa dù icon lịch có đổi kích thước — Box định vị từng con theo toàn bộ chiều
- * rộng của chính nó, không phụ thuộc con bên cạnh.
- *
- * Dùng chung cho Meal Diary lẫn Activity Diary.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateNavigator(
@@ -88,25 +80,16 @@ fun DateNavigator(
     }
 
     if (showDatePicker) {
-        // DatePickerDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
-        // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
-        // đã đổi ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng
-        // ngôn ngữ) rồi re-provide vào các slot bên trong (kể cả lịch DatePicker,
-        // để tên tháng/thứ trong lịch cũng đổi ngôn ngữ đúng theo).
+
         val localContext = LocalContext.current
         val localConfiguration = LocalConfiguration.current
 
-        // DatePicker cần 1 object "state" riêng để:
-        // (a) biết ngày nào đang được tô đậm lúc mở lên,
-        // (b) tự cập nhật khi người dùng bấm chọn ngày khác trong lưới
-        // datePickerState chính là cái object state đó.
         val datePickerState = rememberDatePickerState(
-            // không làm việc với LocalDate — nó chỉ hiểu số mili-giây kể từ mốc 1/1/1970 (epoch millis),
-            // giống hệt kiểu System.currentTimeMillis(). Nên phải "dịch" LocalDate sang con số đó
+
             initialSelectedDateMillis = selectedDate
-                 .atStartOfDay(ZoneOffset.UTC) // gắn thêm giờ 00:00:00, ở múi giờ UTC
-                 .toInstant() // đổi thành 1 "thời điểm" tuyệt đối
-                 .toEpochMilli(), // đổi thành số milli-giây
+                 .atStartOfDay(ZoneOffset.UTC)
+                 .toInstant()
+                 .toEpochMilli(),
         )
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
@@ -115,7 +98,7 @@ fun DateNavigator(
                     TextButton(onClick = {
                         val millis = datePickerState.selectedDateMillis
                         if (millis != null) {
-                            // ↑ dịch ngược: epoch millis -> Instant -> gắn UTC -> lấy ra LocalDate
+
                             onDateSelected(Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate())
                         }
                         showDatePicker = false

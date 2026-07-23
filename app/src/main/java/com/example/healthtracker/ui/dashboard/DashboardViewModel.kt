@@ -27,7 +27,6 @@ class DashboardViewModel @Inject constructor(
     private val calculateTdeeUseCase: CalculateTdeeUseCase,
 ) : ViewModel() {
 
-    // Dashboard chỉ hiện hôm nay, không có date picker như Meal/Activity Diary.
     private val today: LocalDate = LocalDate.now()
 
     private val _uiState = MutableStateFlow(DashboardUiState(today = today))

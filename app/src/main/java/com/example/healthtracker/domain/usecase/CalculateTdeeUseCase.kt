@@ -3,10 +3,6 @@ package com.example.healthtracker.domain.usecase
 import com.example.healthtracker.domain.model.Goal
 import javax.inject.Inject
 
-/**
- * TDEE = BMR × activity_factor, rồi điều chỉnh theo goal (giảm cân −500 /
- * giữ cân +0 / tăng cân +500). Tính runtime (KHÔNG lưu DB).
- */
 class CalculateTdeeUseCase @Inject constructor() {
     fun calculate(bmr: Double, activityLevel: Int, goal: Goal): Double {
         val activityFactor = when (activityLevel) {

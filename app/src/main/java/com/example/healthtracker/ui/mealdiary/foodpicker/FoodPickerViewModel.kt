@@ -22,10 +22,6 @@ class FoodPickerViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
 
-    // Rỗng thì hiện cả catalog (observeFoods); gõ gì thì chuyển sang searchFoods(query).
-    // flatMapLatest tự huỷ query cũ, chạy query mới mỗi khi searchQuery đổi.
-    // Đây là luồng RIÊNG, có độ trễ do phải đợi DB — KHÔNG được dùng trực tiếp để hiển
-    // thị chữ đang gõ (nếu vậy TextField sẽ bị "dội ngược" chờ DB, gây giật con trỏ).
     @OptIn(ExperimentalCoroutinesApi::class)
     private val foods: Flow<List<Food>> = _searchQuery
         .flatMapLatest { query ->
@@ -35,10 +31,6 @@ class FoodPickerViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(FoodPickerUiState())
     val uiState: StateFlow<FoodPickerUiState> = _uiState.asStateFlow()
 
-    // combine() phát UiState mới ngay khi MỘT TRONG HAI nguồn đổi, dùng giá trị mới
-    // nhất của nguồn còn lại (kể cả khi nó chưa kịp cập nhật). Nhờ vậy searchQuery luôn
-    // echo tức thời theo đúng những gì vừa gõ; chỉ có foods được phép hiện trễ vài
-    // mili-giây trong lúc chờ DB — mắt không nhận ra được độ trễ này.
     init {
         viewModelScope.launch {
             combine(_searchQuery, foods) { query, foods ->

@@ -37,13 +37,10 @@ class OnboardingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ProfileFormUiState())
     val uiState: StateFlow<ProfileFormUiState> = _uiState.asStateFlow()
 
-    // Onboarding chưa có hồ sơ user nên không vào được Settings — cho đổi ngôn
-    // ngữ ngay tại đây qua nút "VI"/"EN" trên top bar.
     val language: StateFlow<Language> = settingsRepository.observeSettings()
         .map { it.language }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Language.VI)
 
-    // One-shot event: hoàn tất onboarding. UI tự quyết định điều hướng khi nhận được.
     private val _completedEvent = Channel<Unit>(Channel.BUFFERED)
     val completedEvent: Flow<Unit> = _completedEvent.receiveAsFlow()
 

@@ -29,18 +29,11 @@ class EnterActivityViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EnterActivityUiState())
     val uiState: StateFlow<EnterActivityUiState> = _uiState.asStateFlow()
 
-    /** id của activity đang sửa (null = đang thêm mới) — chỉ dùng nội bộ lúc Save. */
     private var activityId: Long? = null
 
-    // One-shot event: lưu xong. UI tự quyết định đóng màn khi nhận được.
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
-    /**
-     * activity = null -> thêm mới (form rỗng); activity khác null -> sửa, điền
-     * sẵn form NGAY từ chính object đã có, KHÔNG query lại ActivityRepository —
-     * nơi gọi (Choose Activity) đã có sẵn Activity trong tay rồi.
-     */
     fun initialize(activity: Activity?) {
         activityId = activity?.id
         _uiState.value = EnterActivityUiState(
@@ -79,21 +72,15 @@ class EnterActivityViewModel @Inject constructor(
                 _uiState.update { it.copy(isSaving = false) }
                 _savedEvent.send(Unit)
             } catch (e: CancellationException) {
-                throw e // huỷ coroutine bình thường (vd rời màn) — không phải lỗi, không báo
+                throw e
             } catch (e: Exception) {
                 toastController.show(ToastMessage(R.string.msg_activity_save_failed, ToastType.ERROR))
                 _uiState.update { it.copy(isSaving = false) }
-                // KHÔNG gửi savedEvent -> màn không đóng, user sửa/thử lại được.
+
             }
         }
     }
 
-    /**
-     * Chỉ gọi được khi đang sửa (activityId != null) — UI đã ẩn nút xoá lúc
-     * thêm mới. FK activity_id ở activity_entries là RESTRICT nên nếu hoạt
-     * động đang có nhật ký dùng, deleteActivity() sẽ ném lỗi — bắt lại và báo
-     * toast, KHÔNG đóng màn.
-     */
     fun onDelete() {
         val id = activityId ?: return
         val state = _uiState.value
@@ -110,7 +97,7 @@ class EnterActivityViewModel @Inject constructor(
                 )
                 toastController.show(ToastMessage(R.string.msg_activity_deleted, ToastType.SUCCESS))
                 _uiState.update { it.copy(isDeleting = false) }
-                _savedEvent.send(Unit) // đóng màn — dùng chung kênh với lưu thành công
+                _savedEvent.send(Unit)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -121,7 +108,6 @@ class EnterActivityViewModel @Inject constructor(
     }
 }
 
-/** vd 9.0 -> "9", 9.8 -> "9.8" — bỏ ".0" thừa khi là số nguyên. */
 private fun formatMet(met: Double): String {
     return if (met == met.toInt().toDouble()) {
         met.toInt().toString()

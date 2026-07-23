@@ -77,18 +77,10 @@ fun WeeklyBarChartCard(dailyStats: List<DailyCalorieStat>, modifier: Modifier = 
     }
 }
 
-/**
- * Cột 1 ngày: nhãn calo, thanh cột, nhãn thứ. Thanh cột nằm trong 1 Box chiều
- * cao cố định (weight(1f)) rồi mới fillMaxHeight(ratio) bên trong + căn
- * BottomCenter — nhờ vậy đáy mọi cột luôn thẳng hàng bất kể nhãn phía trên/dưới
- * có chiều cao khác nhau, thay vì fillMaxHeight(ratio) tính theo chiều cao cả
- * Column (dễ lệch khi nội dung tràn quá CHART_HEIGHT).
- */
 @Composable
 private fun DayBar(stat: DailyCalorieStat, maxEaten: Double, isToday: Boolean, modifier: Modifier = Modifier) {
     val heightRatio = (stat.eaten / maxEaten).toFloat().coerceIn(0f, 1f)
-    // Animate thay vì gán thẳng heightRatio: đổi tuần (StatsDateRangeNavigator) hay
-    // dữ liệu vừa tải xong đều làm cột "mọc" mượt lên đúng độ cao thay vì nhảy khựng.
+
     val animatedHeightRatio by animateFloatAsState(
         targetValue = heightRatio,
         animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),

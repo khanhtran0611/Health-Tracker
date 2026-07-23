@@ -27,13 +27,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
-/**
- * Giữ resource id thay vì String đã resolve sẵn — chuỗi được resolve bằng
- * `stringResource()` NGAY TRONG [SharedToast] (đọc LocalContext hiện tại mỗi lần
- * render), để đổi ngôn ngữ runtime ở Settings ảnh hưởng đúng tới toast đang/sắp
- * hiện. Resolve trước bằng `context.getString()` ở nơi gọi rồi truyền String vào
- * đây sẽ bị "đóng băng" ngôn ngữ lúc resolve — xem HealthTrackerApp.kt.
- */
 data class ToastData(
     @param:StringRes val textRes: Int,
     val type: ToastType = ToastType.INFO
@@ -44,9 +37,7 @@ fun SharedToast(
     toastData: ToastData?,
     modifier: Modifier = Modifier
 ) {
-    // Lưu lại data cũ để Toast không bị xoá ruột trước khi chạy xong hiệu ứng trượt lên (exit)
-    // Cập nhật ĐỒNG BỘ ngay trong composition (không dùng LaunchedEffect) 
-    // để tránh bị delay 1 frame làm mất hiệu ứng trượt xuống (enter)
+
     var lastToastData by remember { mutableStateOf(toastData) }
     if (toastData != null) {
         lastToastData = toastData
@@ -61,9 +52,9 @@ fun SharedToast(
     ) {
         displayData?.let { data ->
             val backgroundColor = when (data.type) {
-                ToastType.SUCCESS -> Color(0xFF4CAF50) // Green
-                ToastType.ERROR -> Color(0xFFF44336)   // Red
-                ToastType.WARNING -> Color(0xFFFF9800) // Orange
+                ToastType.SUCCESS -> Color(0xFF4CAF50)
+                ToastType.ERROR -> Color(0xFFF44336)
+                ToastType.WARNING -> Color(0xFFFF9800)
                 ToastType.INFO -> MaterialTheme.colorScheme.primary
             }
 
@@ -90,18 +81,14 @@ fun SharedToast(
                 ) {
                     Icon(
                         imageVector = icon,
-                        // Icon chỉ minh hoạ lại nội dung Text ngay bên cạnh — để null
-                        // tránh screen reader đọc trùng lặp 2 lần.
+
                         contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        // Bây giờ thì phải vào tận đây thì mới dùng stringResource
-                        // để lấy text, thay vì lấy ngay tạo LaunchedEffect của HealthTrackerApp
-                        // do LaunchedEffect chỉ chạy đúng 1 lần nên sẽ khóa ngay lại context với config đầu tiên
-                        // Có đổi ngôn ngữ giữa chừng app chạy thì sẽ ko đổi config locale được.
+
                         text = stringResource(data.textRes),
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge

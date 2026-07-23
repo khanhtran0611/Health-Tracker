@@ -93,7 +93,6 @@ fun WeeklySummaryCard(
     }
 }
 
-/** Dùng chung với [MonthlySummaryCard] — cùng 1 hàng "nhãn bên trái, giá trị đậm bên phải". */
 @Composable
 internal fun SummaryRow(label: String, value: String, valueColor: Color) {
     Row(

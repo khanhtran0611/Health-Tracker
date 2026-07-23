@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 
-/** Thanh tổng calo cả ngày, có vạch màu primary bên trái (giống mockup). */
 @Composable
 fun TotalTodayCard(
     totalCalories: Double,

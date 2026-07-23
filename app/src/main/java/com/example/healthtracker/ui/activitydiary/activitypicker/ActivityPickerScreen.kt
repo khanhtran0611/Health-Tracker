@@ -35,7 +35,6 @@ import com.example.healthtracker.ui.activitydiary.addactivityentry.AddActivityEn
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [ActivityPickerContent]. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActivityPickerScreen(
@@ -48,8 +47,6 @@ fun ActivityPickerScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedActivityForEntry by remember { mutableStateOf<Activity?>(null) }
 
-    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
-    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa.
     Scaffold(
         topBar = {
             TopAppBar(
@@ -83,10 +80,6 @@ fun ActivityPickerScreen(
     }
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [ActivityPickerScreen]
- * để @Preview dùng được.
- */
 @Composable
 fun ActivityPickerContent(
     uiState: ActivityPickerUiState,

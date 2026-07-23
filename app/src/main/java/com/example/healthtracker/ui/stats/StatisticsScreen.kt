@@ -32,7 +32,6 @@ import com.example.healthtracker.ui.stats.components.WeeklyTrendChartCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [StatisticsContent]. */
 @Composable
 fun StatisticsScreen(
     viewModel: StatisticsViewModel = hiltViewModel(),
@@ -48,7 +47,6 @@ fun StatisticsScreen(
     )
 }
 
-/** Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được. */
 @Composable
 fun StatisticsContent(
     uiState: StatisticsUiState,

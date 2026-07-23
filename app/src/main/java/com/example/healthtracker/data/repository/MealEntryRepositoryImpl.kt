@@ -31,7 +31,7 @@ class MealEntryRepositoryImpl @Inject constructor(
 
     override suspend fun updateEntry(entry: MealEntry) {
         val existing = mealEntryDao.getById(entry.id) ?: return
-        // Giữ nguyên thời điểm log gốc.
+
         mealEntryDao.update(entry.toEntity().copy(createdAt = existing.createdAt))
     }
 

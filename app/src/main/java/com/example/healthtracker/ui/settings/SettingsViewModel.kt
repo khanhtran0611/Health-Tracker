@@ -34,7 +34,6 @@ class SettingsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
-    // One-shot event: đặt lại dữ liệu xong. UI tự quyết định điều hướng về Onboarding.
     private val _resetEvent = Channel<Unit>(Channel.BUFFERED)
     val resetEvent: Flow<Unit> = _resetEvent.receiveAsFlow()
 
@@ -67,8 +66,7 @@ class SettingsViewModel @Inject constructor(
             settingsRepository.setRemindersEnabled(enabled)
             reminderScheduler.rescheduleAll(_uiState.value.settings.copy(remindersEnabled = enabled))
         }
-        // Bật nhắc nhở -> nhắc thêm user tự cấp Autostart + bỏ tối ưu pin cho app,
-        // không thì AlarmManager dễ bị hệ thống chặn âm thầm trên nhiều máy Android.
+
         if (enabled) {
             _uiState.update { it.copy(showAutostartReminderDialog = true) }
         }

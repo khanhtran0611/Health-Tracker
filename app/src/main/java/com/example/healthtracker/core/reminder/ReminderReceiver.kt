@@ -6,15 +6,6 @@ import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-/**
- * Alarm nổ tới đây: hiện notification cho đúng [ReminderType], rồi tự đặt lại
- * lịch cho CÙNG khung giờ này vào ngày mai — alarm ở đây là one-shot (không
- * phải repeating) nên phải tự gia hạn mỗi lần nổ.
- *
- * KHÔNG cần đọc lại DataStore ở đây: "tắt reminder" đã huỷ PendingIntent tương
- * ứng ngay lúc toggle off (xem SettingsViewModel), nên hễ receiver này chạy
- * nghĩa là reminder đó chắc chắn đang bật — không có nguy cơ hiện nhầm khi đã tắt.
- */
 @AndroidEntryPoint
 class ReminderReceiver : BroadcastReceiver() {
 

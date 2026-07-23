@@ -2,11 +2,6 @@ package com.example.healthtracker.core.reminder
 
 import com.example.healthtracker.R
 
-/**
- * 3 khung giờ nhắc ghi nhật ký cố định theo đề (7h sáng / 12h trưa / 19h tối).
- * [requestCode] dùng làm request code khi tạo `PendingIntent.getBroadcast(...)` —
- * phải khác nhau giữa 3 loại để không đè PendingIntent của nhau.
- */
 enum class ReminderType(
     val hour: Int,
     val minute: Int,

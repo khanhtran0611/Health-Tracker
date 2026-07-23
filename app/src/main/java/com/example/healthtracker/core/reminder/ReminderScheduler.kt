@@ -11,19 +11,6 @@ import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Bọc AlarmManager cho 3 khung giờ nhắc ghi nhật ký. Dùng `setAndAllowWhileIdle`
- * (KHÔNG dùng setExactAndAllowWhileIdle) — trễ vài phút do Doze/battery
- * optimization là chấp nhận được cho 1 lời nhắc, đổi lại KHÔNG cần xin quyền
- * SCHEDULE_EXACT_ALARM (chỉ bắt buộc cho alarm chính xác từ Android 12/API 31).
- */
-// Khi máy không được sạc, màn hình tắt lâu,
-// và không di chuyển (phát hiện qua cảm biến gia tốc),
-// hệ thống tự động chuyển sang trạng thái Doze
-// Trong trạng thái này,máy tiết kiệm pin, và chỉ "thức" lên theo từng chu kỳ ngắn
-// gọi là maintenance window để xử lý dồn các việc đang chờ
-// nếu là inexact alarm, có thể bị trễ một chút do phải đợi đến lúc phiên maintenance window
-// gần nhất để thực thi
 @Singleton
 class ReminderScheduler @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -33,17 +20,14 @@ class ReminderScheduler @Inject constructor(
     fun schedule(type: ReminderType) {
         val triggerAtMillis = nextTriggerTimeMillis(type.hour, type.minute)
 
-        // RTC_WAKEUP: quyết định loại đồng hồ dùng để tính thời gian,
-        // và có đánh thức màn hình/CPU dậy hay không
         alarmManager?.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntentFor(type))
     }
 
     fun cancel(type: ReminderType) {
-        // Hàm này gỡ bỏ báo thức tương ứng với pendingIntent đó ra khỏi danh sách hẹn giờ đang chờ của AlarmManager
+
         alarmManager?.cancel(pendingIntentFor(type))
     }
 
-    /** Đồng bộ cả 3 loại theo đúng trạng thái đang lưu trong [settings] — bật thì schedule, tắt thì cancel. */
     fun rescheduleAll(settings: AppSettings) {
         ReminderType.entries.forEach { type ->
             if (settings.remindersEnabled && isTypeEnabled(type, settings)) {
@@ -64,23 +48,16 @@ class ReminderScheduler @Inject constructor(
         val intent = Intent(context, ReminderReceiver::class.java).apply {
             putExtra(ReminderReceiver.EXTRA_REMINDER_TYPE, type.name)
         }
-        // gửi 1 broadcast (tức gọi tới BroadcastReceiver)
-        // khi tới lúc thực thi — thay vì mở Activity hay khởi động Service
+
         return PendingIntent.getBroadcast(
             context,
             type.requestCode,
             intent,
-            // nếu đã tồn tại sẵn 1 PendingIntent với cùng requestCode + cùng Intent component,
-            // thì cập nhật dữ liệu (extras) bên trong Intent mới nhất vào PendingIntent cũ đó, thay vì tạo bản sao khác
 
-            // FLAG_IMMUTABLE — đánh dấu PendingIntent này là bất biến, nghĩa là bên nhận nó
-            // (ở đây là AlarmManager, thuộc tiến trình hệ thống)
-            // không được phép chỉnh sửa nội dung Intent bên trong trước khi gửi đi
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
     }
 
-    /** Mốc thời gian kế tiếp có đúng [hour]:[minute] — hôm nay nếu chưa qua giờ đó, mai nếu đã qua rồi. */
     private fun nextTriggerTimeMillis(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)

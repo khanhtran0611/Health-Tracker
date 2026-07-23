@@ -2,7 +2,6 @@ package com.example.healthtracker.ui.mealdiary.enterfood
 
 import com.example.healthtracker.ui.component.FieldError
 
-/** Kiểm tra từng field, gắn lỗi (nếu có) vào state. Gọi lại mỗi khi 1 field đổi. */
 fun validateEnterFoodManuallyForm(state: EnterFoodManuallyUiState): EnterFoodManuallyUiState {
     val calories = state.caloriesInput.toDoubleOrNull()
 
@@ -18,7 +17,6 @@ fun validateEnterFoodManuallyForm(state: EnterFoodManuallyUiState): EnterFoodMan
     return state.copy(nameError = nameError, caloriesError = caloriesError)
 }
 
-/** Form hợp lệ để bấm Save hay chưa — gọi SAU khi đã validateEnterFoodManuallyForm. */
 fun isEnterFoodManuallyFormValid(state: EnterFoodManuallyUiState): Boolean {
     return state.nameError == null && state.caloriesError == null
 }

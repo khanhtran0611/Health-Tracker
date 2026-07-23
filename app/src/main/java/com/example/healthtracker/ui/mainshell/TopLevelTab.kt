@@ -11,14 +11,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.navigation.Route
 
-/**
- * 5 tab của bottom nav — render bên trong [MainShellScreen]. Mỗi tab giữ 1
- * NavBackStack riêng (xem [TabBackStacks.kt]/[rememberTabBackStacks]).
- *
- * Nhãn dùng string resource (@StringRes) để hỗ trợ đổi ngôn ngữ. Icon
- * RestaurantMenu/DirectionsRun khớp đúng icon "eaten"/"burned" đã dùng ở
- * Dashboard (CalorieSummaryCard) — nhận diện nhất quán xuyên suốt app.
- */
 enum class TopLevelTab(
     val route: Route,
     @param:StringRes val labelRes: Int,
@@ -32,7 +24,7 @@ enum class TopLevelTab(
     ;
 
     companion object {
-        /** Tập route thuộc bottom nav. */
+
         val routes: Set<Route> = entries.map { it.route }.toSet()
     }
 }

@@ -36,16 +36,9 @@ class AddActivityEntryViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AddActivityEntryUiState())
     val uiState: StateFlow<AddActivityEntryUiState> = _uiState.asStateFlow()
 
-    // One-shot event: lưu xong. UI tự quyết định đóng bottom sheet khi nhận được.
     private val _savedEvent = Channel<Unit>(Channel.BUFFERED)
     val savedEvent: Flow<Unit> = _savedEvent.receiveAsFlow()
 
-    /**
-     * Gọi mỗi lần modal mở, mang theo activity/logDate đã chọn. Khác
-     * AddMealEntryViewModel.initialize() (đồng bộ, vì Food đã có sẵn đủ dữ liệu) —
-     * ở đây cần thêm weightKg từ UserRepository để tính caloriesBurned, nên phải
-     * launch coroutine.
-     */
     fun initialize(activity: Activity, logDate: LocalDate) {
         viewModelScope.launch {
             val weightKg = userRepository.getUser()?.weightKg ?: 0.0
@@ -57,10 +50,6 @@ class AddActivityEntryViewModel @Inject constructor(
         }
     }
 
-    // coerceAtLeast() là hàm extension của Kotlin dùng để đảm bảo
-    // một giá trị không nhỏ hơn một ngưỡng tối thiểu cho trước.
-    // Nếu giá trị hiện tại >= minimumValue → trả về chính giá trị đó.
-    // Nếu giá trị hiện tại < minimumValue → trả về minimumValue.
     fun onDecreaseDuration() {
         _uiState.update {
             it.copy(durationMinutes = (it.durationMinutes - DURATION_STEP_MINUTES).coerceAtLeast(MIN_DURATION_MINUTES))
@@ -75,8 +64,7 @@ class AddActivityEntryViewModel @Inject constructor(
         val state = _uiState.value
         val activity = state.activity ?: return
         viewModelScope.launch {
-            // Điều kiện để dùng it: lambda đó phải có đúng 1 tham số
-            // Còn lại trong lambda có bao nhiêu dòng lệnh cũng được
+
             _uiState.update { it.copy(isSaving = true) }
             try {
                 activityEntryRepository.addEntry(

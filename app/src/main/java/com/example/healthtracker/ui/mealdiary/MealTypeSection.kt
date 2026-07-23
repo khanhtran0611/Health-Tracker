@@ -29,13 +29,6 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
 
-/**
- * 1 khối bữa ăn (Breakfast/Lunch/Dinner/Snacks): icon + tên + tổng calo, danh sách
- * món, nút "+ Thêm món ăn". Trống thì hiện "Chưa có món nào" (giống Dinner trong mockup).
- *
- * onAddFood/onDeleteEntry CHƯA nối logic thật — chỉ để UI bấm được, xử lý thật để
- * dành lúc làm Add/Edit Meal Entry.
- */
 @Composable
 fun MealTypeSection(
     mealType: MealType,
@@ -109,9 +102,6 @@ fun MealTypeSection(
     }
 }
 
-/** Icon riêng cho đồ ăn (BreakfastDining/LunchDining/DinnerDining) không có trong bộ
- * material-icons-core, cần material-icons-extended. Snacks không có icon "quả quýt"
- * y hệt mockup, tạm dùng Icecream thay thế. */
 private fun mealTypeIcon(mealType: MealType): ImageVector = when (mealType) {
     MealType.BREAKFAST -> Icons.Default.BreakfastDining
     MealType.LUNCH -> Icons.Default.LunchDining

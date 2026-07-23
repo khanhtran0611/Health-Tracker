@@ -33,7 +33,6 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Goal
 import kotlin.math.roundToInt
 
-/** Hàng 3 thẻ Cân nặng / Chiều cao / Mục tiêu trên đầu màn Profile. */
 @Composable
 fun ProfileStatsRow(
     weightKg: Double,
@@ -41,9 +40,7 @@ fun ProfileStatsRow(
     goal: Goal,
     modifier: Modifier = Modifier,
 ) {
-    // IntrinsicSize.Min + fillMaxHeight ở mỗi card: bắt cả 3 ô cao BẰNG NHAU (theo
-    // ô cao nhất) — không thì Goal (chữ nhỏ labelMedium) tự co ngắn hơn Weight/Height
-    // (số to titleLarge), nhìn lệch dù chiều rộng đã bằng nhau qua weight(1f).
+
     Row(
         modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -64,8 +61,6 @@ fun ProfileStatsRow(
     }
 }
 
-// Làm tròn bằng số học (không String.format) — tránh dấu thập phân đổi theo
-// locale máy (vd "70,5" ở vi-VN thay vì "70.5"), giống cách BmiCard làm tròn BMI.
 private fun roundTo1Decimal(value: Double): Double = (value * 10).roundToInt() / 10.0
 
 @Composable

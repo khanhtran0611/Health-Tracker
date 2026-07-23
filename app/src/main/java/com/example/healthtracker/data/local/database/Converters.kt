@@ -6,10 +6,6 @@ import com.example.healthtracker.domain.model.Goal
 import com.example.healthtracker.domain.model.MealType
 import java.time.LocalDate
 
-/**
- * Room TypeConverters: LocalDate ↔ ISO String ("yyyy-MM-dd") và enum ↔ name.
- * Lưu enum/ngày dạng String cho dễ đọc/khớp khi debug DB.
- */
 class Converters {
 
     @TypeConverter

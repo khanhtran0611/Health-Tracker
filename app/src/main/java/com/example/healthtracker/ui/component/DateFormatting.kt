@@ -8,7 +8,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-/** "Hôm nay, 16 tháng 7" nếu date là hôm nay, ngược lại chỉ "16 tháng 7". */
 @Composable
 fun formatDiaryDate(date: LocalDate): String {
     val formatter = remember { DateTimeFormatter.ofPattern("d MMMM", Locale.getDefault()) }
@@ -20,7 +19,6 @@ fun formatDiaryDate(date: LocalDate): String {
     }
 }
 
-/** Tên viết tắt thứ trong tuần theo ngôn ngữ hiện tại — dùng cho nhãn trục ngày ở biểu đồ Stats. */
 @Composable
 fun formatWeekdayShort(date: LocalDate): String {
     val formatter = remember { DateTimeFormatter.ofPattern("EEE", Locale.getDefault()) }

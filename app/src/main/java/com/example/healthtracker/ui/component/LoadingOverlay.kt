@@ -19,15 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/**
- * Overlay loading dùng chung: phủ kín khối cha bằng 1 lớp nền mờ (scrim), giữa
- * là vòng xoay + 1 dòng chữ giải thích. Đặt trong 1 `Box` cùng nội dung thật để
- * "đè" lên trên — không thay thế nội dung, chỉ che tạm trong lúc chờ dữ liệu.
- *
- * [textRes] nhận resource id, KHÔNG nhận String đã resolve sẵn — để Composable
- * tự stringResource() ngay lúc vẽ, luôn đọc đúng ngôn ngữ hiện tại (xem lý do ở
- * ui/toast/SharedToast.kt, cùng 1 bẫy stale-context nếu resolve String từ trước).
- */
 @Composable
 fun LoadingOverlay(
     @StringRes textRes: Int,

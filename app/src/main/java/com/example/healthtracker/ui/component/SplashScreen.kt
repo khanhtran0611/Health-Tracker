@@ -21,11 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/**
- * Màn splash — hiện lúc app vừa mở, thay cho spinner trơn trong lúc
- * [com.example.healthtracker.ui.navigation.AppStartViewModel] xác định đã có
- * hồ sơ user chưa (AppStartDestination.LOADING).
- */
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier) {
     Box(

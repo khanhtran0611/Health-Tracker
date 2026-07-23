@@ -31,50 +31,18 @@ import com.example.healthtracker.ui.navigation.Route
 import com.example.healthtracker.ui.profile.ProfileScreen
 import com.example.healthtracker.ui.stats.StatisticsScreen
 
-// Thời lượng animation đổi tab (slide + fade) — giống hệt NavDisplay tầng
-// ngoài ở HealthTrackerApp.kt, để cảm giác chuyển màn nhất quán ở cả 2 tầng.
 private const val TAB_TRANSITION_DURATION_MS = 300
 
-/**
- * Shell 5-tab: `Scaffold` với `bottomBar` là [NavigationBar], bên trong là 1
- * NavDisplay TẦNG TRONG riêng chỉ chứa route của 5 tab (Dashboard/MealDiary/
- * ActivityDiary/Stats/Profile). Mỗi tab giữ backstack riêng (xem
- * [rememberTabBackStacks]) — đổi tab CHỈ đổi backstack nào đang được NavDisplay
- * hiển thị, KHÔNG xoá/tạo lại entry, nên state/scroll của tab không bị mất khi
- * quay lại.
- *
- * QUAN TRỌNG về insets: route [Route.MainShell] được entry ở NavDisplay tầng
- * ngoài (`HealthTrackerApp.kt`) KHÔNG bọc `Modifier.padding(padding)` như các
- * route con khác — vì màn này có `bottomBar` CỦA RIÊNG NÓ, phải nằm sát đáy
- * màn hình thật. Nếu bị ép vào phần padding đã trừ sẵn insets hệ thống (như
- * FoodPicker/Settings...), NavigationBar sẽ lơ lửng phía trên 1 khoảng trống
- * thay vì nằm sát đáy. Vì vậy `Scaffold` ở đây dùng insets MẶC ĐỊNH (không zero
- * ra như các Scaffold con khác), tự lo toàn bộ status bar/nav bar của chính nó.
- *
- * [onNavigateOuter] bubble các navigate ra ngoài phạm vi 5 tab (FoodPicker,
- * ChooseActivity, Settings, EditProfile...) lên backstack TẦNG NGOÀI —
- * MainShellScreen không tự thêm những route đó vào backstack của tab nào cả.
- */
 @Composable
 fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
     val tabBackStacks = rememberTabBackStacks()
 
-    // rememberSaveable (không phải remember thường) vì entry MainShell có thể bị
-    // dispose khi push FoodPicker/Settings... lên backstack tầng ngoài rồi pop
-    // trở lại — phải nhớ ĐANG Ở TAB NÀO qua lần dispose/restore đó, không được
-    // reset về tab Dashboard mỗi lần quay lại từ 1 màn con.
     var currentTabIndex by rememberSaveable { mutableIntStateOf(TopLevelTab.DASHBOARD.ordinal) }
     val currentTab = TopLevelTab.entries[currentTabIndex]
     val activeBackStack = tabBackStacks.getValue(currentTab.route)
 
-    // Tab đích đứng SAU tab hiện tại trong bottom nav (vd Dashboard -> Stats)
-    // thì trượt "tiến" (vào từ phải); đứng TRƯỚC (vd Stats -> Dashboard) thì
-    // trượt "lùi" (vào từ trái) — giống cảm giác ViewPager, không phải lúc nào
-    // cũng trượt 1 chiều như trước.
     var isMovingForward by remember { mutableStateOf(true) }
 
-    // Dùng chung cho cả bottom nav lẫn shortcut trong Dashboard (Add meal/Add
-    // activity) — mọi nơi muốn nhảy sang 1 trong 5 tab đều gọi qua đây.
     fun switchToTab(tab: TopLevelTab) {
         isMovingForward = tab.ordinal >= currentTabIndex
         navigateToTab(tabBackStacks.getValue(tab.route), tab.route)
@@ -103,12 +71,7 @@ fun MainShellScreen(onNavigateOuter: (Route) -> Unit) {
             backStack = activeBackStack,
             onBack = { activeBackStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize().padding(padding),
-            // Đổi tab: slide + fade y hệt NavDisplay tầng ngoài ở HealthTrackerApp.kt,
-            // nhưng hướng trượt phụ thuộc isMovingForward (xem switchToTab) thay vì
-            // luôn cố định 1 chiều — mỗi backstack tab là 1 object riêng biệt (không
-            // phải push/pop chung 1 stack) nên NavDisplay chỉ thực sự gọi tới
-            // transitionSpec, KHÔNG bao giờ tự gọi popTransitionSpec cho việc đổi tab
-            // này; set động cả 2 để đúng hướng dù sau này hành vi NavDisplay đổi khác.
+
             transitionSpec = {
                 val towards = if (isMovingForward) {
                     AnimatedContentTransitionScope.SlideDirection.Start

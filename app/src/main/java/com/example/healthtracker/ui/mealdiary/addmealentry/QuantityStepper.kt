@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 
-/** Nút −/+ chỉnh số khẩu phần, số nguyên tối thiểu 1 (chỉnh giới hạn ở ViewModel). */
 @Composable
 fun QuantityStepper(
     quantity: Double,
@@ -60,12 +59,6 @@ fun QuantityStepper(
     }
 }
 
-/**
- * Nút tròn tự vẽ bằng Box thường — KHÔNG dùng IconButton, vì IconButton có
- * minimumInteractiveComponentSize() riêng can thiệp kích thước, cộng với
- * .border(CircleShape) đè lên sẽ ra hình oval méo thay vì hình tròn.
- * Box tự set đúng 32x32dp, rộng = cao tuyệt đối, không bị méo.
- */
 @Composable
 private fun StepperButton(
     icon: ImageVector,
@@ -86,7 +79,6 @@ private fun StepperButton(
     }
 }
 
-/** vd 1.0 -> "1", 1.5 -> "1.5" — bỏ ".0" thừa khi là số nguyên. */
 private fun formatQuantity(quantity: Double): String {
     return if (quantity == quantity.toInt().toDouble()) {
         quantity.toInt().toString()

@@ -8,11 +8,6 @@ import androidx.room.PrimaryKey
 import com.example.healthtracker.domain.model.MealType
 import java.time.LocalDate
 
-/**
- * Một dòng nhật ký ăn. `foodName` + `calories` là SNAPSHOT tại thời điểm log —
- * sửa catalog `foods` sau này không được làm đổi số liệu ở đây.
- * FK food_id → foods (RESTRICT: không cho xóa food đang được entry tham chiếu).
- */
 @Entity(
     tableName = "meal_entries",
     foreignKeys = [
@@ -33,7 +28,6 @@ data class MealEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
 
-    /** Luôn trỏ tới 1 row trong foods (NOT NULL, không bao giờ free-text). */
     @ColumnInfo(name = "food_id")
     val foodId: Long,
 
@@ -43,14 +37,11 @@ data class MealEntryEntity(
     @ColumnInfo(name = "meal_type")
     val mealType: MealType,
 
-    /** Snapshot tên món lúc log. */
     @ColumnInfo(name = "food_name")
     val foodName: String,
 
-    /** Số khẩu phần. */
     val quantity: Double = 1.0,
 
-    /** Snapshot = food.calories * quantity. */
     val calories: Double,
 
     @ColumnInfo(name = "created_at")

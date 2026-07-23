@@ -19,14 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import kotlin.math.roundToInt
 
-/**
- * Thẻ tổng kết 30 ngày gần nhất — cùng bố cục 3 hàng với [WeeklySummaryCard]
- * (tái dùng [SummaryRow]), nhưng KHÔNG có hàng chấm tròn cuối thẻ: 30 chấm dồn
- * 1 hàng sẽ quá nhỏ/rối, không còn ý nghĩa hiển thị trực quan như 7 chấm ở thẻ
- * tuần. Số liệu truyền vào (avgEatenPerDay/avgBurnedPerDay/daysGoalMet) LUÔN cố
- * định theo 30 ngày gần nhất — không đổi khi user lùi/tiến xem tuần khác (xem
- * monthlyFlow ở StatisticsViewModel).
- */
 @Composable
 fun MonthlySummaryCard(
     avgEatenPerDay: Double,

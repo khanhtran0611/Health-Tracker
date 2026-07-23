@@ -19,11 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.component.ProfileForm
 
-/**
- * Onboarding = ProfileForm KHÔNG có nút back, nút submit là "Next" (đúng CLAUDE.md).
- * Sau khi lưu xong, gọi [onFinishOnboarding] để HealthTrackerApp xoá backstack
- * và chuyển vào Dashboard — Onboarding tự nó không biết Route.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
@@ -33,22 +28,16 @@ fun OnboardingScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val language by viewModel.language.collectAsStateWithLifecycle()
 
-    // Onboarding sẽ tự collect cái event này để còn chuyển hướng sang dashboard
     LaunchedEffect(Unit) {
         viewModel.completedEvent.collect { onFinishOnboarding() }
     }
 
-    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
-    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa
-    // (nếu không sẽ bị dư khoảng trắng cả trên lẫn dưới).
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.onboarding_title)) },
                 actions = {
-                    // "VI"/"EN" là tên ngôn ngữ, cố tình không dịch qua strings.xml
-                    // (giống language_english/language_vietnamese ở Settings) — bấm
-                    // để đổi ngay ngôn ngữ hiện tại sang ngôn ngữ còn lại.
+
                     TextButton(onClick = viewModel::onToggleLanguage) {
                         Text(
                             text = language.name,

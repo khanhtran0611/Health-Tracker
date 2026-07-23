@@ -20,14 +20,12 @@ interface FoodDao {
     @Query("SELECT * FROM foods WHERE id = :id")
     suspend fun getById(id: Long): FoodEntity?
 
-    /** Trả về id của row vừa insert — dùng để tạo entry trỏ tới. */
     @Insert
     suspend fun insert(food: FoodEntity): Long
 
     @Update
     suspend fun update(food: FoodEntity)
 
-    /** Sẽ ném SQLiteConstraintException nếu food đang được entry tham chiếu (RESTRICT). */
     @Delete
     suspend fun delete(food: FoodEntity)
 }

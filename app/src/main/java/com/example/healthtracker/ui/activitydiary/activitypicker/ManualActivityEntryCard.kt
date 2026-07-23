@@ -27,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 
-/** Thẻ viền đứt nét ở cuối danh sách: gợi ý tự nhập hoạt động khi không tìm thấy trong catalog. */
 @Composable
 fun ManualActivityEntryCard(
     onClick: () -> Unit,

@@ -15,20 +15,13 @@ import com.example.healthtracker.R
 import com.example.healthtracker.ui.dashboard.CalorieStatus
 import kotlin.math.abs
 
-/**
- * Lời khuyên ngắn dựa trên tình trạng calo hiện tại — đúng docs/requirement.md
- * 2.5: còn thiếu -> "Bạn còn thiếu X kcal hôm nay"; vừa đủ -> "Bạn đã ăn đủ
- * calo hôm nay!"; vượt quá -> "Bạn đã vượt X kcal hôm nay".
- */
 @Composable
 fun CalorieNeedIndicator(
     remainingCalories: Int,
     calorieStatus: CalorieStatus,
     modifier: Modifier = Modifier
 ) {
-    // Cùng quy ước màu với CalorieProgressCircle: còn dư -> tertiary, vừa đủ ->
-    // primary, vượt quá -> error — để 2 chỗ hiển thị cùng 1 trạng thái trên
-    // Dashboard luôn khớp màu nhau.
+
     val containerColor = when (calorieStatus) {
         CalorieStatus.OVER_TARGET -> MaterialTheme.colorScheme.errorContainer
         CalorieStatus.ON_TARGET -> MaterialTheme.colorScheme.primaryContainer

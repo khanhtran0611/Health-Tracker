@@ -44,12 +44,6 @@ import com.example.healthtracker.ui.component.formatDiaryDate
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/**
- * Điểm vào thật — nối ViewModel qua Hilt, hiển thị dạng ModalBottomSheet (trượt lên
- * từ dưới, tự làm tối nền, tự có drag handle). Vẫn nằm trong backstack chung như
- * mọi Route khác — [onDismiss] chỉ đơn giản gọi backStack.removeLastOrNull(), không
- * phát sinh cơ chế điều hướng riêng nào.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMealEntryScreen(
@@ -69,18 +63,11 @@ fun AddMealEntryScreen(
         viewModel.savedEvent.collect { onDismiss() }
     }
 
-    // ModalBottomSheet dựng Dialog/Popup riêng, bên trong tự lấy lại LocalContext/
-    // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản đã đổi
-    // ngôn ngữ của LocalizedApp -> bắt lại 2 Local này ở NGOÀI (đúng ngôn ngữ) rồi
-    // re-provide vào trong, để stringResource() bên trong content đọc đúng.
     val localContext = LocalContext.current
     val localConfiguration = LocalConfiguration.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    // Vì đặt CompositionLocalProvider(LocalContext provides localContext, ...)
-    // lồng sâu hơn Provider #2 của thư viện (nó nằm giữa Provider #2 và AddMealEntryContent).
-    // AddMealEntryContent sẽ lấy context mới thay vì context sẵn có.
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState
@@ -100,9 +87,6 @@ fun AddMealEntryScreen(
     }
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng để @Preview dùng được.
- */
 @Composable
 fun AddMealEntryContent(
     uiState: AddMealEntryUiState,
@@ -117,8 +101,7 @@ fun AddMealEntryContent(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
-        // Header "✕  Add food  Save" — Box+Alignment để tiêu đề luôn ở giữa,
-        // giống kỹ thuật đã dùng ở DateNavigator/MealDiaryScreen.
+
         Box(modifier = Modifier.fillMaxWidth()) {
             IconButton(onClick = onClose, modifier = Modifier.align(Alignment.CenterStart)) {
                 Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_close))

@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
-    /** App chỉ 1 user → luôn lấy row đầu tiên. */
     @Query("SELECT * FROM users LIMIT 1")
     fun observeUser(): Flow<UserEntity?>
 

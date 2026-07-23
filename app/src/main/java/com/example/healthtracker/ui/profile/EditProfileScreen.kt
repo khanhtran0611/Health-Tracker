@@ -20,10 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.component.ProfileForm
 
-/**
- * Edit Profile = ProfileForm CÓ nút back, nút submit là "Save" (đúng CLAUDE.md).
- * Cả nút back và lưu-xong đều gọi [onBack] — cùng 1 hành động "quay về màn trước".
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
@@ -36,8 +32,6 @@ fun EditProfileScreen(
         viewModel.savedEvent.collect { onBack() }
     }
 
-    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
-    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa.
     Scaffold(
         topBar = {
             TopAppBar(

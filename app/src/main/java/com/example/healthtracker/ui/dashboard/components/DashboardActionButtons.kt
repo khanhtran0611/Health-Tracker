@@ -18,12 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.example.healthtracker.R
 import com.example.healthtracker.ui.dashboard.CalorieStatus
 
-/**
- * Chỉ hiện ĐÚNG 1 trong 2 hint, tuỳ tình trạng calo hiện tại (đúng mục "Lời
- * khuyên ngắn dựa trên tình trạng hiện tại" trong docs/requirement.md 2.5):
- * còn dư calo -> gợi ý thêm bữa ăn; đã vượt -> gợi ý thêm hoạt động để đốt
- * bớt; vừa đủ -> KHÔNG hiện nút nào cả.
- */
 @Composable
 fun DashboardActionButtons(
     calorieStatus: CalorieStatus,
@@ -69,7 +63,7 @@ private fun CustomActionButton(
     ) {
         Box(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Column(modifier = Modifier.align(Alignment.CenterStart)) {
-                // Top Left: Lightbulb + "Hint: "
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.Lightbulb,
@@ -87,7 +81,6 @@ private fun CustomActionButton(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Main Row: Icon + Text
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -100,7 +93,6 @@ private fun CustomActionButton(
                 }
             }
 
-            // Bottom Right: Arrow Right
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,

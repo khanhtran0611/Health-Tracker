@@ -25,13 +25,6 @@ import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-/**
- * Thanh chuyển cửa sổ 7-ngày cho màn Statistics: "< dd/MM – dd/MM >" ở giữa —
- * cùng kỹ thuật Box + Alignment.Center như [com.example.healthtracker.ui.component.DateNavigator]
- * (Meal/Activity Diary) để cụm giữa luôn canh đúng giữa dù 2 IconButton 2 bên.
- * Khác DateNavigator ở chỗ bước nhảy là 7 ngày (1 "trang" thống kê) chứ không
- * phải 1 ngày, nên không dùng lại thẳng DateNavigator được mà tách component riêng.
- */
 @Composable
 fun StatsDateRangeNavigator(
     startDate: LocalDate,

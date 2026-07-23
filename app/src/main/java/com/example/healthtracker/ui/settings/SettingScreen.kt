@@ -42,7 +42,6 @@ import com.example.healthtracker.domain.model.ThemePreset
 import com.example.healthtracker.ui.component.ConfirmDeleteDialog
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [SettingContent]. */
 @Composable
 fun SettingScreen(
     onBackClick: () -> Unit,
@@ -73,10 +72,6 @@ fun SettingScreen(
     )
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [SettingScreen]
- * để @Preview dùng được (màn Preview không có Hilt container để dựng ViewModel thật).
- */
 @Composable
 fun SettingContent(
     uiState: SettingsUiState,
@@ -95,9 +90,6 @@ fun SettingContent(
 ) {
     val settings = uiState.settings
 
-    // Từ Android 13 (API 33) phải có quyền POST_NOTIFICATIONS mới hiện được
-    // notification — xin quyền ngay lúc user bật switch tổng, không xin trước lúc
-    // chưa cần tới. Trên API < 33 (hoặc đã có quyền rồi) thì bật thẳng, khỏi hỏi.
     val context = LocalContext.current
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -120,7 +112,7 @@ fun SettingContent(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
-        // TopBar
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,7 +141,6 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Language Section
         SectionTitle(title = stringResource(R.string.section_language))
         SettingsCard {
             Text(
@@ -168,7 +159,6 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Appearance Section
         SectionTitle(title = stringResource(R.string.section_appearance))
         SettingsCard {
             Text(
@@ -217,8 +207,6 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
-        // Reminders Section — 3 khung giờ cố định theo đề (7h sáng/12h trưa/19h tối).
         SectionTitle(title = stringResource(R.string.section_reminders))
         SettingsCard(padding = 0.dp) {
             SwitchRow(
@@ -254,14 +242,7 @@ fun SettingContent(
         }
 
         if (uiState.showAutostartReminderDialog) {
-            // AlertDialog dựng Dialog riêng, bên trong tự lấy lại LocalContext/
-            // LocalConfiguration từ Window thật (Activity gốc) chứ không kế thừa bản
-            // đã đổi ngôn ngữ của LocalizedApp. KHÁC với ConfirmDeleteDialog (title/
-            // message truyền vào là String đã resolve sẵn từ ngoài), ở đây phải tự
-            // resolve title/message bằng stringResource() ở NGOÀI AlertDialog rồi mới
-            // truyền String thẳng vào slot — nếu gọi stringResource() trực tiếp BÊN
-            // TRONG title/text lambda thì vẫn dính đúng bug cũ (chỉ confirmButton
-            // được re-provide Local nên chỉ mỗi nút "Đã hiểu" dịch đúng).
+
             val dialogTitle = stringResource(R.string.dialog_autostart_reminder_title)
             val dialogMessage = stringResource(R.string.dialog_autostart_reminder_message)
             val localContext = LocalContext.current
@@ -283,7 +264,6 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Data management Section — đặt lại dữ liệu (destructive, có dialog xác nhận).
         SectionTitle(title = stringResource(R.string.section_data_management))
         SettingsCard {
             Text(
@@ -319,7 +299,6 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Footer
         Text(
             text = stringResource(R.string.settings_app_version),
             style = MaterialTheme.typography.bodySmall,

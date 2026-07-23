@@ -35,7 +35,7 @@ fun DashboardHeader(
                 .align(Alignment.CenterStart),
             contentAlignment = Alignment.Center
         ) {
-            // Placeholder for Avatar
+
             Icon(
                 Icons.Default.Person,
                 contentDescription = stringResource(R.string.content_description_avatar),
@@ -45,7 +45,7 @@ fun DashboardHeader(
 
         Text(
             text = dateText,
-            // titleLarge — khớp cỡ chữ tiêu đề của Meal Diary/Activity Diary.
+
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,

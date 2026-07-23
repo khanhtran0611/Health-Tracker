@@ -15,11 +15,9 @@ interface ActivityEntryDao {
     @Query("SELECT * FROM activity_entries WHERE log_date = :date ORDER BY created_at ASC")
     fun observeByDate(date: LocalDate): Flow<List<ActivityEntryEntity>>
 
-    /** Tổng calo ĐỐT trong ngày (dùng cho dashboard: Burned). */
     @Query("SELECT COALESCE(SUM(calories_burned), 0) FROM activity_entries WHERE log_date = :date")
     fun observeTotalCaloriesBurnedByDate(date: LocalDate): Flow<Double>
 
-    /** Tổng calo ĐỐT theo từng ngày trong khoảng — dùng cho Stats (bar/line chart 7 ngày). */
     @Query(
         "SELECT log_date, COALESCE(SUM(calories_burned), 0) as total FROM activity_entries " +
             "WHERE log_date BETWEEN :startDate AND :endDate GROUP BY log_date"

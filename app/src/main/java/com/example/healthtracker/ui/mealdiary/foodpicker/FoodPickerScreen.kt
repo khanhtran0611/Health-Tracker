@@ -36,7 +36,6 @@ import com.example.healthtracker.ui.mealdiary.addmealentry.AddMealEntryScreen
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 
-/** Điểm vào thật — nối ViewModel qua Hilt. Phần hiển thị thật nằm ở [FoodPickerContent]. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodPickerScreen(
@@ -50,8 +49,6 @@ fun FoodPickerScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedFoodForEntry by remember { mutableStateOf<Food?>(null) }
 
-    // Outer Scaffold (HealthTrackerNavHost) đã chừa insets hệ thống (status bar/nav bar)
-    // 1 lần rồi -> Scaffold + TopAppBar ở đây phải để 0, không chừa thêm lần nữa.
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,10 +83,6 @@ fun FoodPickerScreen(
     }
 }
 
-/**
- * Phần hiển thị THUẦN, không đụng ViewModel/Hilt — tách riêng khỏi [FoodPickerScreen]
- * để @Preview dùng được.
- */
 @Composable
 fun FoodPickerContent(
     uiState: FoodPickerUiState,
