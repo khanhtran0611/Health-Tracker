@@ -7,4 +7,5 @@ data class ActivityDiaryUiState(
     val selectedDate: LocalDate = LocalDate.now(),
     val entries: List<ActivityEntry> = emptyList(),
     val totalCaloriesBurnedToday: Double = 0.0,
+    val isLoading: Boolean = true,
 )

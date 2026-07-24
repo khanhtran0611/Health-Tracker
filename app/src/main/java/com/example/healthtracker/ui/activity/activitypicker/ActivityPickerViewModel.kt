@@ -34,7 +34,7 @@ class ActivityPickerViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(_searchQuery, activities) { query, activities ->
-                ActivityPickerUiState(searchQuery = query, activities = activities)
+                ActivityPickerUiState(searchQuery = query, activities = activities, isLoading = false)
             }.collect { _uiState.value = it }
         }
     }

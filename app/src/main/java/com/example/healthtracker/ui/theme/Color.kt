@@ -93,3 +93,8 @@ val ObsidianSurfaceContainerLow = Color(0xFF0C0C0F)
 val ObsidianSurfaceContainer = Color(0xFF18181B)
 val ObsidianSurfaceContainerHigh = Color(0xFF202023)
 val ObsidianSurfaceContainerHighest = Color(0xFF27272A)
+
+val ToastSuccessColor = Color(0xFF4CAF50)
+val ToastErrorColor = Color(0xFFF44336)
+val ToastWarningColor = Color(0xFFFF9800)
+val ToastContentColor = Color.White

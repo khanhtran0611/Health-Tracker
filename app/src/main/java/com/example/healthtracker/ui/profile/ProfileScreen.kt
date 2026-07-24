@@ -15,7 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Gender
 import com.example.healthtracker.domain.model.Goal
+import com.example.healthtracker.ui.component.overlay.LoadingOverlay
 import com.example.healthtracker.ui.component.profileform.activityLevelTitleRes
 import com.example.healthtracker.ui.profile.components.BmiCard
 import com.example.healthtracker.ui.profile.components.ProfileStatsRow
@@ -66,77 +66,76 @@ fun ProfileContent(
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isLoading) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-        return
-    }
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = MaterialTheme.spacing.xl),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-    ) {
-        Box(modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.spacing.lg)) {
-            Text(
-                text = stringResource(R.string.profile_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.align(Alignment.Center),
-            )
-            IconButton(onClick = onSettingsClick, modifier = Modifier.align(Alignment.CenterEnd)) {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.action_settings),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-        }
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = uiState.fullName,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (uiState.age != null) {
-                Text(
-                    text = stringResource(
-                        R.string.profile_age_gender_format,
-                        uiState.age,
-                        stringResource(if (uiState.gender == Gender.MALE) R.string.gender_male else R.string.gender_female),
-                    ),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
-        ProfileStatsRow(
-            weightKg = uiState.weightKg,
-            heightCm = uiState.heightCm,
-            goal = uiState.goal,
-        )
-
-        BmiCard(bmi = uiState.bmi, category = uiState.bmiCategory)
-
-        TdeeCard(tdee = uiState.tdee.toInt(), activityLevelTitleRes = activityLevelTitleRes(uiState.activityLevel))
-
-        OutlinedButton(
-            onClick = onEditProfileClick,
-            modifier = Modifier.fillMaxWidth().height(MaterialTheme.sizing.buttonHeight),
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = MaterialTheme.spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
         ) {
-            Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(MaterialTheme.sizing.iconMedium))
-            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-            Text(stringResource(R.string.action_edit_profile), fontWeight = FontWeight.SemiBold)
+            Box(modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.spacing.lg)) {
+                Text(
+                    text = stringResource(R.string.profile_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+                IconButton(onClick = onSettingsClick, modifier = Modifier.align(Alignment.CenterEnd)) {
+                    Icon(
+                        Icons.Default.Settings,
+                        contentDescription = stringResource(R.string.action_settings),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = uiState.fullName,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (uiState.age != null) {
+                    Text(
+                        text = stringResource(
+                            R.string.profile_age_gender_format,
+                            uiState.age,
+                            stringResource(if (uiState.gender == Gender.MALE) R.string.gender_male else R.string.gender_female),
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            ProfileStatsRow(
+                weightKg = uiState.weightKg,
+                heightCm = uiState.heightCm,
+                goal = uiState.goal,
+            )
+
+            BmiCard(bmi = uiState.bmi, category = uiState.bmiCategory)
+
+            TdeeCard(tdee = uiState.tdee.toInt(), activityLevelTitleRes = activityLevelTitleRes(uiState.activityLevel))
+
+            OutlinedButton(
+                onClick = onEditProfileClick,
+                modifier = Modifier.fillMaxWidth().height(MaterialTheme.sizing.buttonHeight),
+            ) {
+                Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(MaterialTheme.sizing.iconMedium))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+                Text(stringResource(R.string.action_edit_profile), fontWeight = FontWeight.SemiBold)
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
         }
 
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
+        }
     }
 }
 

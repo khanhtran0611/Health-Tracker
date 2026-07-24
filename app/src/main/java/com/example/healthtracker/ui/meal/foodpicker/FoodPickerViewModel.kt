@@ -34,7 +34,7 @@ class FoodPickerViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(_searchQuery, foods) { query, foods ->
-                FoodPickerUiState(searchQuery = query, foods = foods)
+                FoodPickerUiState(searchQuery = query, foods = foods, isLoading = false)
             }.collect { _uiState.value = it }
         }
     }

@@ -28,6 +28,7 @@ import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.MealEntry
 import com.example.healthtracker.domain.model.MealType
 import com.example.healthtracker.ui.component.DateNavigator
+import com.example.healthtracker.ui.component.overlay.LoadingOverlay
 import com.example.healthtracker.ui.meal.mealdiary.components.MealTypeSection
 import com.example.healthtracker.ui.meal.mealdiary.components.TotalTodayCard
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
@@ -61,47 +62,53 @@ fun MealDiaryContent(
     onDeleteEntry: (MealEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(MaterialTheme.spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(MaterialTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg),
+        ) {
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            IconButton(
-                onClick = {  },
-                modifier = Modifier.align(Alignment.CenterStart),
-            ) {
-                Icon(Icons.Default.Menu, contentDescription = null)
+            Box(modifier = Modifier.fillMaxWidth()) {
+                IconButton(
+                    onClick = {  },
+                    modifier = Modifier.align(Alignment.CenterStart),
+                ) {
+                    Icon(Icons.Default.Menu, contentDescription = null)
+                }
+                Text(
+                    text = stringResource(R.string.meal_diary_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
             }
-            Text(
-                text = stringResource(R.string.meal_diary_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.align(Alignment.Center),
+
+            DateNavigator(
+                selectedDate = uiState.selectedDate,
+                onPreviousDay = onPreviousDay,
+                onNextDay = onNextDay,
+                onDateSelected = onDateSelected,
             )
+
+            TotalTodayCard(totalCalories = uiState.totalCaloriesToday)
+
+            MealType.entries.forEach { mealType ->
+                MealTypeSection(
+                    mealType = mealType,
+                    entries = uiState.entriesByMealType.getValue(mealType),
+                    totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
+                    onAddFood = { onAddFood(mealType, uiState.selectedDate) },
+                    onDeleteEntry = onDeleteEntry,
+                )
+            }
         }
 
-        DateNavigator(
-            selectedDate = uiState.selectedDate,
-            onPreviousDay = onPreviousDay,
-            onNextDay = onNextDay,
-            onDateSelected = onDateSelected,
-        )
-
-        TotalTodayCard(totalCalories = uiState.totalCaloriesToday)
-
-        MealType.entries.forEach { mealType ->
-            MealTypeSection(
-                mealType = mealType,
-                entries = uiState.entriesByMealType.getValue(mealType),
-                totalCalories = uiState.totalCaloriesByMealType.getValue(mealType),
-                onAddFood = { onAddFood(mealType, uiState.selectedDate) },
-                onDeleteEntry = onDeleteEntry,
-            )
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
         }
     }
 }
@@ -113,6 +120,7 @@ private fun MealDiaryContentPreview() {
         MealDiaryContent(
             uiState = MealDiaryUiState(
                 selectedDate = LocalDate.now(),
+                isLoading = false,
                 entriesByMealType = mapOf(
                     MealType.BREAKFAST to listOf(
                         MealEntry(

@@ -5,14 +5,18 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.healthtracker.data.di.ApplicationScope
 import com.example.healthtracker.domain.model.AppSettings
 import com.example.healthtracker.domain.model.Brightness
 import com.example.healthtracker.domain.model.FontSize
 import com.example.healthtracker.domain.model.Language
 import com.example.healthtracker.domain.model.ThemePreset
 import com.example.healthtracker.domain.repository.SettingsRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 private val LANGUAGE_KEY = stringPreferencesKey("language")
@@ -26,20 +30,25 @@ private val EVENING_REMINDER_KEY = booleanPreferencesKey("evening_reminder_enabl
 
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
+    @ApplicationScope appScope: CoroutineScope,
 ) : SettingsRepository {
 
-    override fun observeSettings(): Flow<AppSettings> = dataStore.data.map { prefs ->
-        AppSettings(
-            language = parseLanguage(prefs[LANGUAGE_KEY]),
-            fontSize = parseFontSize(prefs[FONT_SIZE_KEY]),
-            brightness = parseBrightness(prefs[BRIGHTNESS_KEY]),
-            themePreset = parseThemePreset(prefs[THEME_PRESET_KEY]),
-            remindersEnabled = prefs[REMINDERS_ENABLED_KEY] ?: false,
-            morningReminderEnabled = prefs[MORNING_REMINDER_KEY] ?: true,
-            noonReminderEnabled = prefs[NOON_REMINDER_KEY] ?: true,
-            eveningReminderEnabled = prefs[EVENING_REMINDER_KEY] ?: true,
-        )
-    }
+    private val settingsState = dataStore.data
+        .map { prefs ->
+            AppSettings(
+                language = parseLanguage(prefs[LANGUAGE_KEY]),
+                fontSize = parseFontSize(prefs[FONT_SIZE_KEY]),
+                brightness = parseBrightness(prefs[BRIGHTNESS_KEY]),
+                themePreset = parseThemePreset(prefs[THEME_PRESET_KEY]),
+                remindersEnabled = prefs[REMINDERS_ENABLED_KEY] ?: false,
+                morningReminderEnabled = prefs[MORNING_REMINDER_KEY] ?: true,
+                noonReminderEnabled = prefs[NOON_REMINDER_KEY] ?: true,
+                eveningReminderEnabled = prefs[EVENING_REMINDER_KEY] ?: true,
+            )
+        }
+        .stateIn(appScope, SharingStarted.Eagerly, AppSettings())
+
+    override fun observeSettings(): Flow<AppSettings> = settingsState
 
     override suspend fun setLanguage(language: Language) {
         dataStore.edit { it[LANGUAGE_KEY] = language.name }

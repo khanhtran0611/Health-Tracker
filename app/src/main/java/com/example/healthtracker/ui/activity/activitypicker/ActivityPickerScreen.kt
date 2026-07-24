@@ -1,5 +1,6 @@
 package com.example.healthtracker.ui.activity.activitypicker
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -35,6 +36,7 @@ import com.example.healthtracker.domain.model.Activity
 import com.example.healthtracker.ui.activity.activitypicker.components.ActivityListItem
 import com.example.healthtracker.ui.activity.activitypicker.components.ManualActivityEntryCard
 import com.example.healthtracker.ui.activity.addactivityentry.AddActivityEntryScreen
+import com.example.healthtracker.ui.component.overlay.LoadingOverlay
 import com.example.healthtracker.ui.theme.HealthTrackerTheme
 import java.time.LocalDate
 import com.example.healthtracker.ui.theme.spacing
@@ -93,37 +95,43 @@ fun ActivityPickerContent(
     onEditActivity: (Activity) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.spacing.lg),
-    ) {
-        OutlinedTextField(
-            value = uiState.searchQuery,
-            onValueChange = onSearchQueryChange,
-            placeholder = { Text(stringResource(R.string.activity_picker_search_placeholder)) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.spacing.lg),
         ) {
-            items(uiState.activities, key = { it.id }) { activity ->
-                ActivityListItem(
-                    activity = activity,
-                    onClick = { onActivitySelected(activity) },
-                    onEditClick = { onEditActivity(activity) },
-                )
+            OutlinedTextField(
+                value = uiState.searchQuery,
+                onValueChange = onSearchQueryChange,
+                placeholder = { Text(stringResource(R.string.activity_picker_search_placeholder)) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
+            ) {
+                items(uiState.activities, key = { it.id }) { activity ->
+                    ActivityListItem(
+                        activity = activity,
+                        onClick = { onActivitySelected(activity) },
+                        onEditClick = { onEditActivity(activity) },
+                    )
+                }
+                item {
+                    ManualActivityEntryCard(
+                        onClick = onEnterNewActivity,
+                        modifier = Modifier.padding(top = MaterialTheme.spacing.lg),
+                    )
+                }
             }
-            item {
-                ManualActivityEntryCard(
-                    onClick = onEnterNewActivity,
-                    modifier = Modifier.padding(top = MaterialTheme.spacing.lg),
-                )
-            }
+        }
+
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
         }
     }
 }
@@ -135,6 +143,7 @@ private fun ActivityPickerContentPreview() {
         ActivityPickerContent(
             uiState = ActivityPickerUiState(
                 searchQuery = "",
+                isLoading = false,
                 activities = listOf(
                     Activity(id = 1, name = "Đi bộ", met = 3.5),
                     Activity(id = 2, name = "Chạy bộ", met = 9.8),

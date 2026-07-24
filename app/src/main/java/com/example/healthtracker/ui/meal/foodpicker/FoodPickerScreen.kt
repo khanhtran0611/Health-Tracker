@@ -1,5 +1,6 @@
 package com.example.healthtracker.ui.meal.foodpicker
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.healthtracker.R
 import com.example.healthtracker.domain.model.Food
 import com.example.healthtracker.domain.model.MealType
+import com.example.healthtracker.ui.component.overlay.LoadingOverlay
 import com.example.healthtracker.ui.meal.addmealentry.AddMealEntryScreen
 import com.example.healthtracker.ui.meal.foodpicker.components.EnterNewFoodCard
 import com.example.healthtracker.ui.meal.foodpicker.components.FoodListItem
@@ -96,37 +98,43 @@ fun FoodPickerContent(
     onEditFood: (Food) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.spacing.lg),
-    ) {
-        OutlinedTextField(
-            value = uiState.searchQuery,
-            onValueChange = onSearchQueryChange,
-            placeholder = { Text(stringResource(R.string.food_picker_search_placeholder)) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.spacing.lg),
         ) {
-            items(uiState.foods, key = { it.id }) { food ->
-                FoodListItem(
-                    food = food,
-                    onClick = { onFoodSelected(food) },
-                    onEditClick = { onEditFood(food) },
-                )
+            OutlinedTextField(
+                value = uiState.searchQuery,
+                onValueChange = onSearchQueryChange,
+                placeholder = { Text(stringResource(R.string.food_picker_search_placeholder)) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(vertical = MaterialTheme.spacing.sm),
+            ) {
+                items(uiState.foods, key = { it.id }) { food ->
+                    FoodListItem(
+                        food = food,
+                        onClick = { onFoodSelected(food) },
+                        onEditClick = { onEditFood(food) },
+                    )
+                }
+                item {
+                    EnterNewFoodCard(
+                        onClick = onEnterNewFood,
+                        modifier = Modifier.padding(top = MaterialTheme.spacing.lg),
+                    )
+                }
             }
-            item {
-                EnterNewFoodCard(
-                    onClick = onEnterNewFood,
-                    modifier = Modifier.padding(top = MaterialTheme.spacing.lg),
-                )
-            }
+        }
+
+        if (uiState.isLoading) {
+            LoadingOverlay(textRes = R.string.text_loading)
         }
     }
 }
@@ -138,6 +146,7 @@ private fun FoodPickerContentPreview() {
         FoodPickerContent(
             uiState = FoodPickerUiState(
                 searchQuery = "",
+                isLoading = false,
                 foods = listOf(
                     Food(id = 1, name = "Cơm trắng", calories = 130.0, servingUnit = "100g"),
                     Food(id = 2, name = "Trứng gà luộc", calories = 78.0, servingUnit = "1 quả"),
