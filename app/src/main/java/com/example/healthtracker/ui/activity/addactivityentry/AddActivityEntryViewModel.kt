@@ -25,6 +25,8 @@ import javax.inject.Inject
 
 private const val DURATION_STEP_MINUTES = 5
 private const val MIN_DURATION_MINUTES = 5
+private const val MAX_DURATION_MINUTES = 600
+private const val MAX_DAILY_CALORIES_BURNED = 99000.0
 
 @HiltViewModel
 class AddActivityEntryViewModel @Inject constructor(
@@ -57,7 +59,9 @@ class AddActivityEntryViewModel @Inject constructor(
     }
 
     fun onIncreaseDuration() {
-        _uiState.update { it.copy(durationMinutes = it.durationMinutes + DURATION_STEP_MINUTES) }
+        _uiState.update {
+            it.copy(durationMinutes = (it.durationMinutes + DURATION_STEP_MINUTES).coerceAtMost(MAX_DURATION_MINUTES))
+        }
     }
 
     fun onSubmit() {
@@ -67,6 +71,13 @@ class AddActivityEntryViewModel @Inject constructor(
 
             _uiState.update { it.copy(isSaving = true) }
             try {
+                val existingTotal = activityEntryRepository.getTotalCaloriesBurnedByDate(state.logDate)
+                if (existingTotal + state.caloriesBurned > MAX_DAILY_CALORIES_BURNED) {
+                    toastController.show(ToastMessage(R.string.msg_daily_calories_burned_exceeded, ToastType.ERROR))
+                    _uiState.update { it.copy(isSaving = false) }
+                    return@launch
+                }
+
                 activityEntryRepository.addEntry(
                     ActivityEntry(
                         activityId = activity.id,

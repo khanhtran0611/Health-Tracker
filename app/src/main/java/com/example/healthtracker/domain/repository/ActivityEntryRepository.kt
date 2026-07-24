@@ -8,6 +8,7 @@ interface ActivityEntryRepository {
     fun observeEntriesByDate(date: LocalDate): Flow<List<ActivityEntry>>
 
     fun observeTotalCaloriesBurnedByDate(date: LocalDate): Flow<Double>
+    suspend fun getTotalCaloriesBurnedByDate(date: LocalDate): Double
 
     fun observeDailyTotalsByDateRange(startDate: LocalDate, endDate: LocalDate): Flow<Map<LocalDate, Double>>
     suspend fun getEntry(id: Long): ActivityEntry?

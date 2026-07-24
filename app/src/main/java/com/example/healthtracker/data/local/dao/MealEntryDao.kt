@@ -18,6 +18,9 @@ interface MealEntryDao {
     @Query("SELECT COALESCE(SUM(calories), 0) FROM meal_entries WHERE log_date = :date")
     fun observeTotalCaloriesByDate(date: LocalDate): Flow<Double>
 
+    @Query("SELECT COALESCE(SUM(calories), 0) FROM meal_entries WHERE log_date = :date")
+    suspend fun getTotalCaloriesByDate(date: LocalDate): Double
+
     @Query(
         "SELECT log_date, COALESCE(SUM(calories), 0) as total FROM meal_entries " +
             "WHERE log_date BETWEEN :startDate AND :endDate GROUP BY log_date"

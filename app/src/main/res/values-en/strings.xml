@@ -53,6 +53,8 @@
     <string name="error_weight_out_of_range">Weight must be between 25 and 400 kg</string>
     <string name="error_height_out_of_range">Height must be between 50 and 250 cm</string>
     <string name="error_age_out_of_range">Age must be between 8 and 150</string>
+    <string name="error_calories_out_of_range">Calories must be between 0 and 10000 kcal</string>
+    <string name="error_met_out_of_range">MET must be between 0.5 and 20</string>
 
     <string name="text_loading">Loading…</string>
 
@@ -105,6 +107,7 @@
     <string name="msg_food_save_failed">Failed to save food, please try again</string>
     <string name="msg_meal_entry_added">Meal entry added</string>
     <string name="msg_meal_entry_failed">Failed to add meal entry, please try again</string>
+    <string name="msg_daily_calories_eaten_exceeded">This day\'s total calories eaten exceeds the allowed limit</string>
 
     <!-- Activity Diary -->
     <string name="activity_diary_title">Activity Diary</string>
@@ -140,6 +143,7 @@
     <string name="msg_activity_save_failed">Failed to save activity, please try again</string>
     <string name="msg_activity_entry_added">Activity entry added</string>
     <string name="msg_activity_entry_failed">Failed to add activity entry, please try again</string>
+    <string name="msg_daily_calories_burned_exceeded">Today\'s total calories burned exceeds the allowed limit</string>
 
     <!-- Dashboard -->
     <string name="content_description_avatar">Avatar</string>

@@ -24,6 +24,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+private const val MAX_QUANTITY = 50
+private const val MAX_DAILY_CALORIES_EATEN = 99999.0
+
 @HiltViewModel
 class AddMealEntryViewModel @Inject constructor(
     private val foodRepository: FoodRepository,
@@ -49,7 +52,7 @@ class AddMealEntryViewModel @Inject constructor(
     }
 
     fun onIncreaseQuantity() {
-        _uiState.update { it.copy(quantity = it.quantity + 1) }
+        _uiState.update { it.copy(quantity = (it.quantity + 1).coerceAtMost(MAX_QUANTITY)) }
     }
 
     fun onSubmit() {
@@ -59,6 +62,14 @@ class AddMealEntryViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true) }
             try {
+                val newCalories = food.calories * state.quantity
+                val existingTotal = mealEntryRepository.getTotalCaloriesByDate(state.logDate)
+                if (existingTotal + newCalories > MAX_DAILY_CALORIES_EATEN) {
+                    toastController.show(ToastMessage(R.string.msg_daily_calories_eaten_exceeded, ToastType.ERROR))
+                    _uiState.update { it.copy(isSaving = false) }
+                    return@launch
+                }
+
                 mealEntryRepository.addEntry(
                     MealEntry(
                         foodId = food.id,
@@ -66,7 +77,7 @@ class AddMealEntryViewModel @Inject constructor(
                         mealType = mealType,
                         foodName = food.name,
                         quantity = state.quantity,
-                        calories = food.calories * state.quantity,
+                        calories = newCalories,
                     ),
                 )
                 toastController.show(ToastMessage(R.string.msg_meal_entry_added, ToastType.SUCCESS))

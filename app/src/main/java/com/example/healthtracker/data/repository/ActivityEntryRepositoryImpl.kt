@@ -20,6 +20,9 @@ class ActivityEntryRepositoryImpl @Inject constructor(
     override fun observeTotalCaloriesBurnedByDate(date: LocalDate): Flow<Double> =
         activityEntryDao.observeTotalCaloriesBurnedByDate(date)
 
+    override suspend fun getTotalCaloriesBurnedByDate(date: LocalDate): Double =
+        activityEntryDao.getTotalCaloriesBurnedByDate(date)
+
     override fun observeDailyTotalsByDateRange(startDate: LocalDate, endDate: LocalDate): Flow<Map<LocalDate, Double>> =
         activityEntryDao.observeDailyTotalsBetween(startDate, endDate).map { list -> list.associate { it.logDate to it.total } }
 

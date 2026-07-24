@@ -57,6 +57,8 @@
     <string name="error_weight_out_of_range">Cân nặng phải trong khoảng 25 - 400 kg</string>
     <string name="error_height_out_of_range">Chiều cao phải trong khoảng 50 - 250 cm</string>
     <string name="error_age_out_of_range">Tuổi phải trong khoảng 8 - 150</string>
+    <string name="error_calories_out_of_range">Calo phải trong khoảng 0 - 10000 kcal</string>
+    <string name="error_met_out_of_range">MET phải trong khoảng 0.5 - 20</string>
 
     <string name="text_loading">Đang tải…</string>
 
@@ -109,6 +111,7 @@
     <string name="msg_food_save_failed">Lưu món ăn thất bại, thử lại nhé</string>
     <string name="msg_meal_entry_added">Đã ghi nhận bữa ăn</string>
     <string name="msg_meal_entry_failed">Ghi nhận bữa ăn thất bại</string>
+    <string name="msg_daily_calories_eaten_exceeded">Tổng calo nạp vào ngày này đã vượt quá giới hạn cho phép</string>
 
     <!-- Activity Diary -->
     <string name="activity_diary_title">Nhật ký hoạt động</string>
@@ -144,6 +147,7 @@
     <string name="msg_activity_save_failed">Lưu hoạt động thất bại, thử lại nhé</string>
     <string name="msg_activity_entry_added">Đã ghi nhận hoạt động</string>
     <string name="msg_activity_entry_failed">Ghi nhận hoạt động thất bại</string>
+    <string name="msg_daily_calories_burned_exceeded">Tổng calo tiêu thụ hôm nay đã vượt quá giới hạn cho phép</string>
 
     <!-- Dashboard -->
     <string name="content_description_avatar">Ảnh đại diện</string>
