@@ -28,7 +28,7 @@ import com.example.healthtracker.ui.theme.spacing
 
 @Composable
 fun QuantityStepper(
-    quantity: Double,
+    quantity: Int,
     onDecrease: () -> Unit,
     onIncrease: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,7 +44,7 @@ fun QuantityStepper(
                 onClick = onDecrease,
             )
             Text(
-                text = formatQuantity(quantity),
+                text = quantity.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.lg),
             )
@@ -80,13 +80,5 @@ private fun StepperButton(
             contentDescription = contentDescription,
             modifier = Modifier.size(MaterialTheme.sizing.stepperIconSize),
         )
-    }
-}
-
-private fun formatQuantity(quantity: Double): String {
-    return if (quantity == quantity.toInt().toDouble()) {
-        quantity.toInt().toString()
-    } else {
-        quantity.toString()
     }
 }

@@ -9,6 +9,6 @@ data class MealEntry(
     val logDate: LocalDate,
     val mealType: MealType,
     val foodName: String,
-    val quantity: Double,
+    val quantity: Int,
     val calories: Double,
 )

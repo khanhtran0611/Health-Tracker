@@ -36,7 +36,7 @@ fun MealEntryRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(entry.foodName, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(bottom = MaterialTheme.spacing.xxs))
             Text(
-                formatQuantity(entry.quantity),
+                "x${entry.quantity}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -62,13 +62,4 @@ fun MealEntryRow(
             }
         }
     }
-}
-
-private fun formatQuantity(quantity: Double): String {
-    val value = if (quantity == quantity.toInt().toDouble()) {
-        quantity.toInt().toString()
-    } else {
-        quantity.toString()
-    }
-    return "x$value"
 }

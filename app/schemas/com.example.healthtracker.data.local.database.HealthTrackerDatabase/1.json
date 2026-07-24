@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fdba56866a7b290e2dd88653bda1797b",
+    "identityHash": "924007073494cb26d5c546f0d0627665",
     "entities": [
       {
         "tableName": "users",
@@ -154,7 +154,7 @@
       },
       {
         "tableName": "meal_entries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `food_id` INTEGER NOT NULL, `log_date` TEXT NOT NULL, `meal_type` TEXT NOT NULL, `food_name` TEXT NOT NULL, `quantity` REAL NOT NULL, `calories` REAL NOT NULL, `created_at` INTEGER NOT NULL, FOREIGN KEY(`food_id`) REFERENCES `foods`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `food_id` INTEGER NOT NULL, `log_date` TEXT NOT NULL, `meal_type` TEXT NOT NULL, `food_name` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `calories` REAL NOT NULL, `created_at` INTEGER NOT NULL, FOREIGN KEY(`food_id`) REFERENCES `foods`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
         "fields": [
           {
             "fieldPath": "id",
@@ -189,7 +189,7 @@
           {
             "fieldPath": "quantity",
             "columnName": "quantity",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -345,7 +345,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fdba56866a7b290e2dd88653bda1797b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '924007073494cb26d5c546f0d0627665')"
     ]
   }
 }

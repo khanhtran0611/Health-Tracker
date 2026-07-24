@@ -189,7 +189,7 @@ private fun AddMealEntryContentPreview() {
         AddMealEntryContent(
             uiState = AddMealEntryUiState(
                 food = Food(id = 1, name = "Phở bò tô nhỏ", calories = 350.0, servingUnit = "1 tô"),
-                quantity = 1.0,
+                quantity = 1,
                 logDate = LocalDate.now(),
             ),
             onDecreaseQuantity = {},

@@ -40,7 +40,7 @@ data class MealEntryEntity(
     @ColumnInfo(name = "food_name")
     val foodName: String,
 
-    val quantity: Double = 1.0,
+    val quantity: Int = 1,
 
     val calories: Double,
 

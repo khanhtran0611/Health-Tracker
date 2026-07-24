@@ -45,7 +45,7 @@ class AddMealEntryViewModel @Inject constructor(
     }
 
     fun onDecreaseQuantity() {
-        _uiState.update { it.copy(quantity = (it.quantity - 1).coerceAtLeast(1.0)) }
+        _uiState.update { it.copy(quantity = (it.quantity - 1).coerceAtLeast(1)) }
     }
 
     fun onIncreaseQuantity() {

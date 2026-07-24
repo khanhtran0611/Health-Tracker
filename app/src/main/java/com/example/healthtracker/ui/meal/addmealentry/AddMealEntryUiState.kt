@@ -7,7 +7,7 @@ import java.time.LocalDate
 data class AddMealEntryUiState(
 
     val food: Food? = null,
-    val quantity: Double = 1.0,
+    val quantity: Int = 1,
     val logDate: LocalDate = LocalDate.now(),
     val mealType: MealType = MealType.BREAKFAST,
     val isSaving: Boolean = false,
